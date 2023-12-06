@@ -1,63 +1,110 @@
 package com.ukma.cleaning.order;
 
+import com.ukma.cleaning.commercialProposal.CommercialProposalRepository;
 import com.ukma.cleaning.order.dto.OrderCreationDto;
 import com.ukma.cleaning.order.dto.OrderForAdminDto;
 import com.ukma.cleaning.order.dto.OrderForUserDto;
 import com.ukma.cleaning.order.dto.OrderListDto;
 import com.ukma.cleaning.review.ReviewDto;
+import com.ukma.cleaning.user.UserRepository;
+import com.ukma.cleaning.utils.mappers.OrderMapper;
+import com.ukma.cleaning.utils.mappers.ReviewMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
+    private final CommercialProposalRepository commercialProposalRepository;
+    private final UserRepository userRepository;
+    private final OrderMapper orderMapper;
+    private final ReviewMapper reviewMapper;
 
     @Override
     public OrderForUserDto createOrder(OrderCreationDto order) {
-        return null;
+        OrderEntity entity = orderMapper.toEntity(order);
+        entity.setClient(userRepository.findById(order.getClientId()).orElseThrow(() ->
+                new NoSuchElementException("Can`t find order by id: " + order.getClientId())
+        ));
+        entity.setCommercialProposals(order.getProposals().entrySet().stream()
+                .collect(Collectors.toMap(
+                        x -> commercialProposalRepository.findById(x.getKey()).get(),
+                        Map.Entry::getValue)));
+        return orderMapper.toUserDto(orderRepository.save(entity));
     }
 
     @Override
     public OrderForUserDto updateOrderForUser(OrderForUserDto order) {
-        return null;
+        OrderEntity entity = orderRepository.findById(order.getId()).orElseThrow(() ->
+                new NoSuchElementException("Can`t find order by id: " + order.getId())
+        );
+        orderMapper.updateFields(entity, order);
+        return orderMapper.toUserDto(orderRepository.save(entity));
     }
 
     @Override
     public OrderForAdminDto updateOrderForAdmin(OrderForAdminDto order) {
-        return null;
+        OrderEntity entity = orderRepository.findById(order.getId()).orElseThrow(() ->
+                new NoSuchElementException("Can`t find order by id: " + order.getId())
+        );
+        orderMapper.updateFields(entity, order);
+        return orderMapper.toAdminDto(orderRepository.save(entity));
     }
 
     @Override
-    public OrderForUserDto updateReview(ReviewDto order) {
-        return null;
+    public OrderForUserDto updateReview(ReviewDto review) {
+        OrderEntity entity = orderRepository.findById(review.getOrderId()).orElseThrow(() ->
+                new NoSuchElementException("Can`t find order by id: " + review.getOrderId())
+        );
+        entity.setReview(reviewMapper.toEntity(review));
+        return orderMapper.toUserDto(orderRepository.save(entity));
     }
 
     @Override
     public OrderForUserDto getOrderByIdForUser(Long id) {
-        return null;
+        OrderEntity entity = orderRepository.findById(id).orElseThrow(() ->
+                new NoSuchElementException("Can`t find order by id: " + id)
+        );
+        return orderMapper.toUserDto(entity);
     }
 
     @Override
     public OrderForAdminDto getOrderByIdForAdmin(Long id) {
-        return null;
+        OrderEntity entity = orderRepository.findById(id).orElseThrow(() ->
+                new NoSuchElementException("Can`t find order by id: " + id)
+        );
+        return orderMapper.toAdminDto(entity);
     }
 
     @Override
-    public Boolean deleteOrderById(Long orderId) {
-        return null;
+    public Boolean cancelOrderById(Long orderId) {
+        OrderEntity entity = orderRepository.findById(orderId).orElseThrow(() ->
+                new NoSuchElementException("Can`t find order by id: " + orderId)
+        );
+        entity.setStatus(Status.CANCELLED);
+        return true;
     }
 
     @Override
     public List<OrderListDto> getAllOrders() {
-        return null;
+        return orderMapper.toListDto(orderRepository.findAll());
+    }
+
+    @Override
+    public List<OrderListDto> getAllOrdersByStatus(Status status) {
+        return orderMapper.toListDto(orderRepository.findAllByStatus(status));
     }
 
     @Override
     public List<OrderListDto> getAllOrdersByUserId(Long id) {
-        return null;
+        return orderMapper.toListDto(orderRepository.findAllByStatusNotAndClientIdIs(Status.CANCELLED, id));
     }
 }

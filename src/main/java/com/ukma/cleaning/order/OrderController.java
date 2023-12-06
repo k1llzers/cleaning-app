@@ -31,18 +31,23 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
+    @GetMapping("/{status}")
+    public List<OrderListDto> getAllOrdersByStatus(@PathVariable String status) {
+        return orderService.getAllOrdersByStatus(Status.valueOf(status));
+    }
+
     @GetMapping("/user/all/{id}")
-    public List<OrderListDto> getAllOrders(@PathVariable Long id) {
+    public List<OrderListDto> getAllOrdersOfUser(@PathVariable Long id) {
         return orderService.getAllOrdersByUserId(id);
     }
 
-
     @PutMapping("/admin")
-    public OrderForAdminDto reviewOrder(@RequestBody OrderForAdminDto order) {
+    public OrderForAdminDto updateOrderByAdmin(@RequestBody OrderForAdminDto order) {
         return orderService.updateOrderForAdmin(order);
     }
+
     @PutMapping("/user")
-    public OrderForUserDto reviewOrder(@RequestBody OrderForUserDto order) {
+    public OrderForUserDto updateOrderByUser(@RequestBody OrderForUserDto order) {
         return orderService.updateOrderForUser(order);
     }
 
@@ -59,6 +64,6 @@ public class OrderController {
 
     @DeleteMapping("/{id}")
     public Boolean deleteOrder(@PathVariable Long id) {
-        return orderService.deleteOrderById(id);
+        return orderService.cancelOrderById(id);
     }
 }

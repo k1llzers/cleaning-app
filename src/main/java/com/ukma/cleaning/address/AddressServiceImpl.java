@@ -5,6 +5,7 @@ import com.ukma.cleaning.user.UserRepository;
 import com.ukma.cleaning.user.UserService;
 import com.ukma.cleaning.user.dto.UserDto;
 import com.ukma.cleaning.utils.mappers.AddressMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class AddressServiceImpl implements AddressService {
         return addressMapper.toDto(addressRepository.save(addressEntity));
     }
 
+    @Transactional
     @Override
     public AddressDto update(AddressDto addressDto) {
         AddressEntity addressEntity = addressRepository.findById(addressDto.getId()).orElseThrow(
@@ -39,8 +41,7 @@ public class AddressServiceImpl implements AddressService {
         addressRepository.delete(addressEntity);
         AddressEntity newAddress = addressMapper.toEntity(addressDto);
         newAddress.setUser(user);
-        addressRepository.save(newAddress);
-        return addressMapper.toDto(newAddress);
+        return addressMapper.toDto(addressRepository.save(newAddress));
     }
 
     @Override

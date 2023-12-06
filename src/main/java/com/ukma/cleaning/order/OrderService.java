@@ -15,7 +15,8 @@ public interface OrderService {
     OrderForUserDto updateReview(ReviewDto order);
     OrderForUserDto getOrderByIdForUser(Long id);
     OrderForAdminDto getOrderByIdForAdmin(Long id);
-    Boolean deleteOrderById(Long orderId);
+    Boolean cancelOrderById(Long orderId);
     List<OrderListDto> getAllOrders();
+    List<OrderListDto> getAllOrdersByStatus(Status status);
     List<OrderListDto> getAllOrdersByUserId(Long id);
 }

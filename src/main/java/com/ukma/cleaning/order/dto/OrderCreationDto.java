@@ -15,10 +15,10 @@ import java.util.Map;
 public class OrderCreationDto {
     private Double price;
     private LocalDateTime orderTime;
-    private Long clientId;
+    private Long clientId; // in service
     private String comment;
     private AddressDto address;
     // TODO CHECK HOW IT WORKS
     private Duration duration;
-    private Map<Integer, Integer> proposals;
+    private Map<Long, Integer> proposals; //in service
 }
