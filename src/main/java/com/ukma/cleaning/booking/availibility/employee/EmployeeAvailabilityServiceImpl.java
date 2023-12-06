@@ -28,7 +28,7 @@ public class EmployeeAvailabilityServiceImpl implements EmployeeAvailabilityServ
     public List<UserDto> getAllAvailableEmployees(Long orderId) {
         OrderEntity order = orderRepository.findById(orderId).orElseThrow();
         LocalDateTime startTime = order.getOrderTime().minusMinutes(40);
-        LocalDateTime endTime = order.getOrderTime().plusMinutes(40);
+        LocalDateTime endTime = order.getOrderTime().plusMinutes(40 + order.getDuration().toMinutes());
         List<OrderEntity> orders = orderRepository.findAllByOrderTimeBetweenAndStatusNot(startTime, endTime, Status.CANCELLED);
         List<UserEntity> allUsers = userRepository.findAllByRole(Role.Employee);
         List<UserEntity> unavailableEmployees = orders.stream()
