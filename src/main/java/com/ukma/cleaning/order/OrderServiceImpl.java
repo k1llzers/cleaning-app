@@ -1,5 +1,6 @@
 package com.ukma.cleaning.order;
 
+import com.ukma.cleaning.address.AddressRepository;
 import com.ukma.cleaning.commercialProposal.CommercialProposalRepository;
 import com.ukma.cleaning.order.dto.OrderCreationDto;
 import com.ukma.cleaning.order.dto.OrderForAdminDto;
@@ -8,6 +9,7 @@ import com.ukma.cleaning.order.dto.OrderListDto;
 import com.ukma.cleaning.review.ReviewDto;
 import com.ukma.cleaning.user.UserRepository;
 import com.ukma.cleaning.utils.exceptions.CantChangeEntityException;
+import com.ukma.cleaning.utils.mappers.AddressMapper;
 import com.ukma.cleaning.utils.mappers.OrderMapper;
 import com.ukma.cleaning.utils.mappers.ReviewMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,8 @@ public class OrderServiceImpl implements OrderService {
     private final CommercialProposalRepository commercialProposalRepository;
     private final UserRepository userRepository;
     private final OrderMapper orderMapper;
+    private final AddressRepository addressRepository;
+    private final AddressMapper addressMapper;
     private final ReviewMapper reviewMapper;
 
     @Override
@@ -39,6 +43,8 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toMap(
                         x -> commercialProposalRepository.findById(x.getKey()).get(),
                         Map.Entry::getValue)));
+        entity.setAddress(addressRepository.findById(order.getAddress().getId())
+                .orElseGet(() -> addressRepository.save(addressMapper.toEntity(order.getAddress()))));
         return orderMapper.toUserDto(orderRepository.save(entity));
     }
 
