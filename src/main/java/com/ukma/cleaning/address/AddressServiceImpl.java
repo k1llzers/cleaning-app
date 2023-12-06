@@ -60,21 +60,10 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<AddressDto> getUserAddresses(UserDto userDto) {
-        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
-        List<AddressEntity> addresses = addressRepository.findAddressEntitiesByUser(userEntity);
-        return addresses.stream().map(x -> modelMapper.map(x, AddressDto.class)).toList();
-    }
-
-    @Override
-    public List<AddressDto> getAddressesByUserId(Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        List<String> authorities = authentication.getAuthorities().stream().map(e -> e + "").toList();
-        UserDto userDto = userService.getUser(id);
-        if (!authorities.contains("ROLE_Admin") && !userDto.getEmail().equals(authentication.getName())){
-            throw new AccessDeniedException("You can`t get addresses by id " + id);
-        }
-        return getUserAddresses(userDto);
+    public List<AddressDto> getAddressesByUserId(Long userId) {
+        return addressRepository.findAddressEntitiesByUserId(userId).stream()
+                .map(entity -> modelMapper.map(entity, AddressDto.class))
+                .toList();
     }
 
     @Override

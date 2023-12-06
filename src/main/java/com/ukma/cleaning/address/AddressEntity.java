@@ -38,6 +38,9 @@ public class AddressEntity {
     private Boolean deleted = false;
 
     @ManyToOne
-    @JoinColumn(name="user")
+    @JoinColumn(name="user_id")
     private UserEntity user;
+
+    @Column(name = "user_id")
+    private Long userId;
 }
