@@ -1,6 +1,7 @@
 package com.ukma.cleaning.address;
 
 import com.ukma.cleaning.user.UserEntity;
+import com.ukma.cleaning.user.UserRepository;
 import com.ukma.cleaning.user.UserService;
 import com.ukma.cleaning.user.dto.UserDto;
 import com.ukma.cleaning.utils.mappers.AddressMapper;
@@ -16,14 +17,14 @@ import java.util.NoSuchElementException;
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
-    private final ModelMapper modelMapper;
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final AddressMapper addressMapper;
 
     @Override
     public AddressDto create(Long userId, AddressDto addressDto) {
-        UserDto user = userService.getById(userId);
-        UserEntity userEntity = modelMapper.map(user, UserEntity.class);
+        UserEntity userEntity = userRepository.findById(userId).orElseThrow(() ->
+                new NoSuchElementException("Can`t find user by id: " + userId)
+        );
         AddressEntity addressEntity = addressMapper.toEntity(addressDto);
         addressEntity.setUser(userEntity);
         return addressMapper.toDto(addressRepository.save(addressEntity));
