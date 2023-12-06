@@ -14,8 +14,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    private static OrderRepository orderRepository;
-    private static ModelMapper modelMapper;
+    private final OrderRepository orderRepository;
+
     @Override
     public OrderForUserDto createOrder(OrderCreationDto order) {
         return null;
@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Boolean deleteOrder(Long orderId) {
+    public Boolean deleteOrderById(Long orderId) {
         return null;
     }
 
