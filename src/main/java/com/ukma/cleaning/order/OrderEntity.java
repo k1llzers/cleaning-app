@@ -55,11 +55,11 @@ public class OrderEntity {
     @OneToOne()
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "review", referencedColumnName = "id")
-    private ReviewEntity reviewEntity;
+    private ReviewEntity review;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private Status orderStatus;
+    private Status status;
 
     @Column(name = "duration", nullable = false)
     private Duration duration;

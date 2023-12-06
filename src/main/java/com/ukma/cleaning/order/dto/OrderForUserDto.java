@@ -15,12 +15,12 @@ import java.util.Map;
 @AllArgsConstructor
 @Data
 public class OrderForUserDto {
-    private Long orderId;
+    private Long id;
     private Double price;
-    private LocalDateTime orderTime;
+    private LocalDateTime orderTime;//
     private AddressDto address;
-    private Status status;
-    private Duration orderDuration;
-    private ReviewDto review;
-    private Map<String, Integer> proposalsMap;
+    private Status status; //
+    private Duration duration;
+    private ReviewDto review; //
+    private Map<String, Integer> commercialProposals;
 }

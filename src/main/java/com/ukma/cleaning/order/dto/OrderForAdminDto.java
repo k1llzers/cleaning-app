@@ -12,19 +12,18 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class OrderForAdminDto {
-    private Long orderId;
+    private Long id;
     private Double price;
     private LocalDateTime orderTime;
     private AddressDto address;
     private Status status;
-    private Duration orderDuration;
+    private Duration duration;
     private ReviewDto review;
-    private Map<String, Integer> proposalsMap;
-    private List<UserDto> workers;
+    private Map<String, Integer> commercialProposals;
+    private List<UserDto> executors;
 }

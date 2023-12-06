@@ -19,6 +19,6 @@ public class OrderCreationDto {
     private String comment;
     private AddressDto address;
     // TODO CHECK HOW IT WORKS
-    private Duration orderDuration;
+    private Duration duration;
     private Map<Integer, Integer> proposals;
 }

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 public class OrderListDto {
-    private Long orderId;
+    private Long id;
     private Double price;
     private LocalDateTime orderTime;
     private AddressDto address;
