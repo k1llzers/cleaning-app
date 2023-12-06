@@ -14,6 +14,7 @@ public class CommercialProposalDto {
     private String name;
     private String shortDescription;
     private String fullDescription;
+    private String requiredCountOfEmployees;
     private Double price;
     private Duration time;
     private ComercialProposalType type;

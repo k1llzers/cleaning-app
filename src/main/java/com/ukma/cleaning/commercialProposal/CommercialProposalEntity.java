@@ -11,7 +11,7 @@ import java.time.Duration;
 @Entity
 @NoArgsConstructor
 @Data
-@SQLDelete(sql = "UPDATE commercial_proposal SET daleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE commercial_proposal SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Table(name = "commercial_proposal")
 public class CommercialProposalEntity {
