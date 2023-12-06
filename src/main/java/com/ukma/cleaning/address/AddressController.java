@@ -28,14 +28,14 @@ public class AddressController {
 
     @Operation(summary = "Change address", description = "Change address")
     @PutMapping()
-    public void editAddress(@RequestBody AddressDto addressDto) {
-        addressService.update(addressDto);
+    public AddressDto editAddress(@RequestBody AddressDto addressDto) {
+        return addressService.update(addressDto);
     }
 
     @Operation(summary = "Create new address for user", description = "Create new address for user")
     @PostMapping("/{userId}")
-    public void createAddress(@PathVariable Long userId, @RequestBody AddressDto addressDto) {
-        addressService.create(userId, addressDto);
+    public AddressDto createAddress(@PathVariable Long userId, @RequestBody AddressDto addressDto) {
+        return addressService.create(userId, addressDto);
     }
 
     @Operation(summary = "Delete address", description = "Delete address")
