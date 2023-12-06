@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 @Tag(name = "User API", description = "Endpoint for operations with users (customers/staff)")
 public class UserController {
     private final UserService userService;
-//    private final AuthenticationService authenticationService;
 
     @Operation(summary = "Get user by id", description = "Get user by id")
     @GetMapping("/{id}")

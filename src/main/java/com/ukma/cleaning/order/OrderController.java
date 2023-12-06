@@ -31,12 +31,12 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
-    @GetMapping("/{status}")
+    @GetMapping("/by-status/{status}")
     public List<OrderListDto> getAllOrdersByStatus(@PathVariable String status) {
         return orderService.getAllOrdersByStatus(Status.valueOf(status));
     }
 
-    @GetMapping("/user/all/{id}")
+    @GetMapping("/all/by-user/{id}")
     public List<OrderListDto> getAllOrdersOfUser(@PathVariable Long id) {
         return orderService.getAllOrdersByUserId(id);
     }
@@ -52,7 +52,7 @@ public class OrderController {
     }
 
 
-    @PutMapping("/review")
+    @PutMapping("/update/review")
     public OrderForUserDto reviewOrder(@RequestBody ReviewDto review) {
         return orderService.updateReview(review);
     }
