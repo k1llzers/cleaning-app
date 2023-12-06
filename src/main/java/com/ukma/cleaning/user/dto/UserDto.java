@@ -24,6 +24,5 @@ public class UserDto {
     @NotNull(message = "Role cannot be null")
     private Role role;
     private String phoneNumber;
-
     private List<AddressDto> addressList;
 }

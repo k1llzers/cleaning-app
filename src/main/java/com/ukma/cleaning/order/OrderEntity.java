@@ -53,6 +53,7 @@ public class OrderEntity {
     private AddressEntity address;
 
     @OneToOne()
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "review", referencedColumnName = "id")
     private ReviewEntity reviewEntity;
 

@@ -3,6 +3,7 @@ package com.ukma.cleaning.address;
 import com.ukma.cleaning.user.UserEntity;
 import com.ukma.cleaning.user.UserService;
 import com.ukma.cleaning.user.dto.UserDto;
+import com.ukma.cleaning.utils.mappers.AddressMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,13 @@ public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
     private final ModelMapper modelMapper;
     private final UserService userService;
+    private final AddressMapper addressMapper;
 
     @Override
     public void create(Long userId, AddressDto addressDto) {
         UserDto user = userService.getById(userId);
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
-        AddressEntity addressEntity = modelMapper.map(addressDto, AddressEntity.class);
+        AddressEntity addressEntity = addressMapper.toEntity(addressDto);
         addressEntity.setUser(userEntity);
         addressRepository.save(addressEntity);
     }
@@ -35,7 +37,7 @@ public class AddressServiceImpl implements AddressService {
                 );
         UserEntity user = addressEntity.getUser();
         addressRepository.delete(addressEntity);
-        AddressEntity newAddress = modelMapper.map(addressDto, AddressEntity.class);
+        AddressEntity newAddress = addressMapper.toEntity(addressDto);
         newAddress.setId(null);
         newAddress.setUser(user);
         addressRepository.save(newAddress);
@@ -49,13 +51,11 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDto getById(Long id) {
         AddressEntity addressEntity = addressRepository.findById(id).get();
-        return modelMapper.map(addressEntity, AddressDto.class);
+        return addressMapper.toDto(addressEntity);
     }
 
     @Override
     public List<AddressDto> getByUserId(Long userId) {
-        return addressRepository.findAddressEntitiesByUserId(userId).stream()
-                .map(entity -> modelMapper.map(entity, AddressDto.class))
-                .toList();
+        return addressMapper.toListDto(addressRepository.findAddressEntitiesByUserId(userId));
     }
 }
