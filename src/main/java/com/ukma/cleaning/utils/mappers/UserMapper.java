@@ -1,11 +1,36 @@
 package com.ukma.cleaning.utils.mappers;
 
 import com.ukma.cleaning.user.UserEntity;
+import com.ukma.cleaning.user.dto.UserDto;
 import com.ukma.cleaning.user.dto.UserRegistrationDto;
 import com.ukma.cleaning.utils.configuration.MapperConfig;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
+import org.mapstruct.Named;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Mapper(config = MapperConfig.class)
 public interface UserMapper {
-    UserEntity toEntity(UserRegistrationDto user);
+    @Mappings({
+            @Mapping(target = "role", expression = "java(com.ukma.cleaning.user.Role.User)"),
+            @Mapping(target = "password", source = "password", qualifiedByName = "encodePassword")
+    })
+    UserEntity toEntity(UserRegistrationDto user, @Context PasswordEncoder passwordEncoder);
+
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "addressList", ignore = true),
+            @Mapping(target = "role", ignore = true)
+    })
+    void updateFields(@MappingTarget UserEntity entity, UserDto user);
+
+    UserDto toDto(UserEntity user);
+
+    @Named("encodePassword")
+    default String encodePassword(String password, @Context PasswordEncoder passwordEncoder) {
+        return passwordEncoder.encode(password);
+    }
 }

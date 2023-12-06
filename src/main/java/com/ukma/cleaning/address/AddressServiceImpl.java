@@ -32,14 +32,12 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto update(AddressDto addressDto) {
-        AddressEntity addressEntity = addressRepository.findById(addressDto.getId())
-                .orElseThrow(
-                        () -> new NoSuchElementException("Can`t find address by id: " + addressDto.getId())
-                );
+        AddressEntity addressEntity = addressRepository.findById(addressDto.getId()).orElseThrow(
+                () -> new NoSuchElementException("Can`t find address by id: " + addressDto.getId())
+        );
         UserEntity user = addressEntity.getUser();
         addressRepository.delete(addressEntity);
         AddressEntity newAddress = addressMapper.toEntity(addressDto);
-        newAddress.setId(null);
         newAddress.setUser(user);
         addressRepository.save(newAddress);
         return addressMapper.toDto(newAddress);
