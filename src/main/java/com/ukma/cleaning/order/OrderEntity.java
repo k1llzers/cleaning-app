@@ -1,7 +1,6 @@
 package com.ukma.cleaning.order;
 
 import com.ukma.cleaning.address.AddressEntity;
-import com.ukma.cleaning.comment.CommentEntity;
 import com.ukma.cleaning.commercialProposal.CommercialProposalEntity;
 import com.ukma.cleaning.review.ReviewEntity;
 import com.ukma.cleaning.user.UserEntity;
@@ -46,9 +45,8 @@ public class OrderEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private Set<UserEntity> executors;
 
-    @OneToOne
-    @JoinColumn(name = "comment")
-    private CommentEntity comment;
+    @Column(name = "comment", length = 500)
+    private String comment;
 
     @OneToOne
     @JoinColumn(name = "address", nullable = false)
