@@ -12,7 +12,8 @@ import java.time.Duration;
 public class CommercialProposalDto {
     private Long id;
     private String name;
-    private String description;
+    private String shortDescription;
+    private String fullDescription;
     private Double price;
     private Duration time;
     private ComercialProposalType type;

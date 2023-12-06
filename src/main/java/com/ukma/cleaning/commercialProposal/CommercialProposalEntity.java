@@ -23,8 +23,11 @@ public class CommercialProposalEntity {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "description", length = 1000)
-    private String description;
+    @Column(name = "shortDescription", length = 100)
+    private String shortDescription;
+
+    @Column(name = "fullDescription", length = 500)
+    private String fullDescription;
 
     @Column(name = "price", nullable = false)
     private Double price;
