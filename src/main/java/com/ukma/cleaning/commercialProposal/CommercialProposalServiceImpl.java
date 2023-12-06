@@ -1,6 +1,6 @@
 package com.ukma.cleaning.commercialProposal;
 
-import org.modelmapper.ModelMapper;
+import com.ukma.cleaning.utils.mappers.CommercialProposalMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,33 +11,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommercialProposalServiceImpl implements CommercialProposalService {
     private final CommercialProposalRepository commercialProposalRepository;
-    private final ModelMapper modelMapper;
+    private final CommercialProposalMapper mapper;
     @Override
     public CommercialProposalDto create(CommercialProposalDto commercialProposal) {
-        CommercialProposalEntity commercialProposalEntity = modelMapper.map(commercialProposal, CommercialProposalEntity.class);
-        commercialProposalRepository.save(commercialProposalEntity);
-        return modelMapper.map(commercialProposalEntity, CommercialProposalDto.class);
+        return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));
     }
 
     @Override
     public CommercialProposalDto update(CommercialProposalDto commercialProposal) {
-        CommercialProposalEntity commercialProposalEntity = modelMapper.map(commercialProposal, CommercialProposalEntity.class);
-        commercialProposalRepository.save(commercialProposalEntity);
-        return modelMapper.map(commercialProposalEntity, CommercialProposalDto.class);
+        return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));
     }
 
     @Override
     public CommercialProposalDto getById(Long id) {
-        CommercialProposalEntity entity = commercialProposalRepository.findById(id).orElseThrow(() -> new RuntimeException("Proposal not found"));
-        return modelMapper.map(entity, CommercialProposalDto.class);
+        CommercialProposalEntity entity = commercialProposalRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Proposal not found")
+        );
+        return mapper.toDto(entity);
     }
 
     @Override
     public List<CommercialProposalDto> getAll() {
-        List<CommercialProposalEntity> entities = commercialProposalRepository.findAll();
-        return entities.stream()
-                .map(entity -> modelMapper.map(entity, CommercialProposalDto.class))
-                .toList();
+        return mapper.toDtoList(commercialProposalRepository.findAll());
     }
 
     @Override
