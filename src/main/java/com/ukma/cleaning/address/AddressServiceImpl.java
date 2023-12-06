@@ -26,7 +26,7 @@ public class AddressServiceImpl implements AddressService {
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
         AddressEntity addressEntity = addressMapper.toEntity(addressDto);
         addressEntity.setUser(userEntity);
-        return addressMapper.toDto(addressEntity);
+        return addressMapper.toDto(addressRepository.save(addressEntity));
     }
 
     @Override

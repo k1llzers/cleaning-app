@@ -4,7 +4,6 @@ import com.ukma.cleaning.address.AddressDto;
 import com.ukma.cleaning.address.AddressEntity;
 import com.ukma.cleaning.utils.configuration.MapperConfig;
 import org.mapstruct.Mapper;
-
 import java.util.List;
 
 @Mapper(config = MapperConfig.class)
