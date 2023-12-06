@@ -8,10 +8,10 @@ import com.ukma.cleaning.user.dto.UserRegistrationDto;
 public interface UserService {
     UserDto createUser(UserRegistrationDto user);
     UserDto editUser(UserDto user);
-    void deleteUser(long id);
-    UserDto getUser(long id);
+    void deleteUser(Long id);
+    UserDto getUser(Long id);
     UserDto getUserByEmail(String email);
-    UserPasswordDto getUserPassword(long id);
+    UserPasswordDto getUserPassword(Long id);
     UserPasswordDto getUserPasswordByEmail(String email);
     UserDto changePassword(UserPasswordDto user);
 }

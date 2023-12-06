@@ -36,12 +36,12 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(userRepository.save(userEntity), UserDto.class);
     }
     @Override
-    public void deleteUser(long id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public UserDto getUser(long id) {
+    public UserDto getUser(Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         return modelMapper.map(userEntity, UserDto.class);
     }
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserPasswordDto getUserPassword(long id) {
+    public UserPasswordDto getUserPassword(Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         return modelMapper.map(userEntity, UserPasswordDto.class);
     }
