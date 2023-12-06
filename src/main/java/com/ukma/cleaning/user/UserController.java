@@ -60,8 +60,8 @@ public class UserController {
     @Operation(summary = "Delete user", description = "Delete user")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        userService.deleteById(id);
+    public Boolean delete(@PathVariable Long id) {
+        return userService.deleteById(id);
     }
 
 //    @ExceptionHandler({EmailDuplicateException.class})

@@ -36,7 +36,8 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
     }
 
     @Override
-    public void deleteById(Long id) {
+    public Boolean deleteById(Long id) {
         commercialProposalRepository.deleteById(id);
+        return true;
     }
 }

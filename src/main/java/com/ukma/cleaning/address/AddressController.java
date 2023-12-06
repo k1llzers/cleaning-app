@@ -40,7 +40,7 @@ public class AddressController {
 
     @Operation(summary = "Delete address", description = "Delete address")
     @DeleteMapping("/{id}")
-    public void deleteAddress(@PathVariable Long id) {
-        addressService.deleteById(id);
+    public Boolean deleteAddress(@PathVariable Long id) {
+        return addressService.deleteById(id);
     }
 }

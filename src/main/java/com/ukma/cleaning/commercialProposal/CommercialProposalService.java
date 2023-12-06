@@ -9,5 +9,5 @@ public interface CommercialProposalService {
     CommercialProposalDto update(CommercialProposalDto commercialProposal);
     CommercialProposalDto getById(Long id);
     List<CommercialProposalDto> getAll();
-    void deleteById(Long id);
+    Boolean deleteById(Long id);
 }

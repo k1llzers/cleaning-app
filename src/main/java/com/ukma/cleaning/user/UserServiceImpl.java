@@ -32,8 +32,9 @@ public class UserServiceImpl implements UserService {
         return mapper.toDto(userRepository.save(userEntity));
     }
     @Override
-    public void deleteById(Long id) {
+    public Boolean deleteById(Long id) {
         userRepository.deleteById(id);
+        return true;
     }
 
     @Override

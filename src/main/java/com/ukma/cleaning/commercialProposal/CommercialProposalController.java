@@ -32,7 +32,7 @@ public class CommercialProposalController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAddress(@PathVariable Long id) {
-        commercialProposalService.deleteById(id);
+    public Boolean deleteAddress(@PathVariable Long id) {
+        return commercialProposalService.deleteById(id);
     }
 }
