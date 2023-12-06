@@ -1,17 +1,14 @@
 package com.ukma.cleaning.address;
 
-import com.ukma.cleaning.order.OrderRepository;
 import com.ukma.cleaning.user.UserEntity;
 import com.ukma.cleaning.user.UserService;
 import com.ukma.cleaning.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,41 +17,37 @@ public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
     private final ModelMapper modelMapper;
     private final UserService userService;
-    private final OrderRepository orderRepository;
 
     @Override
-    public void createAddress(long userId, AddressDto addressDto) {
+    public void createAddress(Long userId, AddressDto addressDto) {
         UserDto user = userService.getUser(userId);
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
-
         AddressEntity addressEntity = modelMapper.map(addressDto, AddressEntity.class);
         addressEntity.setUser(userEntity);
         addressRepository.save(addressEntity);
-//        Address address = modelMapper.map(addressDto, Address.class);
-//        createAddress(user, address);
     }
 
     @Override
     public void editAddress(AddressDto addressDto) {
-        AddressEntity addressEntity = modelMapper.map(addressDto, AddressEntity.class);
-        addressRepository.save(addressEntity); // ???
-//        AddressEntity addressEntity = addressRepository.findById(addressDto.getId()).get();
-//        addressEntity.setCity(addressDto.getCity());
-//        addressEntity.setStreet(addressDto.getStreet());
-//        addressEntity.setHouseNumber(addressDto.getHouseNumber());
-//        addressEntity.setFlatNumber(addressDto.getFlatNumber());
-//        addressEntity.setZip(addressDto.getZip());
+        AddressEntity addressEntity = addressRepository.findById(addressDto.getId())
+                .orElseThrow(
+                        () -> new NoSuchElementException("Can`t find address by id: " + addressDto.getId())
+                );
+        UserEntity user = addressEntity.getUser();
+        addressRepository.delete(addressEntity);
+        AddressEntity newAddress = modelMapper.map(addressDto, AddressEntity.class);
+        newAddress.setId(null);
+        newAddress.setUser(user);
+        addressRepository.save(newAddress);
     }
 
     @Override
-    public void deleteAddress(long id) {
-        AddressEntity addressEntity = addressRepository.findById(id).get();
-        addressEntity.setDeleted(true);
-        addressRepository.save(addressEntity);
+    public void deleteAddress(Long id) {
+        addressRepository.deleteById(id);
     }
 
     @Override
-    public AddressDto getAddress(long id) {
+    public AddressDto getAddress(Long id) {
         AddressEntity addressEntity = addressRepository.findById(id).get();
         return modelMapper.map(addressEntity, AddressDto.class);
     }
@@ -67,7 +60,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public boolean hasAttachedOrders(long id) {
+    public boolean hasAttachedOrders(Long id) {
 //        Address address = getAddress(id);
         return false;
         //return address.getOrders().stream().anyMatch(x -> x.getOrderStatus() != Status.NOT_VERIFIED && x.getOrderStatus() != Status.CANCELLED);

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class AddressDto {
-    private long id;
+    private Long id;
     @NotNull
     private String city;
     @NotNull
