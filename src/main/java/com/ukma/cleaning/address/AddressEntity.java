@@ -41,6 +41,6 @@ public class AddressEntity {
     @JoinColumn(name="user_id")
     private UserEntity user;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", insertable=false, updatable=false)
     private Long userId;
 }

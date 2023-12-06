@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
@@ -60,6 +61,9 @@ public class OrderEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status orderStatus;
+
+    @Column(name = "duration", nullable = false)
+    private Duration duration;
 
     @ElementCollection
     @MapKeyJoinColumn(name = "commercial_proposal_id")

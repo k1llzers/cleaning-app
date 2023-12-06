@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import java.time.LocalTime;
+import java.time.Duration;
 
 @Entity
 @NoArgsConstructor
@@ -30,8 +30,8 @@ public class CommercialProposalEntity {
     private Double price;
 
     @Temporal(TemporalType.TIME)
-    @Column(name = "time", nullable = false)
-    private LocalTime time;
+    @Column(name = "duration", nullable = false)
+    private Duration time;
 
     @Column(name = "count_of_employee", nullable = false)
     private Integer requiredCountOfEmployees;
