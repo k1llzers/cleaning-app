@@ -10,7 +10,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @NoArgsConstructor
 @Data
-@SQLDelete(sql = "UPDATE address SET daleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE address SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Table(name = "address")
 public class AddressEntity {
