@@ -4,6 +4,8 @@ import com.ukma.cleaning.address.AddressDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -16,5 +18,7 @@ public class OrderCreationDto {
     private Long clientId;
     private String comment;
     private AddressDto address;
+    // TODO CHECK HOW IT WORKS
+    private Duration orderDuration;
     private Map<Integer, Integer> proposals;
 }
