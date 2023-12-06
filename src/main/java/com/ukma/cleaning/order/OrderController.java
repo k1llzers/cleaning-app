@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/commercial-proposals")
+@RequestMapping("/orders")
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     public OrderForUserDto getOrderForUser(@PathVariable Long id) {
         return orderService.getOrderByIdForUser(id);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/{id}")
     public OrderForAdminDto getOrderForAdmin(@PathVariable Long id) {
         return orderService.getOrderByIdForAdmin(id);
     }
@@ -31,7 +31,7 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/user/all/{id}")
     public List<OrderListDto> getAllOrders(@PathVariable Long id) {
         return orderService.getAllOrdersByUserId(id);
     }

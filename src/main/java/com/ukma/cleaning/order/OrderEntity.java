@@ -39,7 +39,7 @@ public class OrderEntity {
     @JoinColumn(name = "client", nullable = false)
     private UserEntity client;
 
-    @Column(name = "client")
+    @Column(name = "client", insertable=false, updatable=false)
     private Long clientId;
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -4,8 +4,8 @@ public enum Status {
     NOT_VERIFIED,
     VERIFIED,
     NOT_STARTED,
-    IN_PROGRESS,
     PREPARING,
+    IN_PROGRESS,
     DONE,
     CANCELLED
 }

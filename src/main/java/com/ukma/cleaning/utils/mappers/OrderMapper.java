@@ -19,6 +19,10 @@ import java.util.Map;
 
 @Mapper(config = MapperConfig.class, uses = {AddressMapper.class, UserMapper.class})
 public interface OrderMapper {
+    @Mappings({
+            @Mapping(target = "creationTime", expression = "java(java.time.LocalDateTime.now())"),
+            @Mapping(target = "status", expression = "java(com.ukma.cleaning.order.Status.NOT_VERIFIED)")
+    })
     OrderEntity toEntity(OrderCreationDto order);
 
     @Mappings({
