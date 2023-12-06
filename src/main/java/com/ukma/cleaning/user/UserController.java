@@ -25,7 +25,7 @@ public class UserController {
     @Operation(summary = "Get user by id", description = "Get user by id")
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable Long id) {
-        return userService.getUser(id);
+        return userService.getById(id);
     }
 
     @Operation(summary = "Get user by email", description = "Get user by email")
@@ -35,33 +35,33 @@ public class UserController {
         String resource = "http://worldtimeapi.org/api/timezone/Europe/Kyiv";
         ResponseEntity<String> time = restTemplate.getForEntity(resource, String.class);
         log.info("time from api:" + time.getBody());
-        return userService.getUserByEmail(email);
+        return userService.getByEmail(email);
     }
 
     @Operation(summary = "Change user", description = "Change user")
     @PutMapping
     public UserDto updateUser(@RequestBody @Valid UserDto userDto) {
-        return userService.editUser(userDto);
+        return userService.update(userDto);
     }
 
     @Operation(summary = "Change user", description = "Change user")
     @PutMapping("/pass")
     public UserDto updatePassword(@RequestBody @Valid UserPasswordDto userDto) {
-        return userService.changePassword(userDto);
+        return userService.updatePassword(userDto);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add user", description = "Add user")
     @PostMapping
     public UserDto addUser(@RequestBody @Valid UserRegistrationDto userDto) {
-        return userService.createUser(userDto);
+        return userService.create(userDto);
     }
 
     @Operation(summary = "Delete user", description = "Delete user")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        userService.deleteUser(id);
+        userService.deleteById(id);
     }
 
 //    @ExceptionHandler({EmailDuplicateException.class})

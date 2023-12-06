@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
 
     @Override
-    public UserDto createUser(UserRegistrationDto user) {
+    public UserDto create(UserRegistrationDto user) {
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
         userEntity.setRole(Role.User);
         userEntity.setPassword(encoder.encode(userEntity.getPassword()));
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto editUser(UserDto user) {
+    public UserDto update(UserDto user) {
         UserEntity userEntity = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
         userEntity.setName(user.getName());
         userEntity.setSurname(user.getSurname());
@@ -36,18 +36,18 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(userRepository.save(userEntity), UserDto.class);
     }
     @Override
-    public void deleteUser(Long id) {
+    public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public UserDto getUser(Long id) {
+    public UserDto getById(Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         return modelMapper.map(userEntity, UserDto.class);
     }
 
     @Override
-    public UserDto getUserByEmail(String email) {
+    public UserDto getByEmail(String email) {
 //        UserEntity userEntity = null;
 //        try {
 //            userEntity = userRepository.findUserEntityByEmail(email).get();
@@ -60,20 +60,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserPasswordDto getUserPassword(Long id) {
+    public UserPasswordDto getPasswordById(Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         return modelMapper.map(userEntity, UserPasswordDto.class);
     }
 
     @Override
-    public UserDto changePassword(UserPasswordDto user) {
+    public UserDto updatePassword(UserPasswordDto user) {
         UserEntity userEntity = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
         userEntity.setPassword(encoder.encode(user.getPassword()));
         return modelMapper.map(userRepository.save(userEntity), UserDto.class);
     }
 
     @Override
-    public UserPasswordDto getUserPasswordByEmail(String email) {
+    public UserPasswordDto getPasswordByEmail(String email) {
         UserEntity userEntity = userRepository.findUserEntityByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
         return modelMapper.map(userEntity, UserPasswordDto.class);
     }

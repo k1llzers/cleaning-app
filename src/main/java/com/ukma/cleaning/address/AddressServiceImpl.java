@@ -20,7 +20,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void create(Long userId, AddressDto addressDto) {
-        UserDto user = userService.getUser(userId);
+        UserDto user = userService.getById(userId);
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
         AddressEntity addressEntity = modelMapper.map(addressDto, AddressEntity.class);
         addressEntity.setUser(userEntity);
