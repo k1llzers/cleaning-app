@@ -2,6 +2,7 @@ package com.ukma.cleaning.order.dto;
 
 import com.ukma.cleaning.address.AddressDto;
 import com.ukma.cleaning.order.Status;
+import com.ukma.cleaning.review.ReviewDto;
 import com.ukma.cleaning.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class OrderForAdminDto {
     private AddressDto address;
     private Status status;
     private Duration orderDuration;
+    private ReviewDto review;
     private Map<String, Integer> proposalsMap;
     private List<UserDto> workers;
 }
