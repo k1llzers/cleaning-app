@@ -17,30 +17,30 @@ public class AddressController {
     @Operation(summary = "Get address by id", description = "Get address by id")
     @GetMapping("/{id}")
     public AddressDto getAddress(@PathVariable Long id) {
-            return addressService.getAddress(id);
+        return addressService.getById(id);
     }
 
     @Operation(summary = "Get all user addresses", description = "Get all user addresses")
     @GetMapping("/by-user/{userId}")
     public List<AddressDto> getUserAddresses(@PathVariable Long userId) {
-        return addressService.getAddressesByUserId(userId);
+        return addressService.getByUserId(userId);
     }
 
     @Operation(summary = "Change address", description = "Change address")
     @PutMapping()
     public void editAddress(@RequestBody AddressDto addressDto) {
-        addressService.editAddress(addressDto);
+        addressService.update(addressDto);
     }
 
     @Operation(summary = "Create new address for user", description = "Create new address for user")
     @PostMapping("/{userId}")
     public void createAddress(@PathVariable Long userId, @RequestBody AddressDto addressDto) {
-        addressService.createAddress(userId, addressDto);
+        addressService.create(userId, addressDto);
     }
 
     @Operation(summary = "Delete address", description = "Delete address")
     @DeleteMapping("/{id}")
     public void deleteAddress(@PathVariable Long id) {
-        addressService.deleteAddress(id);
+        addressService.deleteById(id);
     }
 }
