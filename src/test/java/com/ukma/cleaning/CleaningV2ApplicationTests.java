@@ -1,0 +1,13 @@
+package com.ukma.cleaning;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class CleaningV2ApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
