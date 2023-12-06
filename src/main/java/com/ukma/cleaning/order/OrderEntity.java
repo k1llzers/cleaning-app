@@ -39,6 +39,9 @@ public class OrderEntity {
     @JoinColumn(name = "client", nullable = false)
     private UserEntity client;
 
+    @Column(name = "client")
+    private Long clientId;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "executors",
             joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
