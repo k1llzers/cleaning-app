@@ -11,5 +11,5 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     // for admin to get all needed orders by status
     List<OrderEntity> findAllByStatus(Status status);
     // for available booking time
-    List<OrderEntity> findAllByOrderTimeBetween(LocalDateTime start, LocalDateTime end);
+    List<OrderEntity> findAllByOrderTimeBetweenAndStatusNot(LocalDateTime start, LocalDateTime end, Status status);
 }
