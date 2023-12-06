@@ -40,6 +40,7 @@ public interface OrderMapper {
             @Mapping(target = "address", ignore = true),
             @Mapping(target = "duration", ignore = true),
             @Mapping(target = "commercialProposals", ignore = true),
+            @Mapping(target = "status", expression = "java(com.ukma.cleaning.order.Status.NOT_VERIFIED)")
     })
     void updateFields(@MappingTarget OrderEntity entity, OrderForUserDto order);
 

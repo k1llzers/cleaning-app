@@ -7,6 +7,7 @@ import com.ukma.cleaning.order.dto.OrderForUserDto;
 import com.ukma.cleaning.order.dto.OrderListDto;
 import com.ukma.cleaning.review.ReviewDto;
 import com.ukma.cleaning.user.UserRepository;
+import com.ukma.cleaning.utils.exceptions.CantChangeEntityException;
 import com.ukma.cleaning.utils.mappers.OrderMapper;
 import com.ukma.cleaning.utils.mappers.ReviewMapper;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,9 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity entity = orderRepository.findById(order.getId()).orElseThrow(() ->
                 new NoSuchElementException("Can`t find order by id: " + order.getId())
         );
+        if (entity.getStatus().ordinal() >= Status.PREPARING.ordinal()) {
+            throw new CantChangeEntityException("You can`t change order when status is Preparing");
+        }
         orderMapper.updateFields(entity, order);
         return orderMapper.toUserDto(orderRepository.save(entity));
     }
@@ -64,6 +68,9 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity entity = orderRepository.findById(review.getOrderId()).orElseThrow(() ->
                 new NoSuchElementException("Can`t find order by id: " + review.getOrderId())
         );
+        if (entity.getStatus() != Status.DONE) {
+            throw new CantChangeEntityException("You can`t add review when status isn`t Done`");
+        }
         entity.setReview(reviewMapper.toEntity(review));
         return orderMapper.toUserDto(orderRepository.save(entity));
     }

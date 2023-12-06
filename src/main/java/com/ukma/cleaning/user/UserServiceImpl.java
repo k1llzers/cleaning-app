@@ -3,7 +3,7 @@ package com.ukma.cleaning.user;
 import com.ukma.cleaning.user.dto.UserDto;
 import com.ukma.cleaning.user.dto.UserPasswordDto;
 import com.ukma.cleaning.user.dto.UserRegistrationDto;
-import com.ukma.cleaning.utils.NoSuchEntityException;
+import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
 import com.ukma.cleaning.utils.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
