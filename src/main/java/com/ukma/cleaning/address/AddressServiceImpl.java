@@ -58,11 +58,4 @@ public class AddressServiceImpl implements AddressService {
                 .map(entity -> modelMapper.map(entity, AddressDto.class))
                 .toList();
     }
-
-    @Override
-    public boolean hasAttachedOrders(Long id) {
-//        Address address = getAddress(id);
-        return false;
-        //return address.getOrders().stream().anyMatch(x -> x.getOrderStatus() != Status.NOT_VERIFIED && x.getOrderStatus() != Status.CANCELLED);
-    }
 }
