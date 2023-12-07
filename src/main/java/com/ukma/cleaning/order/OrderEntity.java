@@ -35,7 +35,7 @@ public class OrderEntity {
     @Column(name = "creation_time", nullable = false)
     private LocalDateTime creationTime;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "client", nullable = false)
     private UserEntity client;
 
