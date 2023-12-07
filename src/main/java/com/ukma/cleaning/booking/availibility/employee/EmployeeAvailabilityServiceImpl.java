@@ -41,7 +41,7 @@ public class EmployeeAvailabilityServiceImpl implements EmployeeAvailabilityServ
                 .map(OrderEntity::getExecutors)
                 .flatMap(Collection::stream)
                 .toList();
-        return allUsers.stream().filter(x -> !unavailableEmployees.contains(x)).map(userMapper::toDto).toList();
+        return userMapper.toEmployeeDtoList(allUsers.stream().filter(x -> !unavailableEmployees.contains(x)).toList());
     }
 
     private static boolean isBetween(OrderEntity order, LocalTime start, LocalTime end) {
