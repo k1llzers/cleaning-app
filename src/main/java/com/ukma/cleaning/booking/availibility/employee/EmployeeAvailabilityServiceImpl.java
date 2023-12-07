@@ -6,6 +6,7 @@ import com.ukma.cleaning.order.Status;
 import com.ukma.cleaning.user.Role;
 import com.ukma.cleaning.user.UserEntity;
 import com.ukma.cleaning.user.UserRepository;
+import com.ukma.cleaning.user.dto.EmployeeDto;
 import com.ukma.cleaning.user.dto.UserDto;
 import com.ukma.cleaning.utils.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class EmployeeAvailabilityServiceImpl implements EmployeeAvailabilityServ
     private final UserMapper userMapper;
 
     @Override
-    public List<UserDto> getAllAvailableEmployees(Long orderId) {
+    public List<EmployeeDto> getAllAvailableEmployees(Long orderId) {
         OrderEntity order = orderRepository.findById(orderId).orElseThrow();
         LocalDateTime startTime = order.getOrderTime().toLocalDate().atStartOfDay();
         LocalDateTime endTime = order.getOrderTime().toLocalDate().plusDays(1).atStartOfDay();

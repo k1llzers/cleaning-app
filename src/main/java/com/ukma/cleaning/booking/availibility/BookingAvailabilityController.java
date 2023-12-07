@@ -1,5 +1,6 @@
 package com.ukma.cleaning.booking.availibility;
 
+import com.ukma.cleaning.user.dto.EmployeeDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import com.ukma.cleaning.booking.availibility.employee.EmployeeAvailabilityService;
@@ -32,7 +33,7 @@ public class BookingAvailabilityController {
 
     @Operation(summary = "Get available employee", description = "Get available employee for order")
     @GetMapping("/employees/{orderId}")
-    public List<UserDto> getAvailable(@PathVariable Long orderId) {
+    public List<EmployeeDto> getAvailable(@PathVariable Long orderId) {
         return employeeAvailabilityService.getAllAvailableEmployees(orderId);
     }
 }
