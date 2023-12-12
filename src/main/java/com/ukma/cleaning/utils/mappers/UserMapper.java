@@ -18,7 +18,7 @@ import java.util.List;
 @Mapper(config = MapperConfig.class)
 public interface UserMapper {
     @Mappings({
-            @Mapping(target = "role", expression = "java(com.ukma.cleaning.user.Role.User)"),
+            @Mapping(target = "role", expression = "java(com.ukma.cleaning.user.Role.USER)"),
             @Mapping(target = "password", source = "password", qualifiedByName = "encodePassword")
     })
     UserEntity toEntity(UserRegistrationDto user, @Context PasswordEncoder passwordEncoder);

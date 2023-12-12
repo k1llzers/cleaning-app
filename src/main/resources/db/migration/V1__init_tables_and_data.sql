@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS `user`
     `patronymic`   varchar(255) DEFAULT NULL,
     `email`        varchar(255)                     NOT NULL,
     `password`     varchar(255)                     NOT NULL,
-    `role`         enum ('User','Employee','Admin') NOT NULL,
+    `role`         enum ('USER','EMPLOYEE','ADMIN') NOT NULL,
     `phone_number` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `UK_ob8kqyqqgmefl0aco34akdtpe` (`email`),
@@ -108,19 +108,19 @@ CREATE TABLE IF NOT EXISTS `order_commercial_proposals_mapping`
   COLLATE = utf8mb4_0900_ai_ci;
 
 INSERT INTO user (name, surname, patronymic, password, email, phone_number, role)
-VALUES ('Leonid', 'Petrenko', 'Ihorovich', '$2a$10$6DI5oh7MbZX7DSkdHOfdlOc6GXj2gH8Qgyo5VCmuldGnAkEMlo3GO', 'admin', '+380930000000', 'Admin');
+VALUES ('Leonid', 'Petrenko', 'Ihorovich', '$2a$10$6DI5oh7MbZX7DSkdHOfdlOc6GXj2gH8Qgyo5VCmuldGnAkEMlo3GO', 'admin', '+380930000000', 'ADMIN');
 INSERT INTO user (name, surname, patronymic, password, email, phone_number, role)-- password: Qw3rty*
-VALUES ('Maizie', 'Burnett', 'Viktorovivna', '$2a$10$lFW0pKbU24UkSlBFoANN0uE/FETJJCf66iDUOMZS8JYgmgeVvx6L2', 'm.burnatt@gmail.com', '+380931234567','User');
+VALUES ('Maizie', 'Burnett', 'Viktorovivna', '$2a$10$lFW0pKbU24UkSlBFoANN0uE/FETJJCf66iDUOMZS8JYgmgeVvx6L2', 'm.burnatt@gmail.com', '+380931234567','USER');
 INSERT INTO user (name, surname, patronymic, password, email, phone_number, role)-- password: P4ssw()rd
-VALUES ('Chaya', 'Burnett', 'Petrivna', '$2a$10$3ezDfbsXuVb817/MgR9D5e2ERNHZDckq/0kqx1SwWHnYTdnSmZz7y', 'c.burnett@outlook.com', '+380685812781', 'Employee');
+VALUES ('Chaya', 'Burnett', 'Petrivna', '$2a$10$3ezDfbsXuVb817/MgR9D5e2ERNHZDckq/0kqx1SwWHnYTdnSmZz7y', 'c.burnett@outlook.com', '+380685812781', 'EMPLOYEE');
 INSERT INTO user (name, surname, patronymic, password, email, phone_number, role)-- password: password
-VALUES ('Bobby', 'Durham', 'Ihorovich', '$2a$10$khRH0cGfqeo6S8uux6o.suCG32m1qxxj60mP3m7eIK3ibWjkB4nXW', 'b.durman@gmail.com', '+380503215691', 'User');
+VALUES ('Bobby', 'Durham', 'Ihorovich', '$2a$10$khRH0cGfqeo6S8uux6o.suCG32m1qxxj60mP3m7eIK3ibWjkB4nXW', 'b.durman@gmail.com', '+380503215691', 'USER');
 INSERT INTO user (name, surname, patronymic, password, email, phone_number, role)-- password: us3r
-VALUES ('Micheal', 'Jacobson', 'Olegovich', '$2a$10$jt6bt5yQowuPz.W0KFvqu.Q1LdJpl0C0nRaTd2VQkby194BitHoBO', 'm.jacobs@gmail.com', '+380521785665', 'User');
+VALUES ('Micheal', 'Jacobson', 'Olegovich', '$2a$10$jt6bt5yQowuPz.W0KFvqu.Q1LdJpl0C0nRaTd2VQkby194BitHoBO', 'm.jacobs@gmail.com', '+380521785665', 'USER');
 INSERT INTO user (name, surname, patronymic, password, email, phone_number, role)-- password: qwerty
-VALUES ('Kallum', 'Charles', 'Ivanovna', '$2a$10$mLur1uQN0ZRORjvPMAo.OeBOYsTbz4h3fp/hOEoaWvBEiiNDr/5S2', 'k.charles@i.ua', '+380951234567', 'Employee');
+VALUES ('Kallum', 'Charles', 'Ivanovna', '$2a$10$mLur1uQN0ZRORjvPMAo.OeBOYsTbz4h3fp/hOEoaWvBEiiNDr/5S2', 'k.charles@i.ua', '+380951234567', 'EMPLOYEE');
 INSERT INTO user (name, surname, patronymic, password, email, phone_number, role)-- password: password
-VALUES ('Alys', 'Bonner', 'Semenivna', '$2a$10$khRH0cGfqeo6S8uux6o.suCG32m1qxxj60mP3m7eIK3ibWjkB4nXW', 'a.bonner@gmail.com', '+380679831471', 'Employee');
+VALUES ('Alys', 'Bonner', 'Semenivna', '$2a$10$khRH0cGfqeo6S8uux6o.suCG32m1qxxj60mP3m7eIK3ibWjkB4nXW', 'a.bonner@gmail.com', '+380679831471', 'EMPLOYEE');
 
 INSERT INTO commercial_proposal (id, name, short_description, full_description, count_of_employee, duration, price, type) -- 15m/900s (+000000000)
 VALUES (1, 'Подушка велика', 'Велика подушка з легкоочищуваного матеріалу', 'Подушка 70х70 з екопуху/пуху/бамбуку, без глибоких складних забруднень, без пошкоджень, що вимагають делікатної чистки. Білосніжні подушки не підпадають у цю категорію.', 1, 900000000000, 220, 'PER_ITEM');

@@ -34,7 +34,7 @@ public class EmployeeAvailabilityServiceImpl implements EmployeeAvailabilityServ
         LocalDateTime endTime = order.getOrderTime().toLocalDate().plusDays(1).atStartOfDay();
         List<OrderEntity> orders = orderRepository.findAllByOrderTimeBetweenAndStatusNot(startTime, endTime, Status.CANCELLED);
 
-        List<UserEntity> allUsers = userRepository.findAllByRole(Role.Employee);
+        List<UserEntity> allUsers = userRepository.findAllByRole(Role.EMPLOYEE);
         List<UserEntity> unavailableEmployees = orders.stream()
                 .filter(x -> isBetween(x, order.getOrderTime().toLocalTime().minusMinutes(40)
                         , order.getOrderTime().toLocalTime().plus(order.getDuration()).plusMinutes(40)))

@@ -31,7 +31,7 @@ public class BookingAvailabilityServiceImpl implements BookingAvailabilityServic
     public Map<LocalDate, List<LocalTime>> getAvailableTime(Long countOfExecutors, Duration duration) {
         LocalDate dateOfStart = LocalDate.now().plusDays(1);
         LocalTime timeOfStart = LocalTime.of(9, 0);
-        List<UserEntity> employees = userRepository.findAllByRole(Role.Employee);
+        List<UserEntity> employees = userRepository.findAllByRole(Role.EMPLOYEE);
         Map<LocalDate, List<LocalTime>> dateAndTimeMap = LongStream.range(0, 7)
                 .boxed()
                 .collect(Collectors.toMap(
