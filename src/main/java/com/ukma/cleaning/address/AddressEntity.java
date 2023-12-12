@@ -4,9 +4,6 @@ import com.ukma.cleaning.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -14,8 +11,7 @@ import org.hibernate.annotations.Where;
 @NoArgsConstructor
 @Data
 @SQLDelete(sql = "UPDATE address SET deleted = true WHERE id=?")
-@FilterDef(name = "deletedAddressFilter", parameters = @ParamDef(name = "deleted", type = Boolean.class))
-@Filter(name = "deletedProductFilter", condition = "deleted = :isDeleted")
+@Where(clause = "")
 @Table(name = "address")
 public class AddressEntity {
     @Id
