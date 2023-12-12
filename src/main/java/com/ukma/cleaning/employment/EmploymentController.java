@@ -1,5 +1,7 @@
 package com.ukma.cleaning.employment;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,33 +14,40 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/employment")
+@RequestMapping("api/employment")
 @RequiredArgsConstructor()
+@Tag(name = "Employment API", description = "Endpoint for employment operations")
 public class EmploymentController {
     private final EmploymentService service;
 
+    @Operation(summary = "Create employment request", description = "Create employment request (user id take from security)")
     @PostMapping
     public EmploymentDto createRequest(@RequestBody String motivationList) {
         return service.create(motivationList);
     }
 
+    @Operation(summary = "Succeed employment request", description = "Succeed employment request")
     @PutMapping("/employment/{userId}/succeed)")
     public Boolean succeed(@PathVariable Long userId) {
         return service.succeed(userId);
     }
+
+    @Operation(summary = "Cancel employment request", description = "Cancel employment request")
 
     @PutMapping("/employment/{userId}/cancel)")
     public Boolean cancel(@PathVariable Long userId) {
         return service.cancel(userId);
     }
 
+    @Operation(summary = "Unemployment", description = "Unemployed employee")
     @PutMapping("/employment/{userId}/unemployment)")
     public Boolean unemployment(@PathVariable Long userId) {
         return service.unemployment(userId);
     }
 
+    @Operation(summary = "Get all employment request", description = "Get all employment request")
     @GetMapping
-    public List<EmploymentDto> getEmploymentRequests() {
+    public List<EmploymentDto> getAllEmploymentRequests() {
         return service.getAll();
     }
 }
