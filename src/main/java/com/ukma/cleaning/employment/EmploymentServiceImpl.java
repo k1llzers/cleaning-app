@@ -35,7 +35,7 @@ public class EmploymentServiceImpl implements EmploymentService {
     @Override
     public Boolean succeed(Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(
-                () -> new NoSuchEntityException("Can`t find entity by id: " + userId)
+                () -> new NoSuchEntityException("Can`t find user by id: " + userId)
         );
         EmploymentEntity employmentRequest = repository.findByApplicant_Id(userId).orElseThrow(
                 () -> new NoSuchEntityException("Can`t find application by user id: " + userId)
@@ -59,5 +59,15 @@ public class EmploymentServiceImpl implements EmploymentService {
     @Override
     public List<EmploymentDto> getAll() {
         return mapper.toDtoList(repository.findAll());
+    }
+
+    @Override
+    public Boolean unemployment(Long userId) {
+        UserEntity employee = userRepository.findById(userId).orElseThrow(
+                () -> new NoSuchEntityException("Can`t find user by id: " + userId)
+        );
+        employee.setRole(Role.USER);
+        userRepository.save(employee);
+        return true;
     }
 }

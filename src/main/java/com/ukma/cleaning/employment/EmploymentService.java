@@ -10,4 +10,6 @@ public interface EmploymentService {
     Boolean cancel(Long userId);
 
     List<EmploymentDto> getAll();
+
+    Boolean unemployment(Long userId);
 }

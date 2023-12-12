@@ -32,6 +32,11 @@ public class EmploymentController {
         return service.cancel(userId);
     }
 
+    @PutMapping("/employment/{userId}/unemployment)")
+    public Boolean unemployment(@PathVariable Long userId) {
+        return service.unemployment(userId);
+    }
+
     @GetMapping
     public List<EmploymentDto> getEmploymentRequests() {
         return service.getAll();
