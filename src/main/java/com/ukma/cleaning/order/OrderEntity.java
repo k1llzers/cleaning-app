@@ -51,7 +51,7 @@ public class OrderEntity {
     @Column(name = "comment", length = 500)
     private String comment;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address", nullable = false)
     private AddressEntity address;
 
