@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `executors`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE TABLE `order_commercial_proposals_mapping`
+CREATE TABLE IF NOT EXISTS `order_commercial_proposals_mapping`
 (
     `commercial_proposal_id` bigint NOT NULL,
     `order_id`               bigint NOT NULL,
