@@ -2,7 +2,6 @@ package com.ukma.cleaning.order;
 
 import com.ukma.cleaning.order.dto.*;
 import com.ukma.cleaning.review.ReviewDto;
-import com.ukma.cleaning.user.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -11,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -33,23 +30,28 @@ public class OrderController {
         return orderService.getOrderByIdForAdmin(id);
     }
 
-//    @Operation(summary = "Get all orders", description = "Get all orders")
-//    @GetMapping
-//    public List<OrderListDto> getAllOrders() {
-//        return orderService.getAllOrders();
-//    }
-
-    @Operation(summary = "Get all orders with status", description = "Get all orders with status")
-    @GetMapping("/by-status")
+    @Operation(summary = "Get all orders with status (pageable)", description = "Get all orders with status (pageable)")
+    @GetMapping("/all/by-status")
     public OrderPageDto getAllOrdersByStatus(@RequestParam(defaultValue = "NOT_VERIFIED") Status status,
                                                    @PageableDefault(sort = {"status","creationTime"}, direction = Sort.Direction.ASC) Pageable pageable) {
         return orderService.findOrdersByStatusAndPage(status, pageable);
     }
+    @Operation(summary = "Get all orders (pageable)", description = "Get all orders (pageable)")
+    @GetMapping("/all")
+    public OrderPageDto getAllOrders(@PageableDefault(sort = {"status","creationTime"}, direction = Sort.Direction.ASC) Pageable pageable) {
+        return orderService.findOrdersByPage(pageable);
+    }
 
-    @Operation(summary = "Get all orders by user id", description = "Get all orders by user id")
-    @GetMapping("/all/by-user/{id}")
-    public List<OrderListDto> getAllOrdersOfUser(@PathVariable Long id) {
-        return orderService.getAllOrdersByUserId(id);
+    @Operation(summary = "Get all orders by user id (pageable)", description = "Get all orders by user id (pageable)")
+    @GetMapping("/by-user/{id}")
+    public OrderPageDto getOrdersOfUser(@PathVariable Long id, @PageableDefault(sort = {"status","creationTime"}, direction = Sort.Direction.ASC) Pageable pageable) {
+        return orderService.findOrdersByUserId(id, pageable);
+    }
+
+    @Operation(summary = "Get all orders of executor by id (pageable)", description = "Get all orders of executor by id (pageable)")
+    @GetMapping("/by-executor/{id}")
+    public OrderPageDto getExecutorsOrders(@PathVariable Long id, @PageableDefault(sort = {"status","creationTime"}, direction = Sort.Direction.ASC) Pageable pageable) {
+        return orderService.findOrdersByExecutorId(id, pageable);
     }
 
     @Operation(summary = "Update order for admin", description = "Update order for admin(executors, time)")
@@ -81,10 +83,5 @@ public class OrderController {
     @DeleteMapping("/{id}")
     public Boolean deleteOrder(@PathVariable Long id) {
         return orderService.cancelOrderById(id);
-    }
-
-    @GetMapping("/findAll")
-    public OrderPageDto findAll(@PageableDefault(sort = {"status","creationTime"}, direction = Sort.Direction.ASC) Pageable pageable) {
-        return orderService.findOrdersByPage(pageable);
     }
 }

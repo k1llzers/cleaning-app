@@ -20,4 +20,6 @@ public interface OrderService {
 
     OrderPageDto findOrdersByPage(Pageable pageable);
     OrderPageDto findOrdersByStatusAndPage(Status status, Pageable pageable);
+    OrderPageDto findOrdersByExecutorId(Long id, Pageable pageable);
+    OrderPageDto findOrdersByUserId(Long id, Pageable pageable);
 }
