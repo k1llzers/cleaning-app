@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class UserEntity implements UserDetails {
     @Id
     @Column(name = "id")

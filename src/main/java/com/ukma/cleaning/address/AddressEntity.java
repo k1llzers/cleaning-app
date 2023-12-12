@@ -5,14 +5,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 @Entity
 @NoArgsConstructor
 @Data
-@SQLDelete(sql = "UPDATE address SET deleted = true WHERE id=?")
-@Where(clause = "")
-@Table(name = "address")
+@SQLDelete(sql = "UPDATE addresses SET user_id = null WHERE id=?")
+@Table(name = "addresses")
 public class AddressEntity {
     @Id
     @Column(name = "id")
@@ -33,9 +31,6 @@ public class AddressEntity {
 
     @Column(name = "zip")
     private String zip;
-
-    @Column(name = "deleted")
-    private Boolean deleted = false;
 
     @ManyToOne
     @JoinColumn(name="user_id")
