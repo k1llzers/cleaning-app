@@ -31,11 +31,11 @@ public class OrderController {
         return orderService.getOrderByIdForAdmin(id);
     }
 
-    @Operation(summary = "Get all orders", description = "Get all orders")
-    @GetMapping
-    public List<OrderListDto> getAllOrders() {
-        return orderService.getAllOrders();
-    }
+//    @Operation(summary = "Get all orders", description = "Get all orders")
+//    @GetMapping
+//    public List<OrderListDto> getAllOrders() {
+//        return orderService.getAllOrders();
+//    }
 
     @Operation(summary = "Get all orders with status", description = "Get all orders with status")
     @GetMapping("/by-status/{status}")

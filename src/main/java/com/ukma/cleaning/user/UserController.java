@@ -1,6 +1,8 @@
 package com.ukma.cleaning.user;
 
+import com.ukma.cleaning.order.dto.OrderPageDto;
 import com.ukma.cleaning.user.dto.UserDto;
+import com.ukma.cleaning.user.dto.UserPageDto;
 import com.ukma.cleaning.user.dto.UserPasswordDto;
 import com.ukma.cleaning.user.dto.UserRegistrationDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,6 +10,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,5 +62,10 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Boolean delete(@PathVariable Long id) {
         return userService.deleteById(id);
+    }
+
+    @GetMapping("/findAll")
+    public UserPageDto findAll(@PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable) {
+        return userService.findUsersByPage(pageable);
     }
 }
