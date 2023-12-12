@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
@@ -32,7 +32,7 @@ public class BookingAvailabilityServiceImpl implements BookingAvailabilityServic
         LocalDate dateOfStart = LocalDate.now().plusDays(1);
         LocalTime timeOfStart = LocalTime.of(9, 0);
         List<UserEntity> employees = userRepository.findAllByRole(Role.EMPLOYEE);
-        Map<LocalDate, List<LocalTime>> dateAndTimeMap = LongStream.range(0, 7)
+        Map<LocalDate, List<LocalTime>> allTimeMap = LongStream.range(0, 7)
                 .boxed()
                 .collect(Collectors.toMap(
                         dateOfStart::plusDays,
@@ -40,7 +40,8 @@ public class BookingAvailabilityServiceImpl implements BookingAvailabilityServic
                                 .mapToObj(timeOfStart::plusHours)
                                 .collect(Collectors.toList())
                 ));
-        dateAndTimeMap.forEach((date, timeList) -> {
+        TreeMap<LocalDate, List<LocalTime>> availableDate = new TreeMap<>();
+        allTimeMap.forEach((date, timeList) -> {
             List<OrderEntity> bookedOrder = orderRepository.findAllByOrderTimeBetweenAndStatusNot(date.atStartOfDay(),
                     date.plusDays(1).atStartOfDay(), Status.CANCELLED);
             List<LocalTime> localTimes = timeList.stream()
@@ -62,8 +63,8 @@ public class BookingAvailabilityServiceImpl implements BookingAvailabilityServic
                         return employees.size() - countOfInvalid - countOfExecutors >= 0;
                     })
                     .toList();
-            dateAndTimeMap.put(date, localTimes);
+            availableDate.put(date, localTimes);
         });
-        return dateAndTimeMap;
+        return availableDate;
     }
 }
