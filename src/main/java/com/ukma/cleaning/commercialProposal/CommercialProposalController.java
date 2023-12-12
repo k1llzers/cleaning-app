@@ -2,6 +2,7 @@ package com.ukma.cleaning.commercialProposal;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +29,13 @@ public class CommercialProposalController {
 
     @Operation(summary = "Edit proposal", description = "Edit proposal")
     @PutMapping
-    public CommercialProposalDto editProposal(@RequestBody CommercialProposalDto proposalDto) {
+    public CommercialProposalDto editProposal(@Valid @RequestBody CommercialProposalDto proposalDto) {
         return commercialProposalService.update(proposalDto);
     }
 
     @Operation(summary = "Create proposal", description = "Create proposal")
     @PostMapping
-    public CommercialProposalDto createAddress(@RequestBody CommercialProposalDto addressDto) {
+    public CommercialProposalDto createAddress(@Valid @RequestBody CommercialProposalDto addressDto) {
         return commercialProposalService.create(addressDto);
     }
 

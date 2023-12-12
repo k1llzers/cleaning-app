@@ -2,8 +2,10 @@ package com.ukma.cleaning.order;
 
 import com.ukma.cleaning.order.dto.*;
 import com.ukma.cleaning.review.ReviewDto;
+import com.ukma.cleaning.user.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -38,9 +40,10 @@ public class OrderController {
 //    }
 
     @Operation(summary = "Get all orders with status", description = "Get all orders with status")
-    @GetMapping("/by-status/{status}")
-    public List<OrderListDto> getAllOrdersByStatus(@PathVariable String status) {
-        return orderService.getAllOrdersByStatus(Status.valueOf(status));
+    @GetMapping("/by-status")
+    public OrderPageDto getAllOrdersByStatus(@RequestParam(defaultValue = "NOT_VERIFIED") Status status,
+                                                   @PageableDefault(sort = {"status","creationTime"}, direction = Sort.Direction.ASC) Pageable pageable) {
+        return orderService.findOrdersByStatusAndPage(status, pageable);
     }
 
     @Operation(summary = "Get all orders by user id", description = "Get all orders by user id")
@@ -51,26 +54,26 @@ public class OrderController {
 
     @Operation(summary = "Update order for admin", description = "Update order for admin(executors, time)")
     @PutMapping("/admin")
-    public OrderForAdminDto updateOrderByAdmin(@RequestBody OrderForAdminDto order) {
+    public OrderForAdminDto updateOrderByAdmin(@Valid @RequestBody OrderForAdminDto order) {
         return orderService.updateOrderForAdmin(order);
     }
 
     @Operation(summary = "Update order for user", description = "Update order for user(address, time)")
     @PutMapping("/user")
-    public OrderForUserDto updateOrderByUser(@RequestBody OrderForUserDto order) {
+    public OrderForUserDto updateOrderByUser(@Valid @RequestBody OrderForUserDto order) {
         return orderService.updateOrderForUser(order);
     }
 
 
     @Operation(summary = "Create review for order", description = "Create review for order")
     @PutMapping("/update/review")
-    public OrderForUserDto reviewOrder(@RequestBody ReviewDto review) {
+    public OrderForUserDto reviewOrder(@Valid @RequestBody ReviewDto review) {
         return orderService.updateReview(review);
     }
 
     @Operation(summary = "Create order", description = "Create order")
     @PostMapping
-    public OrderForUserDto createOrder(@RequestBody OrderCreationDto order) {
+    public OrderForUserDto createOrder(@Valid @RequestBody OrderCreationDto order) {
         return orderService.createOrder(order);
     }
 

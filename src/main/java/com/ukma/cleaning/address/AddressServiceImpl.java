@@ -24,7 +24,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDto create(Long userId, AddressDto addressDto) {
         UserEntity userEntity = userRepository.findById(userId).orElseThrow(() ->
-                new NoSuchElementException("Can`t find user by id: " + userId)
+                new NoSuchElementException("Can`t find address by id: " + userId)
         );
         AddressEntity addressEntity = addressMapper.toEntity(addressDto);
         addressEntity.setUser(userEntity);
@@ -52,7 +52,9 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto getById(Long id) {
-        AddressEntity addressEntity = addressRepository.findById(id).get();
+        AddressEntity addressEntity = addressRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("Can`t find address by id: " + id)
+        );
         return addressMapper.toDto(addressEntity);
     }
 

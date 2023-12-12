@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class MyHandler {
+//    @ExceptionHandler()
+//    public void handleException() {
+//
+//    }
     @ExceptionHandler
     public ResponseEntity<String> handleException(Exception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);

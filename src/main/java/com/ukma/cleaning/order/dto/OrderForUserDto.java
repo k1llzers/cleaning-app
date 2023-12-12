@@ -3,6 +3,7 @@ package com.ukma.cleaning.order.dto;
 import com.ukma.cleaning.address.AddressDto;
 import com.ukma.cleaning.order.Status;
 import com.ukma.cleaning.review.ReviewDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,10 @@ import java.util.Map;
 @AllArgsConstructor
 @Data
 public class OrderForUserDto {
+    @NotNull
     private Long id;
     private Double price;
+    @NotNull
     private LocalDateTime orderTime;//
     private AddressDto address;
     private Status status; //

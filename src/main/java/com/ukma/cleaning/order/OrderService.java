@@ -19,4 +19,5 @@ public interface OrderService {
     List<OrderListDto> getAllOrdersByUserId(Long id);
 
     OrderPageDto findOrdersByPage(Pageable pageable);
+    OrderPageDto findOrdersByStatusAndPage(Status status, Pageable pageable);
 }

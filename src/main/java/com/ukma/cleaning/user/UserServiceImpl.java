@@ -9,6 +9,7 @@ import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
 import com.ukma.cleaning.utils.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -66,9 +67,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserPageDto findUsersByPage(Pageable pageable) {
-        int totalPages = userRepository.findAll(pageable).getTotalPages();
-//        return new OrderPageDto(pageable.getPageNumber(), totalPages, userRepository.findAll(pageable).stream().map(x -> userMapper.));
-        return null;
+    public UserPageDto findUsersByPageAndRole(Role role, Pageable pageable) {
+        Page<UserEntity> users = userRepository.findAllByRole(role, pageable);
+        int totalPages = users.getTotalPages();
+        return new UserPageDto(pageable.getPageNumber(), totalPages, userMapper.toUserListDto(users.stream().toList()));
     }
 }

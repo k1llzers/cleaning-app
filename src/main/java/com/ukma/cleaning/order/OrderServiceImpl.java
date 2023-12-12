@@ -124,7 +124,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderPageDto findOrdersByPage(Pageable pageable) {
-        int totalPages = orderRepository.findAll(pageable).getTotalPages();
-        return new OrderPageDto(pageable.getPageNumber(), totalPages, orderMapper.toListDto(orderRepository.findAll(pageable).stream().toList()));
+        Page<OrderEntity> orders = orderRepository.findAll(pageable);
+        int totalPages = orders.getTotalPages();
+        return new OrderPageDto(pageable.getPageNumber(), totalPages, orderMapper.toListDto(orders.stream().toList()));
+    }
+
+    @Override
+    public OrderPageDto findOrdersByStatusAndPage(Status status, Pageable pageable) {
+        Page<OrderEntity> orders = orderRepository.findAllByStatus(status, pageable);
+        int totalPages = orders.getTotalPages();
+        return new OrderPageDto(pageable.getPageNumber(), totalPages, orderMapper.toListDto(orders.stream().toList()));
     }
 }

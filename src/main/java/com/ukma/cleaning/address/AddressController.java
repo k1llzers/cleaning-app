@@ -2,6 +2,7 @@ package com.ukma.cleaning.address;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +29,13 @@ public class AddressController {
 
     @Operation(summary = "Change address", description = "Change address")
     @PutMapping()
-    public AddressDto editAddress(@RequestBody AddressDto addressDto) {
+    public AddressDto editAddress(@Valid @RequestBody AddressDto addressDto) {
         return addressService.update(addressDto);
     }
 
     @Operation(summary = "Create new address for user", description = "Create new address for user")
     @PostMapping("/{userId}")
-    public AddressDto createAddress(@PathVariable Long userId, @RequestBody AddressDto addressDto) {
+    public AddressDto createAddress(@PathVariable Long userId,@Valid @RequestBody AddressDto addressDto) {
         return addressService.create(userId, addressDto);
     }
 

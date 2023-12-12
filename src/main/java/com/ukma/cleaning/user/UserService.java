@@ -15,5 +15,5 @@ public interface UserService {
     UserDto getByEmail(String email);
     UserDto updatePassword(UserPasswordDto user);
 
-    UserPageDto findUsersByPage(Pageable pageable);
+    UserPageDto findUsersByPageAndRole(Role role, Pageable pageable);
 }
