@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/commercial-proposals")
+@RequestMapping("/api/commercial-proposals")
 @RequiredArgsConstructor
 @Tag(name = "Commercial Proposal API", description = "Endpoint for operations with commercial proposal")
 public class CommercialProposalController {

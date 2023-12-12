@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/available")
+@RequestMapping("/api/available")
 @RequiredArgsConstructor
 @Tag(name = "Availability API", description = "Endpoint for get available employee/time")
 public class BookingAvailabilityController {

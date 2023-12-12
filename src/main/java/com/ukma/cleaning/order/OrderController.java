@@ -1,19 +1,19 @@
 package com.ukma.cleaning.order;
 
-import com.ukma.cleaning.order.dto.OrderCreationDto;
-import com.ukma.cleaning.order.dto.OrderForAdminDto;
-import com.ukma.cleaning.order.dto.OrderForUserDto;
-import com.ukma.cleaning.order.dto.OrderListDto;
+import com.ukma.cleaning.order.dto.*;
 import com.ukma.cleaning.review.ReviewDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/orders")
 @RequiredArgsConstructor
 @Tag(name = "Order API", description = "Endpoint for operations order")
 public class OrderController {
@@ -78,5 +78,10 @@ public class OrderController {
     @DeleteMapping("/{id}")
     public Boolean deleteOrder(@PathVariable Long id) {
         return orderService.cancelOrderById(id);
+    }
+
+    @GetMapping("/findAll")
+    public OrderPageDto findAll(@PageableDefault(sort = {"status","creationTime"}, direction = Sort.Direction.ASC) Pageable pageable) {
+        return orderService.findOrdersByPage(pageable);
     }
 }

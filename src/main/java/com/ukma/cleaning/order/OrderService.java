@@ -1,10 +1,8 @@
 package com.ukma.cleaning.order;
 
-import com.ukma.cleaning.order.dto.OrderCreationDto;
-import com.ukma.cleaning.order.dto.OrderForAdminDto;
-import com.ukma.cleaning.order.dto.OrderForUserDto;
-import com.ukma.cleaning.order.dto.OrderListDto;
+import com.ukma.cleaning.order.dto.*;
 import com.ukma.cleaning.review.ReviewDto;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -19,4 +17,6 @@ public interface OrderService {
     List<OrderListDto> getAllOrders();
     List<OrderListDto> getAllOrdersByStatus(Status status);
     List<OrderListDto> getAllOrdersByUserId(Long id);
+
+    OrderPageDto findOrdersByPage(Pageable pageable);
 }

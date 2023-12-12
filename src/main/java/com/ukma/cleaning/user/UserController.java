@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @RestController()
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Tag(name = "User API", description = "Endpoint for operations with users (customers/staff)")
 public class UserController {

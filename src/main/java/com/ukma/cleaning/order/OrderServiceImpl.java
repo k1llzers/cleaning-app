@@ -2,10 +2,7 @@ package com.ukma.cleaning.order;
 
 import com.ukma.cleaning.address.AddressRepository;
 import com.ukma.cleaning.commercialProposal.CommercialProposalRepository;
-import com.ukma.cleaning.order.dto.OrderCreationDto;
-import com.ukma.cleaning.order.dto.OrderForAdminDto;
-import com.ukma.cleaning.order.dto.OrderForUserDto;
-import com.ukma.cleaning.order.dto.OrderListDto;
+import com.ukma.cleaning.order.dto.*;
 import com.ukma.cleaning.review.ReviewDto;
 import com.ukma.cleaning.user.UserRepository;
 import com.ukma.cleaning.utils.exceptions.CantChangeEntityException;
@@ -14,6 +11,8 @@ import com.ukma.cleaning.utils.mappers.OrderMapper;
 import com.ukma.cleaning.utils.mappers.ReviewMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -120,5 +119,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderListDto> getAllOrdersByUserId(Long id) {
         return orderMapper.toListDto(orderRepository.findAllByStatusNotAndClientIdIs(Status.CANCELLED, id));
+    }
+
+
+    @Override
+    public OrderPageDto findOrdersByPage(Pageable pageable) {
+        int totalPages = orderRepository.findAll(pageable).getTotalPages();
+        return new OrderPageDto(pageable.getPageNumber(), totalPages, orderMapper.toListDto(orderRepository.findAll(pageable).stream().toList()));
     }
 }
