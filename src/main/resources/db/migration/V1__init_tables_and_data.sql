@@ -73,7 +73,6 @@ CREATE TABLE IF NOT EXISTS `orders`
     `status`        enum ('NOT_VERIFIED','VERIFIED','NOT_STARTED','PREPARING','IN_PROGRESS','DONE','CANCELLED') NOT NULL,
     `duration`      decimal(21, 0)                                                                              NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `UK_c00648r29ats40rnyuj59kty0` (`address`),
     UNIQUE KEY `UK_g9w287a4g2eo1hy2fkhg81dm` (`review`),
     KEY `FKg8nkrjl2e7h9vmisqk3wb6mf4` (`client`),
     CONSTRAINT `FKg8nkrjl2e7h9vmisqk3wb6mf4` FOREIGN KEY (`client`) REFERENCES `user` (`id`),
