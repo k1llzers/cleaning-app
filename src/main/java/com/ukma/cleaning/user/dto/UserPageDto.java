@@ -1,6 +1,5 @@
 package com.ukma.cleaning.user.dto;
 
-import com.ukma.cleaning.order.dto.OrderListDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,5 @@
 package com.ukma.cleaning.user.dto;
 
-
 import com.ukma.cleaning.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
