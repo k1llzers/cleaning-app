@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `address`
     `house_number` varchar(255) NOT NULL,
     `flat_number`  varchar(255) DEFAULT NULL,
     `zip`          varchar(255) DEFAULT NULL,
-    `deleted`      bit(1)       DEFAULT NULL,
+    `deleted`      bit(1)       DEFAULT FALSE,
     `user_id`      bigint       DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `FKda8tuywtf0gb6sedwk7la1pgi` (`user_id`),
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `commercial_proposal`
     `price`             double                       NOT NULL,
     `duration`          decimal(21, 0)               NOT NULL,
     `count_of_employee` int                          NOT NULL,
-    `deleted`           bit(1)       DEFAULT NULL,
+    `deleted`           bit(1)       DEFAULT FALSE,
     `type`              enum ('PER_AREA','PER_ITEM') NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `UK_a2l3whnjhqv37ftofa7vn66q8` (`name`)
