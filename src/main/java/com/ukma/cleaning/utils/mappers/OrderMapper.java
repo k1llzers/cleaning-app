@@ -29,9 +29,10 @@ public interface OrderMapper {
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "commercialProposals", ignore = true),
+            @Mapping(target = "price", ignore = true),
             @Mapping(target = "orderTime", ignore = true),
             @Mapping(target = "address", ignore = true),
-            @Mapping(target = "review", ignore = true)
+            @Mapping(target = "review", ignore = true),
     })
     void updateFields(@MappingTarget OrderEntity entity, OrderForAdminDto order);
 

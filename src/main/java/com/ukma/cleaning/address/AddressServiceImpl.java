@@ -2,12 +2,9 @@ package com.ukma.cleaning.address;
 
 import com.ukma.cleaning.user.UserEntity;
 import com.ukma.cleaning.user.UserRepository;
-import com.ukma.cleaning.user.UserService;
-import com.ukma.cleaning.user.dto.UserDto;
 import com.ukma.cleaning.utils.mappers.AddressMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
