@@ -67,7 +67,7 @@ public class OrderEntity {
     @Column(name = "duration", nullable = false)
     private Duration duration;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @MapKeyJoinColumn(name = "commercial_proposal_id")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @CollectionTable(name = "order_commercial_proposals_mapping", joinColumns = @JoinColumn(name = "order_id"))
