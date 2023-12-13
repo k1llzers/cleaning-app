@@ -1,0 +1,19 @@
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="com.ukma.cleaning.utils.logging.LogLayout" />
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="com.ukma.cleaning.utils.logging.LogAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="com.ukma.cleaning.utils.logging.LogLayout" />
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>
