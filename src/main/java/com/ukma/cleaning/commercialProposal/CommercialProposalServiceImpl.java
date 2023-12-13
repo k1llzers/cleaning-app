@@ -21,10 +21,10 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
     @Override
     public CommercialProposalDto create(CommercialProposalDto commercialProposal) {
         if (commercialProposalRepository.findCommercialProposalEntityByName(commercialProposal.getName()).isPresent()) {
-            log.warn("Commercial proposal name should be unique!");
+            log.warn("Name of commercial proposal should be unique");
             throw new ProposalNameDuplicateException("Commercial proposal name should be unique!");
         }
-        log.debug("Commercial proposal created: " + commercialProposal);
+        log.info("Created commercial proposal with id = {}", commercialProposal.getId());
         return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));
     }
 
@@ -32,10 +32,10 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
     @Override
     public CommercialProposalDto update(CommercialProposalDto commercialProposal) {
         if (commercialProposalRepository.findCommercialProposalEntityByName(commercialProposal.getName()).isPresent()) {
-            log.warn("Same commercial proposals name, when update proposal with name: " + commercialProposal.getName());
+            log.warn("Same commercial proposals name, when update proposal with name: {}", commercialProposal.getName());
             throw new ProposalNameDuplicateException("Commercial proposal name should be unique!");
         }
-        log.debug("Commercial proposal updated: " + commercialProposal);
+        log.debug("Commercial proposal with id = {} successfully updated", commercialProposal.getId());
         return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));
     }
 
@@ -58,7 +58,7 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
     @Override
     public Boolean deleteById(Long id) {
         commercialProposalRepository.deleteById(id);
-        log.info("Commercial proposal deleted by id: " + id);
+        log.info("Commercial proposal with id = {} was successfully deleted", id);
         return true;
     }
 }

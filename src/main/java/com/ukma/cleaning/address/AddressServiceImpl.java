@@ -22,7 +22,7 @@ public class AddressServiceImpl implements AddressService {
     public AddressDto create(AddressDto addressDto) {
         AddressEntity addressEntity = addressMapper.toEntity(addressDto);
         addressEntity.setUser(SecurityContextAccessor.getAuthenticatedUser());
-        log.debug("Address created: " + addressEntity);
+        log.info("Created new address with id = {}",addressEntity.getId());
         return addressMapper.toDto(addressRepository.save(addressEntity));
     }
 
@@ -31,7 +31,7 @@ public class AddressServiceImpl implements AddressService {
     public AddressDto update(AddressDto addressDto) {
         AddressEntity addressEntity = addressRepository.findById(addressDto.getId()).orElseThrow(() ->
         {
-            log.warn("Can`t find address by id: " + addressDto.getId());
+            log.warn("Can`t find address by id = {}", addressDto.getId());
             return new NoSuchEntityException("Can`t find address by id: " + addressDto.getId());
         });
         addressRepository.delete(addressEntity);
@@ -43,8 +43,8 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Boolean deleteById(Long id) {
-        log.info("Address deleted by id: " + id);
         addressRepository.deleteById(id);
+        log.info("Address with id = {} was deleted", id);
         return true;
     }
 
@@ -52,7 +52,7 @@ public class AddressServiceImpl implements AddressService {
     public AddressDto getById(Long id) {
         AddressEntity addressEntity = addressRepository.findById(id).orElseThrow(() ->
         {
-            log.warn("Can`t find address by id: " + id);
+            log.warn("Can`t find address by id = {}", id);
             return new NoSuchEntityException("Can`t find address by id: " + id);
         });
         return addressMapper.toDto(addressEntity);

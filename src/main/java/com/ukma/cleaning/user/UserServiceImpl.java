@@ -33,7 +33,9 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findUserEntityByEmail(user.getEmail()).isPresent()) {
             throw new EmailDuplicateException("Email already in use!");
         }
-        return userMapper.toDto(userRepository.save(userMapper.toEntity(user, encoder)));
+        UserDto userDto = userMapper.toDto(userRepository.save(userMapper.toEntity(user, encoder)));
+        log.info("Created new user with id = {}", userDto.getId());
+        return userDto;
     }
 
     @Override
@@ -42,16 +44,19 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> userEntityByEmail = userRepository.findUserEntityByEmail(user.getEmail());
         userEntityByEmail.ifPresent(existingUser -> {
             if (!Objects.equals(userEntity.getId(), existingUser.getId())) {
+                log.warn("User id = {} try to use email that is already in use", userEntity.getId());
                 throw new EmailDuplicateException("Email already in use!");
             }
         });
         Optional<UserEntity> userEntityByPhone = userRepository.findUserEntityByPhoneNumber(user.getPhoneNumber());
         userEntityByPhone.ifPresent(existingUser -> {
             if (!Objects.equals(userEntity.getId(), existingUser.getId())) {
+                log.warn("User id = {} try to use phone number that is already in use", userEntity.getId());
                 throw new PhoneNumberDuplicateException("Phone number already in use!");
             }
         });
         userMapper.updateFields(userEntity, user);
+        log.debug("Data of user id = {} successfully updated", userEntity.getId());
         return userMapper.toDto(userRepository.save(userEntity));
     }
 
@@ -72,6 +77,7 @@ public class UserServiceImpl implements UserService {
     public UserDto updatePassword(UserPasswordDto user) {
         UserEntity userEntity = SecurityContextAccessor.getAuthenticatedUser();
         userEntity.setPassword(encoder.encode(user.getPassword()));
+        log.info("Password of user id = {} was changed", user.getId());
         return userMapper.toDto(userRepository.save(userEntity));
     }
 

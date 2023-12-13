@@ -40,8 +40,6 @@ public class GlobalHandler {
         return new ResponseEntity<>(formatMessage(e.getMessage()), getHttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
-
-
     @ExceptionHandler
     public ResponseEntity<String> handleException(Exception e) {
         return new ResponseEntity<>(formatMessage(e.getMessage()), getHttpHeaders(), HttpStatus.BAD_REQUEST);
