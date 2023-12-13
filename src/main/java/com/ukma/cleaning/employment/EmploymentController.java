@@ -30,21 +30,21 @@ public class EmploymentController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Succeed employment request", description = "Succeed employment request")
-    @PutMapping("/employment/{userId}/succeed)")
+    @PutMapping("/{userId}/succeed")
     public Boolean succeed(@PathVariable Long userId) {
         return service.succeed(userId);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Cancel employment request", description = "Cancel employment request")
-    @PutMapping("/employment/{userId}/cancel)")
+    @PutMapping("/{userId}/cancel")
     public Boolean cancel(@PathVariable Long userId) {
         return service.cancel(userId);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Unemployment", description = "Unemployed employee")
-    @PutMapping("/employment/{userId}/unemployment)")
+    @PutMapping("/{userId}/unemployment")
     public Boolean unemployment(@PathVariable Long userId) {
         return service.unemployment(userId);
     }
