@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ public class RefreshTokenService {
         while (findByToken(generatedRefreshToken).isPresent())
             generatedRefreshToken = UUID.randomUUID().toString();
         refreshToken.setToken(generatedRefreshToken);
-        refreshToken.setExpiryDate(Instant.now().plusSeconds(60 * 10)); // 10 min
+        refreshToken.setExpiryDate(LocalDateTime.now().plusSeconds(60 * 10)); // 10 min
         return refreshTokenRepository.save(refreshToken).getToken();
     }
 
@@ -34,7 +35,7 @@ public class RefreshTokenService {
     }
 
     public RefreshTokenEntity verify(RefreshTokenEntity token) {
-        if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
+        if (token.getExpiryDate().compareTo(LocalDateTime.now()) < 0) {
             refreshTokenRepository.delete(token);
             throw new VerifyRefreshTokenException("Can`t verify token: " + token.getToken());
         }

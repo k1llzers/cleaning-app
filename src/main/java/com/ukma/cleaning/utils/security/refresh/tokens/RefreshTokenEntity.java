@@ -9,11 +9,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -28,7 +30,8 @@ public class RefreshTokenEntity {
     @Column(name = "refresh_token", nullable = false, unique = true)
     private String token;
 
-    private Instant expiryDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime expiryDate;
 
     @OneToOne
     @NotNull

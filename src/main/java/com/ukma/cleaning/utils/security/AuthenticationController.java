@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +43,7 @@ public class AuthenticationController {
     public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-        } catch (Throwable e) {
+        } catch (BadCredentialsException e) {
             return new ResponseEntity<>("Invalid username or password!", HttpStatus.UNAUTHORIZED);
         }
         return ResponseEntity.ok(new JwtResponse(jwtService.generateToken(authRequest.getUsername()), refreshTokenService.create(authRequest.getUsername())));
