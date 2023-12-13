@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SecurityContextAccessor {
     public static UserEntity getAuthenticatedUser() {
-        return (UserEntity) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        return (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public static Long getAuthenticatedUserId() {
