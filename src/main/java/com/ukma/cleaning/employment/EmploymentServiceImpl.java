@@ -36,13 +36,13 @@ public class EmploymentServiceImpl implements EmploymentService {
     public Boolean succeed(Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(() ->
                 {
-                    log.warn("Can`t find user by id = {}", userId);
+                    log.info("Can`t find user by id = {}", userId);
                     return new NoSuchEntityException("Can`t find user by id: " + userId);
                 }
         );
         EmploymentEntity employmentRequest = repository.findByApplicant_Id(userId).orElseThrow(() ->
                 {
-                    log.warn("Can`t find application by user id = {}", userId);
+                    log.info("Can`t find application by user id = {}", userId);
                     return new NoSuchEntityException("Can`t find application by user id: " + userId);
                 }
         );
@@ -58,7 +58,7 @@ public class EmploymentServiceImpl implements EmploymentService {
     public Boolean cancel(Long userId) {
         EmploymentEntity employmentRequest = repository.findByApplicant_Id(userId).orElseThrow(() ->
                 {
-                    log.warn("Can`t find application by user id = {}", userId);
+                    log.info("Can`t find application by user id = {}", userId);
                     return new NoSuchEntityException("Can`t find application by user id: " + userId);
                 }
         );
@@ -76,7 +76,7 @@ public class EmploymentServiceImpl implements EmploymentService {
     public Boolean unemployment(Long userId) {
         UserEntity employee = userRepository.findById(userId).orElseThrow(() ->
                 {
-                    log.warn("Can`t find user by id = {}", userId);
+                    log.info("Can`t find user by id = {}", userId);
                     return new NoSuchEntityException("Can`t find user by id: " + userId);
                 }
         );

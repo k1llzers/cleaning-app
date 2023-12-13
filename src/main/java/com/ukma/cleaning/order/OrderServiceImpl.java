@@ -65,10 +65,13 @@ public class OrderServiceImpl implements OrderService {
             throw new AccessDeniedException("Access denied");
         }
         if (entity.getStatus().ordinal() >= Status.PREPARING.ordinal()) {
-            log.warn("User id = {} trying to change order status", SecurityContextAccessor.getAuthenticatedUserId());
-            throw new CantChangeEntityException("You can`t change order when status is Preparing");
+            log.info("User id = {} trying to change order status, when status is {}", SecurityContextAccessor.getAuthenticatedUserId(), entity.getStatus().name());
+            throw new CantChangeEntityException("You can`t change order when status is " + entity.getStatus().name());
         }
         orderMapper.updateFields(entity, order);
+        if (order.getStatus() == Status.CANCELLED) {
+            entity.setStatus(Status.CANCELLED);
+        }
         OrderForUserDto orderDto = orderMapper.toUserDto(orderRepository.save(entity));
         log.debug("Data of order id = {} successfully updated", order.getId());
         return orderDto;

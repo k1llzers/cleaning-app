@@ -9,6 +9,7 @@ import com.ukma.cleaning.utils.security.refresh.tokens.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,7 +41,9 @@ public class AuthenticationController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         } catch (BadCredentialsException e) {
-            return new ResponseEntity<>("Invalid username or password!", HttpStatus.UNAUTHORIZED);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            return new ResponseEntity<>("{\"errors\":\"Invalid username or password!\"}", headers, HttpStatus.UNAUTHORIZED);
         }
         String token = jwtService.generateToken(authRequest.getUsername());
         HttpHeaders headers = new HttpHeaders();

@@ -31,7 +31,7 @@ public class AddressServiceImpl implements AddressService {
     public AddressDto update(AddressDto addressDto) {
         AddressEntity addressEntity = addressRepository.findById(addressDto.getId()).orElseThrow(() ->
         {
-            log.warn("Can`t find address by id = {}", addressDto.getId());
+            log.info("Can`t find address by id = {}", addressDto.getId());
             return new NoSuchEntityException("Can`t find address by id: " + addressDto.getId());
         });
         addressRepository.delete(addressEntity);
@@ -52,7 +52,7 @@ public class AddressServiceImpl implements AddressService {
     public AddressDto getById(Long id) {
         AddressEntity addressEntity = addressRepository.findById(id).orElseThrow(() ->
         {
-            log.warn("Can`t find address by id = {}", id);
+            log.info("Can`t find address by id = {}", id);
             return new NoSuchEntityException("Can`t find address by id: " + id);
         });
         return addressMapper.toDto(addressEntity);

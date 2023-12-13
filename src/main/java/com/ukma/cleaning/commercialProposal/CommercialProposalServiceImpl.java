@@ -21,7 +21,7 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
     @Override
     public CommercialProposalDto create(CommercialProposalDto commercialProposal) {
         if (commercialProposalRepository.findCommercialProposalEntityByName(commercialProposal.getName()).isPresent()) {
-            log.warn("Name of commercial proposal should be unique");
+            log.info("Name of commercial proposal should be unique");
             throw new ProposalNameDuplicateException("Commercial proposal name should be unique!");
         }
         log.info("Created commercial proposal with id = {}", commercialProposal.getId());
@@ -32,7 +32,7 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
     @Override
     public CommercialProposalDto update(CommercialProposalDto commercialProposal) {
         if (commercialProposalRepository.findCommercialProposalEntityByName(commercialProposal.getName()).isPresent()) {
-            log.warn("Same commercial proposals name, when update proposal with name: {}", commercialProposal.getName());
+            log.info("Same commercial proposals name, when update proposal with name: {}", commercialProposal.getName());
             throw new ProposalNameDuplicateException("Commercial proposal name should be unique!");
         }
         log.debug("Commercial proposal with id = {} successfully updated", commercialProposal.getId());

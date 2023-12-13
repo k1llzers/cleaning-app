@@ -44,14 +44,14 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> userEntityByEmail = userRepository.findUserEntityByEmail(user.getEmail());
         userEntityByEmail.ifPresent(existingUser -> {
             if (!Objects.equals(userEntity.getId(), existingUser.getId())) {
-                log.warn("User id = {} try to use email that is already in use", userEntity.getId());
+                log.info("User id = {} try to use email that is already in use", userEntity.getId());
                 throw new EmailDuplicateException("Email already in use!");
             }
         });
         Optional<UserEntity> userEntityByPhone = userRepository.findUserEntityByPhoneNumber(user.getPhoneNumber());
         userEntityByPhone.ifPresent(existingUser -> {
             if (!Objects.equals(userEntity.getId(), existingUser.getId())) {
-                log.warn("User id = {} try to use phone number that is already in use", userEntity.getId());
+                log.info("User id = {} try to use phone number that is already in use", userEntity.getId());
                 throw new PhoneNumberDuplicateException("Phone number already in use!");
             }
         });
