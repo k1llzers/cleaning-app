@@ -1,4 +1,4 @@
-package com.ukma.cleaning.utils.security;
+package com.ukma.cleaning.utils.security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

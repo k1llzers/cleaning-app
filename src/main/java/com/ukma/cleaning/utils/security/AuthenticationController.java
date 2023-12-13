@@ -1,12 +1,17 @@
 package com.ukma.cleaning.utils.security;
 
 import com.ukma.cleaning.user.dto.UserRegistrationDto;
+import com.ukma.cleaning.utils.exceptions.CantRefreshTokenException;
+import com.ukma.cleaning.utils.security.dto.AuthRequest;
+import com.ukma.cleaning.utils.security.dto.JwtResponse;
+import com.ukma.cleaning.utils.security.refresh.tokens.RefreshTokenEntity;
+import com.ukma.cleaning.utils.security.refresh.tokens.RefreshTokenRepository;
+import com.ukma.cleaning.utils.security.refresh.tokens.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +26,7 @@ public class AuthenticationController {
     private final CustomUserDetails service;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final RefreshTokenService refreshTokenService;
 
     @GetMapping("/welcome")
     public String welcome() {
@@ -33,13 +39,22 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-        } catch (BadCredentialsException e) {
+        } catch (Throwable e) {
             return new ResponseEntity<>("Invalid username or password!", HttpStatus.UNAUTHORIZED);
         }
-        return ResponseEntity.ok(jwtService.generateToken(authRequest.getUsername()));
+        return ResponseEntity.ok(new JwtResponse(jwtService.generateToken(authRequest.getUsername()), refreshTokenService.create(authRequest.getUsername())));
+    }
+
+    @PostMapping("/refreshToken")
+    public JwtResponse refreshToken(@RequestBody String refreshToken) {
+        RefreshTokenEntity token = refreshTokenService.findByToken(refreshToken).orElseThrow(
+                () -> new CantRefreshTokenException("Can`t find refresh token")
+        );
+        refreshTokenService.verify(token);
+        return new JwtResponse(jwtService.generateToken(token.getUser().getEmail()), refreshToken);
     }
 
     @GetMapping("/user/userProfile")
