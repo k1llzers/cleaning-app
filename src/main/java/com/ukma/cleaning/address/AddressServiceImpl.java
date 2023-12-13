@@ -1,7 +1,5 @@
 package com.ukma.cleaning.address;
 
-import com.ukma.cleaning.user.UserEntity;
-import com.ukma.cleaning.user.UserRepository;
 import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
 import com.ukma.cleaning.utils.mappers.AddressMapper;
 import com.ukma.cleaning.utils.security.SecurityContextAccessor;
@@ -18,7 +16,6 @@ import java.util.List;
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
-    private final UserRepository userRepository;
     private final AddressMapper addressMapper;
 
     @Override
@@ -32,9 +29,11 @@ public class AddressServiceImpl implements AddressService {
     @Transactional
     @Override
     public AddressDto update(AddressDto addressDto) {
-        AddressEntity addressEntity = addressRepository.findById(addressDto.getId()).orElseThrow(
-                () -> new NoSuchEntityException("Can`t find address by id: " + addressDto.getId())
-        );
+        AddressEntity addressEntity = addressRepository.findById(addressDto.getId()).orElseThrow(() ->
+        {
+            log.warn("Can`t find address by id: " + addressDto.getId());
+            return new NoSuchEntityException("Can`t find address by id: " + addressDto.getId());
+        });
         addressRepository.delete(addressEntity);
         AddressEntity newAddress = addressMapper.toEntity(addressDto);
         newAddress.setUser(SecurityContextAccessor.getAuthenticatedUser());
@@ -44,16 +43,18 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Boolean deleteById(Long id) {
-        log.debug("Address deleted by id: " + id);
+        log.info("Address deleted by id: " + id);
         addressRepository.deleteById(id);
         return true;
     }
 
     @Override
     public AddressDto getById(Long id) {
-        AddressEntity addressEntity = addressRepository.findById(id).orElseThrow(
-                () -> new NoSuchEntityException("Can`t find address by id: " + id)
-        );
+        AddressEntity addressEntity = addressRepository.findById(id).orElseThrow(() ->
+        {
+            log.warn("Can`t find address by id: " + id);
+            return new NoSuchEntityException("Can`t find address by id: " + id);
+        });
         return addressMapper.toDto(addressEntity);
     }
 

@@ -21,9 +21,10 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
     @Override
     public CommercialProposalDto create(CommercialProposalDto commercialProposal) {
         if (commercialProposalRepository.findCommercialProposalEntityByName(commercialProposal.getName()).isPresent()) {
-            log.warn("Same commercial proposals name, when creating proposal with name: " + commercialProposal.getName());
+            log.warn("Commercial proposal name should be unique!");
             throw new ProposalNameDuplicateException("Commercial proposal name should be unique!");
         }
+        log.debug("Commercial proposal created: " + commercialProposal);
         return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));
     }
 
@@ -34,6 +35,7 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
             log.warn("Same commercial proposals name, when update proposal with name: " + commercialProposal.getName());
             throw new ProposalNameDuplicateException("Commercial proposal name should be unique!");
         }
+        log.debug("Commercial proposal updated: " + commercialProposal);
         return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));
     }
 
@@ -56,6 +58,7 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
     @Override
     public Boolean deleteById(Long id) {
         commercialProposalRepository.deleteById(id);
+        log.info("Commercial proposal deleted by id: " + id);
         return true;
     }
 }
