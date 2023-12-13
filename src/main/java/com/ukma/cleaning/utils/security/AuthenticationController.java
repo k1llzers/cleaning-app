@@ -7,6 +7,7 @@ import com.ukma.cleaning.utils.security.dto.JwtResponse;
 import com.ukma.cleaning.utils.security.refresh.tokens.RefreshTokenEntity;
 import com.ukma.cleaning.utils.security.refresh.tokens.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,7 +42,12 @@ public class AuthenticationController {
         } catch (BadCredentialsException e) {
             return new ResponseEntity<>("Invalid username or password!", HttpStatus.UNAUTHORIZED);
         }
-        return ResponseEntity.ok(new JwtResponse(jwtService.generateToken(authRequest.getUsername()), refreshTokenService.create(authRequest.getUsername())));
+        String token = jwtService.generateToken(authRequest.getUsername());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(new JwtResponse(token, refreshTokenService.create(authRequest.getUsername())));
     }
 
     @PreAuthorize("permitAll()")
