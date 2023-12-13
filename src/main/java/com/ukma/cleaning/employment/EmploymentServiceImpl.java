@@ -27,7 +27,7 @@ public class EmploymentServiceImpl implements EmploymentService {
     public EmploymentDto create(String motivationList) {
         EmploymentEntity employmentRequest = mapper.toEntity(motivationList);
         employmentRequest.setApplicant(SecurityContextAccessor.getAuthenticatedUser());
-        log.debug("Employment request created: " + employmentRequest);
+        log.info("Created new employment request with id = {}",employmentRequest.getId());
         return mapper.toDto(repository.save(employmentRequest));
     }
 
@@ -36,13 +36,13 @@ public class EmploymentServiceImpl implements EmploymentService {
     public Boolean succeed(Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(() ->
                 {
-                    log.warn("Can`t find user by id: " + userId);
+                    log.warn("Can`t find user by id = {}", userId);
                     return new NoSuchEntityException("Can`t find user by id: " + userId);
                 }
         );
         EmploymentEntity employmentRequest = repository.findByApplicant_Id(userId).orElseThrow(() ->
                 {
-                    log.warn("Can`t find application by user id: " + userId);
+                    log.warn("Can`t find application by user id = {}", userId);
                     return new NoSuchEntityException("Can`t find application by user id: " + userId);
                 }
         );
@@ -50,7 +50,7 @@ public class EmploymentServiceImpl implements EmploymentService {
         user.setAddressList(Collections.emptyList());
         user.setRole(Role.EMPLOYEE);
         userRepository.save(user);
-        log.debug("Admin succeed request of user: " + user);
+        log.debug("Admin id = {} accepted Employment request id = {}", SecurityContextAccessor.getAuthenticatedUserId(), employmentRequest.getId());
         return true;
     }
 
@@ -58,12 +58,12 @@ public class EmploymentServiceImpl implements EmploymentService {
     public Boolean cancel(Long userId) {
         EmploymentEntity employmentRequest = repository.findByApplicant_Id(userId).orElseThrow(() ->
                 {
-                    log.warn("Can`t find application by user id: " + userId);
+                    log.warn("Can`t find application by user id = {}", userId);
                     return new NoSuchEntityException("Can`t find application by user id: " + userId);
                 }
         );
         repository.delete(employmentRequest);
-        log.info("Admin canceled request of user by id: " + userId);
+        log.debug("Admin id = {} cancelled Employment request id = {}", SecurityContextAccessor.getAuthenticatedUserId(), employmentRequest.getId());
         return true;
     }
 
@@ -76,13 +76,13 @@ public class EmploymentServiceImpl implements EmploymentService {
     public Boolean unemployment(Long userId) {
         UserEntity employee = userRepository.findById(userId).orElseThrow(() ->
                 {
-                    log.warn("Can`t find user by id: " + userId);
+                    log.warn("Can`t find user by id = {}", userId);
                     return new NoSuchEntityException("Can`t find user by id: " + userId);
                 }
         );
         employee.setRole(Role.USER);
         userRepository.save(employee);
-        log.info("Unemployed user by id: " + userId);
+        log.info("User id = {} was fired by Admin id = {}", userId, SecurityContextAccessor.getAuthenticatedUserId());
         return true;
     }
 }

@@ -35,13 +35,13 @@ public class CommercialProposalController {
 
     @Operation(summary = "Create proposal", description = "Create proposal")
     @PostMapping
-    public CommercialProposalDto createAddress(@Valid @RequestBody CommercialProposalDto addressDto) {
-        return commercialProposalService.create(addressDto);
+    public CommercialProposalDto createProposal(@Valid @RequestBody CommercialProposalDto proposalDto) {
+        return commercialProposalService.create(proposalDto);
     }
 
     @Operation(summary = "Delete commercial proposal", description = "Delete commercial proposal(soft delete)")
     @DeleteMapping("/{id}")
-    public Boolean deleteAddress(@PathVariable Long id) {
+    public Boolean deleteProposal(@PathVariable Long id) {
         return commercialProposalService.deleteById(id);
     }
 }
