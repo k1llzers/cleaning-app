@@ -5,7 +5,9 @@ import com.ukma.cleaning.user.dto.UserDto;
 import com.ukma.cleaning.user.dto.UserPageDto;
 import com.ukma.cleaning.user.dto.UserPasswordDto;
 import com.ukma.cleaning.user.dto.UserRegistrationDto;
+import com.ukma.cleaning.utils.exceptions.EmailDuplicateException;
 import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
+import com.ukma.cleaning.utils.exceptions.PhoneNumberDuplicateException;
 import com.ukma.cleaning.utils.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto create(UserRegistrationDto user) {
+        if (userRepository.findUserEntityByEmail(user.getEmail()).isPresent()) {
+            throw new EmailDuplicateException("Email already in use!");
+        }
         return userMapper.toDto(userRepository.save(userMapper.toEntity(user, encoder)));
     }
 
@@ -32,6 +37,12 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findById(user.getId()).orElseThrow(
                 () -> new NoSuchEntityException("Can`t find user by id: " + user.getId())
         );
+        if (userRepository.findUserEntityByEmail(user.getEmail()).isPresent()) {
+            throw new EmailDuplicateException("Email already in use!");
+        }
+        if (userRepository.findUserEntityByPhoneNumber(user.getPhoneNumber()).isPresent()) {
+            throw new PhoneNumberDuplicateException("Phone number already in use!");
+        }
         userMapper.updateFields(userEntity, user);
         return userMapper.toDto(userRepository.save(userEntity));
     }

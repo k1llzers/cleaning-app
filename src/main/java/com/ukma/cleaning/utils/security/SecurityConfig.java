@@ -36,7 +36,7 @@ public class SecurityConfig {
                         requests -> requests
                                 .requestMatchers("/api/auth/welcome", "/api/auth/registration", "/api/auth/login").permitAll()
                                 .requestMatchers("/api/auth/user/**", "/api/auth/admin/**").authenticated()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

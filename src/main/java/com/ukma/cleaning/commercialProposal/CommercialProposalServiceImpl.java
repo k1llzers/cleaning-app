@@ -1,5 +1,7 @@
 package com.ukma.cleaning.commercialProposal;
 
+import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
+import com.ukma.cleaning.utils.exceptions.ProposalNameDuplicateException;
 import com.ukma.cleaning.utils.mappers.CommercialProposalMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,18 +16,24 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
     private final CommercialProposalMapper mapper;
     @Override
     public CommercialProposalDto create(CommercialProposalDto commercialProposal) {
+        if (commercialProposalRepository.findCommercialProposalEntityByName(commercialProposal.getName()).isPresent()) {
+            throw new ProposalNameDuplicateException("Commercial proposal name should be unique!");
+        }
         return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));
     }
 
     @Override
     public CommercialProposalDto update(CommercialProposalDto commercialProposal) {
+        if (commercialProposalRepository.findCommercialProposalEntityByName(commercialProposal.getName()).isPresent()) {
+            throw new ProposalNameDuplicateException("Commercial proposal name should be unique!");
+        }
         return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));
     }
 
     @Override
     public CommercialProposalDto getById(Long id) {
         CommercialProposalEntity entity = commercialProposalRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Proposal not found")
+                () -> new NoSuchEntityException("Can't find proposal with id: " + id)
         );
         return mapper.toDto(entity);
     }
