@@ -1,0 +1,30 @@
+button {
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: darkgrey;
+    width: 100%;
+}
+
+button:hover:enabled {
+    filter: brightness(85%);
+}
+
+button:disabled {
+    cursor: not-allowed;
+    filter: brightness(85%);
+}
+
+button.red {
+    background-color: red;
+}
+
+button.green {
+    background-color: #4CAF50;
+}
+
+button.grey {
+    background-color: darkgrey;
+}

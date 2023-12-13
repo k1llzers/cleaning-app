@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/pages/login.css}" rel="stylesheet" />
+    <title>Log in</title>
+  </head>
+  <body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div id="main_part">
+      <div id="main_part_content">
+        <form class="login_form" method="post" action="/login">
+          <h1 class="login_form_heading">Please log in</h1>
+          <p class="request_message"></p>
+          <div class="form_field">
+            <h3>Email</h3>
+            <input class="email_input" type="email" placeholder="Enter email" name="email">
+            <p class="validation_error"></p>
+          </div>
+          <div class="form_field">
+            <h3>Password</h3>
+            <input class="password_input" type="password" placeholder="Enter password" name="password">
+            <p class="validation_error"></p>
+          </div>
+          <button type="submit" class="confirm_button green">Log in</button>
+        </form>
+        <form th:action="@{/signup}" method="GET">
+          <button type="submit" class="grey">Register</button>
+        </form>
+      </div>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script type="module" src="../scripts/pages/login.js"></script>
+    <script src="../scripts/utils/general.js"></script>
+  </body>
+</html>

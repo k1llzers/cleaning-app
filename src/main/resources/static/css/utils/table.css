@@ -1,0 +1,41 @@
+table {
+    border-radius: 10px;
+    border: solid 1px darkgrey;
+    border-spacing: 0;
+}
+
+table thead {
+    color: white;
+    background-color: #333333;
+}
+
+table thead th {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+table thead tr:first-child th:first-child {
+    border-radius: 10px 0 0 0;
+}
+
+table thead tr:first-child th:last-child {
+    border-radius: 0 10px 0 0;
+}
+
+table tbody tr td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+table tbody tr:nth-child(even) td {
+    background-color: rgb(240, 240, 240);
+}
+
+table tbody tr:last-child td:first-child {
+    border-radius: 0 0 0 10px;
+}
+
+table tbody tr:last-child td:last-child {
+    overflow: hidden;
+    border-radius: 0 0 10px 0;
+}

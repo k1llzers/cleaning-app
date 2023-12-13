@@ -1,0 +1,92 @@
+@import '../utils/general.css';
+@import '../utils/header.css';
+@import '../utils/footer.css';
+@import '../utils/popup.css';
+@import '../utils/form.css';
+@import '../utils/button.css';
+@import '../utils/table.css';
+
+#proposals {
+    text-align: center;
+}
+
+#about {
+    text-align: center;
+}
+
+#proposals_list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#main_part_content {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.proposal {
+    overflow: hidden;
+    text-align: center;
+    /*box-shadow: 0 0 5px #ccc;*/
+    border-radius: 10px;
+    border: solid 1px darkgrey;
+    margin: 10px;
+}
+
+.proposal .add_button {
+    width: 50%;
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+
+/*.proposal:hover {
+    box-shadow: 0 0 5px #808080;
+}*/
+
+.proposal_count {
+    display: flex;
+    flex-direction: row;
+}
+
+.proposal_count .plus, .proposal_count .minus {
+    width: 40px;
+    aspect-ratio: 1/1;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.proposal_count .minus {
+    margin-right: 10px;
+}
+
+.proposal_count .plus {
+    margin-left: 10px;
+}
+
+.proposal .proposal_header {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    background-color: #79ce7c;
+}
+
+.proposal h2 {
+    margin: auto;
+    color: white;
+}
+
+hr {
+    width: 50%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.proposal_price::after {
+    content: ' ₴';
+}
+
+.apply_button {
+    margin-top: 0;
+}

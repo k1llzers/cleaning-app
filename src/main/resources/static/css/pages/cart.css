@@ -1,0 +1,71 @@
+@import '../utils/general.css';
+@import '../utils/header.css';
+@import '../utils/footer.css';
+@import '../utils/popup.css';
+@import '../utils/form.css';
+@import '../utils/button.css';
+@import '../utils/table.css';
+
+#main_part_content {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+#proposals_table {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+form {
+    width: 200px;
+    margin: 20px auto;
+}
+
+#add_proposals_form {
+    margin-top: 0;
+}
+
+.empty_list {
+    display: flex;
+    height: 100%;
+    margin: auto;
+}
+
+.empty_list span {
+    color: darkgrey;
+    font-size: 80px;
+    font-weight: bold;
+    margin: auto;
+}
+
+.price::after {
+    content: ' ₴';
+}
+
+.button_wrapper {
+    display: flex;
+}
+
+.remove_button {
+    margin-right: 10px;
+}
+
+#price {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#price .total_cost {
+    margin-left: 20px;
+}
+
+#price .total_cost::after {
+    content: ' ₴';
+}
+
+#create_order_form {
+    margin-top: 0;
+}

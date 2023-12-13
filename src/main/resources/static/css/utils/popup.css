@@ -1,0 +1,29 @@
+body.popup_active {
+    overflow: hidden;
+}
+
+.popup {
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 20px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.popup::backdrop {
+    background-color: rgb(0, 0, 0, 0.5);
+}
+
+.popup::-webkit-scrollbar {
+    display: none;
+}
+
+.popup_content {
+    text-align: center;
+    width: 400px;
+}
+
+.popup_content button {
+    margin-top: 10px;
+}

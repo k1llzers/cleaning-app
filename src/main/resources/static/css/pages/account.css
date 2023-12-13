@@ -1,0 +1,86 @@
+@import '../utils/general.css';
+@import '../utils/header.css';
+@import '../utils/footer.css';
+@import '../utils/popup.css';
+@import '../utils/form.css';
+@import '../utils/button.css';
+
+.account_info {
+    text-align: center;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.account_info h1 {
+    margin-bottom: 0;
+}
+
+.account_info h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#phone_input + .validation_error {
+    margin-bottom: 0;
+}
+
+/*.edit_cancel {
+    cursor: pointer;
+    color: grey;
+}
+
+.edit_cancel:hover {
+    color: lightgray;
+}*/
+
+.account_buttons {
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 18px;
+}
+
+.account_buttons button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.account_content {
+    display: grid;
+    grid-template-columns: 1fr 300px 1fr;
+}
+
+.account_info button {
+    margin-top: 20px;
+}
+
+#delete_account_dialog .popup_content {
+    width: 300px;
+    text-align: center;
+}
+
+#delete_account_dialog .delete_button {
+    margin-bottom: 10px;
+}
+
+#change_password_dialog .popup_content {
+    width: 300px;
+    text-align: center;
+}
+
+#change_password_dialog .popup_content button {
+    margin-top: 10px;
+}
+
+@media screen and (max-width: 768px) {
+    .account_content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .account_buttons {
+        width: 300px;
+    }
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Account</title>
+    <link th:href="@{/css/pages/account.css}" rel="stylesheet" />
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div id="main_part">
+        <div id="main_part_content">
+            <div class="account_content">
+                <div></div>
+                <form class="account_info" th:attr="data-id=${user.id}, role=${user.role}">
+                    <h1>Account</h1>
+                    <!-- <span class="edit_cancel">edit</span> -->
+                    <p class="request_message"></p>
+                    <h3>Name</h3>
+                    <input id="name_input" class="not_editable" type="text" placeholder="Enter name" th:value="${user.name}" readonly>
+                    <h3>Surname</h3>
+                    <input id="surname_input" class="not_editable" type="text" placeholder="Enter surname" th:value="${user.surname}" readonly>
+                    <h3>Patronym</h3>
+                    <input id="patronym_input" class="not_editable" type="text" placeholder="Enter patronym" th:value="${user.patronymic}" readonly>
+                    <div class="form_field">
+                        <h3>Email Address</h3>
+                        <input id="email_input" class="email_input not_editable" type="email" placeholder="Enter email" th:value="${user.email}" required readonly>
+                        <p class="validation_error"></p>
+                    </div>
+                    <div class="form_field">
+                        <h3>Phone Number</h3>
+                        <input id="phone_input" class="phone_input not_editable" type="text" placeholder="Enter phone" th:value="${user.phoneNumber}" readonly>
+                        <p class="validation_error"></p>
+                    </div>
+                    <button type="submit" class="not_visible green apply_button">Apply changes</button>
+                    <button type="button" class="not_visible grey cancel_button">Cancel</button>
+                </form>
+                <div class="account_buttons">
+                    <button id="orders_button" class="grey">Orders</button>
+                    <button id="addresses_button" class="grey">Addresses</button>
+                    <button id="edit_button" class="grey">Edit Account</button>
+                    <button id="change_password_button" class="grey">Change Password</button>
+                    <!-- <button id="delete_account_button" class="red">Delete Account</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <dialog id="delete_account_dialog" class="popup">
+        <div class="popup_content">
+            <h1>Delete Account</h1>
+            <p>Are you sure you want to delete your account?</p>
+            <p class="warning">This action cannot be cancelled!</p>
+            <button class="delete_button red">Delete</button>
+            <button class="cancel_button close_popup_button grey">Cancel</button>
+        </div>
+    </dialog>
+    <dialog id="change_password_dialog" class="popup">
+        <div class="popup_content">
+            <form id="change_password_form">
+                <h1>Change Password</h1>
+                <p class="request_message"></p>
+                <div class="form_field">
+                    <h3>New Password</h3>
+                    <input class="password_input" type="password" placeholder="Enter new password">
+                    <p class="validation_error"></p>
+                </div>
+                <div class="form_field">
+                    <h3>Repeat Password</h3>
+                    <input class="confirm_password_input" type="password" placeholder="Repeat password">
+                    <p class="validation_error"></p>
+                </div>
+                <button type="submit" class="apply_button green">Apply</button>
+                <button class="cancel_button close_popup_button grey">Cancel</button>
+            </form>
+        </div>
+    </dialog>
+    <script src="../scripts/utils/general.js"></script>
+    <script type="module" src="../scripts/pages/account.js"></script>
+</body>
+</html>

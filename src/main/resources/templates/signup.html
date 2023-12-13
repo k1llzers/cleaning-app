@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign up</title>
+    <link th:href="@{/css/pages/signup.css}" rel="stylesheet" />
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div id="main_part">
+        <div id="main_part_content">
+            <form class="signup_form" th:action="@{/signUp/success}" method="POST">
+                <h1>Registration</h1>
+                <p>Please fill in this form to create an account.</p>
+                <p th:if="${#strings.toString(param.error)} == 'pass'" class="error-message">Password is not strong enough.</p>
+                <p th:if="${#strings.toString(param.error)} == 'email'" class="error-message">Email already used.</p>
+                <h3>Name</h3>
+                <input type="text" placeholder="Enter name" class="name">
+                <h3>Surname</h3>
+                <input type="text" placeholder="Enter surname" class="surname">
+                <h3>Patronym</h3>
+                <input type="text" placeholder="Enter patronym" class="patronym">
+                <div class="form_field">
+                    <h3>Email</h3>
+                    <input class="email_input" type="email" placeholder="Enter email" name="email">
+                    <p class="validation_error"></p>
+                </div>
+                <div class="form_field">
+                    <h3>Password</h3>
+                    <input class="password_input" type="password" placeholder="Enter password" name="password">
+                    <p class="validation_error"></p>
+                </div>
+                <div class="form_field">
+                    <h3>Repeat Password</h3>
+                    <input class="confirm_password_input" type="password" placeholder="Repeat password">
+                    <p class="validation_error"></p>
+                </div>
+                <p class="request_message"></p>
+                <button type="submit" class="confirm_button green">Register</button>
+            </form>
+            <form th:action="@{/login}" method="GET">
+                <button type="submit" class="grey">Log in</button>
+            </form>
+        </div>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script src="../scripts/utils/general.js"></script>
+    <script type="module" src="../scripts/pages/signup.js"></script>
+</body>
+</html>

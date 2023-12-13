@@ -1,0 +1,41 @@
+form input {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+form input.not_editable {
+    text-align: center;
+    border: none;
+    border-radius: 0;
+    border-bottom: solid 1px #ccc;
+}
+
+form .validation_error {
+    color: red;
+}
+
+form .validation_error:empty {
+    margin: 0;
+}
+
+form .form_field {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+form .form_field.error input {
+    border-color: red;
+    border-width: 2px;
+}
+
+form .form_field.success input {
+    border-color: #4CAF50;
+    border-width: 2px;
+}

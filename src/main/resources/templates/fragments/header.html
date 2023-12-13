@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Header</title>
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+</head>
+<body>
+    <header th:fragment="header">
+        <div class="logo_and_buttons">
+            <a th:href="@{/}" class="logo">Cleaning</a>
+            <div class="login_buttons">
+                <!-- Uncomment when security appears
+                <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Log out</a>
+                <a th:href="@{/login}" sec:authorize="isAnonymous()">Log in</a>
+                <a th:href="@{/signUp}" sec:authorize="isAnonymous()">Sign up</a> -->
+                <a th:href="@{/login}">Log in</a>
+                <a th:href="@{/signup}">Sign up</a>
+            </div>
+        </div>
+        <nav>
+            <a th:href="@{/cart}">Cart</a>
+            <a th:href="@{/account}">Account</a>
+        </nav>
+        <!-- Uncomment when security appears
+        <nav sec:authorize="isAuthenticated()">
+            <a sec:authorize="hasRole('User')">Create Order</a>
+            <a th:href="@{/viewAddresses}" sec:authorize="hasRole('User')">Addresses</a>
+            <a sec:authorize="hasRole('Admin')">Employees</a>
+            <a sec:authorize="hasRole('Admin')">Proposals</a>
+            <a sec:authorize="isAuthenticated()">Orders</a>
+        </nav> -->
+    </header>
+</body>
+</html>

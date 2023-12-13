@@ -1,0 +1,44 @@
+header {
+    background-color: #45a049;
+    position: sticky;
+    top: 0;
+    width: 100%;
+}
+
+header .logo_and_buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+header .logo {
+    font-size: 50px;
+    color: white;
+    margin: 10px;
+    font-weight: bold;
+}
+
+header .login_buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+header a:hover {
+    cursor: pointer;
+    color: lightgray;
+}
+
+header nav {
+    margin-left: auto;
+    width: fit-content;
+    padding-bottom: 10px;
+}

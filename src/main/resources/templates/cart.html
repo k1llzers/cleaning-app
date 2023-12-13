@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <link th:href="@{/css/pages/cart.css}" rel="stylesheet" />
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div id="main_part">
+        <div id="main_part_content">
+            <h1>Cart</h1>
+            <form id="add_proposals_form" method="GET" th:action="@{/}">
+                <button type="submit" class="green">Add Proposals</button>
+            </form>
+            <div class="empty_list not_visible">
+                <span>Empty</span>
+            </div>
+            <table id="proposals_table" class="not_visible">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Count</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div id="price" class="not_visible">
+                <h2>Total cost: </h2><h2 class="total_cost"></h2>
+            </div>
+            <form id="create_order_form" class="not_visible" method="GET" th:action="@{/order}">
+                <button type="submit" class="green">Create Order</button>
+            </form>
+        </div>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script type="module" src="../scripts/pages/cart.js"></script>
+    <script src="../scripts/utils/general.js"></script>
+</body>
+</html>

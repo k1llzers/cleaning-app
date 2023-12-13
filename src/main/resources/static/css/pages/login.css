@@ -1,0 +1,25 @@
+@import '../utils/general.css';
+@import '../utils/header.css';
+@import '../utils/footer.css';
+@import '../utils/form.css';
+@import '../utils/button.css';
+
+#main_part {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+#main_part_content {
+    min-height: 0;
+    max-width: 420px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+button {
+    margin-top: 10px;
+}

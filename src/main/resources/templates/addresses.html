@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Addresses</title>
+    <link th:href="@{/css/pages/addresses.css}" rel="stylesheet" />
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div id="main_part">
+        <div id="main_part_content">
+            <h1>Your Addresses</h1>
+            <p class="request_message"></p>
+            <button id="add_address_button" class="green">Add Address</button>
+            <div class="empty_list" th:classappend="${addresses != null and !addresses.isEmpty()} ? not_visible : ''">
+                <span>Empty</span>
+            </div>
+            <table id="addresses_table" th:attr="user-id=${user.id}" th:class="${addresses != null and !addresses.isEmpty()} ? '' : not_visible">
+                <thead>
+                    <tr>
+                        <th>City</th>
+                        <th>Street</th>
+                        <th>House</th>
+                        <th>Flat</th>
+                        <th>Zip</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="address:${addresses}" th:attr="data-id=${address.id}">
+                        <td class="city" th:text="${address.city}"></td>
+                        <td class="street" th:text="${address.street}"></td>
+                        <td class="house_number" th:text="${address.houseNumber}"></td>
+                        <td class="flat_number" th:text="${address.flatNumber}"></td>
+                        <td class="zip" th:text="${address.zip}"></td>
+                        <td>
+                            <button class="edit_button grey">Edit</button>
+                            <button class="delete_button red">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <dialog id="add_address_popup" class="popup">
+        <div class="popup_content">
+            <h1>Add Address</h1>
+            <form id="add_address_form">
+                <div class="form_field">
+                    <h3>City</h3>
+                    <input type="text" class="not_empty city" placeholder="Enter City" name="city">
+                    <p class="validation_error"></p>
+                </div>
+                <div class="form_field">
+                    <h3>Street</h3>
+                    <input type="text" class="not_empty street" placeholder="Enter Street" name="street">
+                    <p class="validation_error"></p>
+                </div>
+                <div class="form_field">
+                    <h3>House Number</h3>
+                    <input type="text" class="not_empty house_number" placeholder="Enter House Number" name="houseNumber">
+                    <p class="validation_error"></p>
+                </div>
+                <h3>Flat Number</h3>
+                <input type="text" class="flat_number" placeholder="Enter Flat Number" name="flatNumber">
+                <h3>Zip Code (optional)</h3>
+                <input type="text" class="zip" placeholder="Enter Zip Code" name="zip">
+                <button type="submit" class="apply green">Add Address</button>
+            </form>
+            <button class="cancel_button close_popup_button grey">Cancel</button>
+        </div>
+    </dialog>
+
+    <dialog id="edit_address_popup" class="popup">
+        <div class="popup_content">
+            <h1>Edit Address</h1>
+            <p class="warning">Editing address will NOT affect attached orders to it.</p>
+            <form id="edit_address_form">
+                <div class="form_field">
+                    <h3>City</h3>
+                    <input type="text" id="" class="not_empty city" placeholder="Enter City" name="city">
+                    <p class="validation_error"></p>
+                </div>
+                <div class="form_field">
+                    <h3>Street</h3>
+                    <input type="text" class="not_empty street" placeholder="Enter Street" name="street">
+                    <p class="validation_error"></p>
+                </div>
+                <div class="form_field">
+                    <h3>House Number</h3>
+                    <input type="text" class="not_empty house_number" placeholder="Enter House Number" name="houseNumber">
+                    <p class="validation_error"></p>
+                </div>
+                <h3>Flat Number</h3>
+                <input type="text" class="flat_number" placeholder="Enter Flat Number" name="flatNumber">
+                <h3>Zip Code (optional)</h3>
+                <input type="text" class="zip" placeholder="Enter Zip Code" name="zip">
+                <button type="submit" class="apply green">Edit Address</button>
+            </form>
+            <button class="cancel_button close_popup_button grey">Cancel</button>
+        </div>
+    </dialog>
+
+    <dialog id="delete_address_popup" class="popup">
+        <div class="popup_content">
+            <h1>Delete Address</h1>
+            <p class="warning">Deleting address will NOT affect attached orders to it.</p>
+            <p>Are you sure you want to delete this address?</p>
+            <button class="delete_button red">Delete Address</button>
+            <button class="cancel_button close_popup_button grey">Cancel</button>
+        </div>
+    </dialog>
+
+    <script src="../scripts/utils/general.js"></script>
+    <script type="module" src="../scripts/pages/addresses.js"></script>
+</body>
+</html>
