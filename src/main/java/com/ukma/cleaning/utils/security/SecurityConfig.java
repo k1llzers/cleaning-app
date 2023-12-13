@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,19 +31,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/api/auth/welcome", "/api/auth/registration", "/api/auth/login").permitAll()
-                .and()
-                .authorizeHttpRequests().requestMatchers("/api/auth/user/**").authenticated()
-                .and()
-                .authorizeHttpRequests().requestMatchers("/api/auth/admin/**").authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+        return http.
+                authorizeHttpRequests(
+                        requests -> requests
+                                .requestMatchers("/api/auth/welcome", "/api/auth/registration", "/api/auth/login").permitAll()
+                                .requestMatchers("/api/auth/user/**", "/api/auth/admin/**").authenticated()
+                                .anyRequest().authenticated()
+                )
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+                .formLogin(login -> login.loginPage("/login").permitAll().failureUrl("/login?error"))
                 .build();
     }
 
