@@ -1,8 +1,11 @@
 <configuration>
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="com.ukma.cleaning.utils.logging.LogLayout" />
-        </encoder>
+    <appender name="CONSOLE"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %green(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1}): %msg%n%throwable
+            </Pattern>
+        </layout>
     </appender>
 
     <appender name="FILE" class="com.ukma.cleaning.utils.logging.LogAppender">
