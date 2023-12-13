@@ -24,19 +24,35 @@ public class GlobalHandler {
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.joining("\n"));
         log.info("Validation on controller failed: {}", message);
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\"errorMessage\":\"")
+                .append(message)
+                .append("\"}");
+        return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({EmailDuplicateException.class, PhoneNumberDuplicateException.class, ProposalNameDuplicateException.class})
     public ResponseEntity<String> handleDuplicateException(Exception e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\"errorMessage\":\"")
+                .append(e.getMessage())
+                .append("\"}");
+        return new ResponseEntity<>(sb.toString(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(NoSuchEntityException.class)
     public ResponseEntity<String> handleNoSuchEntityException(NoSuchEntityException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\"errorMessage\":\"")
+                .append(e.getMessage())
+                .append("\"}");
+        return new ResponseEntity<>(sb.toString(), HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler
     public ResponseEntity<String> handleException(Exception e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\"errorMessage\":\"")
+                .append(e.getMessage())
+                .append("\"}");
+        return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
     }
 }
