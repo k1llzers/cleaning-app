@@ -1,10 +1,12 @@
 package com.ukma.cleaning.commercialProposal;
 
+import com.ukma.cleaning.user.UserEntity;
 import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
 import com.ukma.cleaning.utils.exceptions.ProposalNameDuplicateException;
 import com.ukma.cleaning.utils.mappers.CommercialProposalMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -14,22 +16,28 @@ import java.util.List;
 public class CommercialProposalServiceImpl implements CommercialProposalService {
     private final CommercialProposalRepository commercialProposalRepository;
     private final CommercialProposalMapper mapper;
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public CommercialProposalDto create(CommercialProposalDto commercialProposal) {
         if (commercialProposalRepository.findCommercialProposalEntityByName(commercialProposal.getName()).isPresent()) {
+            log.warn("Same commercial proposals name, when creating proposal with name: " + commercialProposal.getName());
             throw new ProposalNameDuplicateException("Commercial proposal name should be unique!");
         }
         return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public CommercialProposalDto update(CommercialProposalDto commercialProposal) {
         if (commercialProposalRepository.findCommercialProposalEntityByName(commercialProposal.getName()).isPresent()) {
+            log.warn("Same commercial proposals name, when update proposal with name: " + commercialProposal.getName());
             throw new ProposalNameDuplicateException("Commercial proposal name should be unique!");
         }
         return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @Override
     public CommercialProposalDto getById(Long id) {
         CommercialProposalEntity entity = commercialProposalRepository.findById(id).orElseThrow(
@@ -38,11 +46,13 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
         return mapper.toDto(entity);
     }
 
+    @PreAuthorize("permitAll()")
     @Override
     public List<CommercialProposalDto> getAll() {
         return mapper.toDtoList(commercialProposalRepository.findAll());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public Boolean deleteById(Long id) {
         commercialProposalRepository.deleteById(id);

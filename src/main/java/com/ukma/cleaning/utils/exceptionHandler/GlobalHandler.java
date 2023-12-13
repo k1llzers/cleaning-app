@@ -35,6 +35,7 @@ public class GlobalHandler {
     public ResponseEntity<String> handleNoSuchEntityException(NoSuchEntityException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler
     public ResponseEntity<String> handleException(Exception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

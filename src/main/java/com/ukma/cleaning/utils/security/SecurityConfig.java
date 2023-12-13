@@ -3,6 +3,7 @@ package com.ukma.cleaning.utils.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -34,8 +35,6 @@ public class SecurityConfig {
         return http.
                 authorizeHttpRequests(
                         requests -> requests
-                                .requestMatchers("/api/auth/welcome", "/api/auth/registration", "api/auth/refreshToken").permitAll()
-                                .requestMatchers("/api/auth/user/**", "/api/auth/admin/**").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
