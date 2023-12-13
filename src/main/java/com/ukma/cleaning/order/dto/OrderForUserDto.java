@@ -16,10 +16,10 @@ import java.util.Map;
 @AllArgsConstructor
 @Data
 public class OrderForUserDto {
-    @NotNull
+    @NotNull(message = "Order id can't be null")
     private Long id;
     private Double price;
-    @NotNull
+    @NotNull(message = "Order time can't be null")
     private LocalDateTime orderTime;//
     private AddressDto address;
     private Status status; //

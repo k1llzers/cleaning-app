@@ -6,6 +6,7 @@ import com.ukma.cleaning.order.dto.*;
 import com.ukma.cleaning.review.ReviewDto;
 import com.ukma.cleaning.user.UserRepository;
 import com.ukma.cleaning.utils.exceptions.CantChangeEntityException;
+import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
 import com.ukma.cleaning.utils.mappers.AddressMapper;
 import com.ukma.cleaning.utils.mappers.OrderMapper;
 import com.ukma.cleaning.utils.mappers.ReviewMapper;
@@ -36,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderForUserDto createOrder(OrderCreationDto order) {
         OrderEntity entity = orderMapper.toEntity(order);
         entity.setClient(userRepository.findById(order.getClientId()).orElseThrow(() ->
-                new NoSuchElementException("Can`t find order by id: " + order.getClientId())
+                new NoSuchEntityException("Can`t find order by id: " + order.getClientId())
         ));
         entity.setCommercialProposals(order.getProposals().entrySet().stream()
                 .collect(Collectors.toMap(
@@ -51,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderForUserDto updateOrderForUser(OrderForUserDto order) {
         OrderEntity entity = orderRepository.findById(order.getId()).orElseThrow(() ->
-                new NoSuchElementException("Can`t find order by id: " + order.getId())
+                new NoSuchEntityException("Can`t find order by id: " + order.getId())
         );
         if (entity.getStatus().ordinal() >= Status.PREPARING.ordinal()) {
             throw new CantChangeEntityException("You can`t change order when status is Preparing");
@@ -63,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderForAdminDto updateOrderForAdmin(OrderForAdminDto order) {
         OrderEntity entity = orderRepository.findById(order.getId()).orElseThrow(() ->
-                new NoSuchElementException("Can`t find order by id: " + order.getId())
+                new NoSuchEntityException("Can`t find order by id: " + order.getId())
         );
         orderMapper.updateFields(entity, order);
         return orderMapper.toAdminDto(orderRepository.save(entity));
@@ -72,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderForUserDto updateReview(ReviewDto review) {
         OrderEntity entity = orderRepository.findById(review.getOrderId()).orElseThrow(() ->
-                new NoSuchElementException("Can`t find order by id: " + review.getOrderId())
+                new NoSuchEntityException("Can`t find order by id: " + review.getOrderId())
         );
         if (entity.getStatus() != Status.DONE) {
             throw new CantChangeEntityException("You can`t add review when status isn`t Done`");
@@ -84,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderForUserDto getOrderByIdForUser(Long id) {
         OrderEntity entity = orderRepository.findById(id).orElseThrow(() ->
-                new NoSuchElementException("Can`t find order by id: " + id)
+                new NoSuchEntityException("Can`t find order by id: " + id)
         );
         return orderMapper.toUserDto(entity);
     }
@@ -92,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderForAdminDto getOrderByIdForAdmin(Long id) {
         OrderEntity entity = orderRepository.findById(id).orElseThrow(() ->
-                new NoSuchElementException("Can`t find order by id: " + id)
+                new NoSuchEntityException("Can`t find order by id: " + id)
         );
         return orderMapper.toAdminDto(entity);
     }
@@ -100,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Boolean cancelOrderById(Long orderId) {
         OrderEntity entity = orderRepository.findById(orderId).orElseThrow(() ->
-                new NoSuchElementException("Can`t find order by id: " + orderId)
+                new NoSuchEntityException("Can`t find order by id: " + orderId)
         );
         entity.setStatus(Status.CANCELLED);
         return true;

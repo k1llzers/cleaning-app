@@ -10,14 +10,14 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 public class AddressDto {
     private Long id;
-    @NotNull
-    @NotBlank
+    @NotNull(message = "City can't be null!")
+    @NotBlank(message = "City can't be blank!")
     private String city;
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Street can't be null!")
+    @NotBlank(message = "Street can't be blank!")
     private String street;
-    @NotNull
-    @NotBlank
+    @NotNull(message = "HouseNumber can't be null!")
+    @NotBlank(message = "HouseNumber can't be blank!")
     private String houseNumber;
     private String flatNumber;
     private String zip;

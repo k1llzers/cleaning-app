@@ -2,6 +2,7 @@ package com.ukma.cleaning.address;
 
 import com.ukma.cleaning.user.UserEntity;
 import com.ukma.cleaning.user.UserRepository;
+import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
 import com.ukma.cleaning.utils.mappers.AddressMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDto create(Long userId, AddressDto addressDto) {
         UserEntity userEntity = userRepository.findById(userId).orElseThrow(() ->
-                new NoSuchElementException("Can`t find address by id: " + userId)
+                new NoSuchEntityException("Can`t find address by id: " + userId)
         );
         AddressEntity addressEntity = addressMapper.toEntity(addressDto);
         addressEntity.setUser(userEntity);
@@ -32,7 +33,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDto update(AddressDto addressDto) {
         AddressEntity addressEntity = addressRepository.findById(addressDto.getId()).orElseThrow(
-                () -> new NoSuchElementException("Can`t find address by id: " + addressDto.getId())
+                () -> new NoSuchEntityException("Can`t find address by id: " + addressDto.getId())
         );
         UserEntity user = addressEntity.getUser();
         addressRepository.delete(addressEntity);
@@ -50,7 +51,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDto getById(Long id) {
         AddressEntity addressEntity = addressRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException("Can`t find address by id: " + id)
+                () -> new NoSuchEntityException("Can`t find address by id: " + id)
         );
         return addressMapper.toDto(addressEntity);
     }

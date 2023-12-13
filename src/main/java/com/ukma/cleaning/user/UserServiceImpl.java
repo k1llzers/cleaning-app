@@ -16,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -37,12 +40,18 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findById(user.getId()).orElseThrow(
                 () -> new NoSuchEntityException("Can`t find user by id: " + user.getId())
         );
-        if (userRepository.findUserEntityByEmail(user.getEmail()).isPresent()) {
-            throw new EmailDuplicateException("Email already in use!");
-        }
-        if (userRepository.findUserEntityByPhoneNumber(user.getPhoneNumber()).isPresent()) {
-            throw new PhoneNumberDuplicateException("Phone number already in use!");
-        }
+        Optional<UserEntity> userEntityByEmail = userRepository.findUserEntityByEmail(user.getEmail());
+        userEntityByEmail.ifPresent(existingUser -> {
+            if (!Objects.equals(userEntity.getId(), existingUser.getId())) {
+                throw new EmailDuplicateException("Email already in use!");
+            }
+        });
+        Optional<UserEntity> userEntityByPhone = userRepository.findUserEntityByPhoneNumber(user.getPhoneNumber());
+        userEntityByPhone.ifPresent(existingUser -> {
+            if (!Objects.equals(userEntity.getId(), existingUser.getId())) {
+                throw new PhoneNumberDuplicateException("Phone number already in use!");
+            }
+        });
         userMapper.updateFields(userEntity, user);
         return userMapper.toDto(userRepository.save(userEntity));
     }

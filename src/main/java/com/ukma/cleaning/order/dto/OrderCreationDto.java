@@ -17,18 +17,17 @@ import java.util.Map;
 @AllArgsConstructor
 @Data
 public class OrderCreationDto {
-    @Positive
+    @Positive(message = "Price of order should be positive")
     private Double price;
-    @NotNull
+    @NotNull(message = "Order time can't be null")
     private LocalDateTime orderTime;
-    @NotNull
+    @NotNull(message = "Client id can't be null")
     private Long clientId; // in service
     private String comment;
-    @NotNull
+    @NotNull(message = "Address of order can't be null")
     private AddressDto address;
-    // TODO CHECK HOW IT WORKS
-    @NotNull
+    @NotNull(message = "Duration of order can't be null")
     private Duration duration;
-    @NotNull
+    @NotNull(message = "Order can't be null")
     private Map<Long, Integer> proposals; //in service
 }

@@ -20,19 +20,19 @@ import java.util.Map;
 @AllArgsConstructor
 @Data
 public class OrderForAdminDto {
-    @NotNull
+    @NotNull(message = "Order id can't be null")
     private Long id;
-    @Positive
+    @Positive(message = "Price of order should be positive")
     private Double price;
     private LocalDateTime orderTime;
     private AddressDto address;
-    @NotNull
+    @NotNull(message = "Order status can't be null")
     private Status status;
-    @NotNull
+    @NotNull(message = "Order duration can't be null")
     private Duration duration;
     private ReviewDto review;
     private Map<String, Integer> commercialProposals;
-    @NotNull
-    @Size(min = 1)
+    @NotNull(message = "Order executors can't be null")
+    @Size(min = 1, message = "Order should have at least 1 executor")
     private List<EmployeeDto> executors;
 }
