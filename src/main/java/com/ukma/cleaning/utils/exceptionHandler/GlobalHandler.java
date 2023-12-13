@@ -1,10 +1,7 @@
 package com.ukma.cleaning.utils.exceptionHandler;
 
 
-import com.ukma.cleaning.utils.exceptions.EmailDuplicateException;
-import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
-import com.ukma.cleaning.utils.exceptions.PhoneNumberDuplicateException;
-import com.ukma.cleaning.utils.exceptions.ProposalNameDuplicateException;
+import com.ukma.cleaning.utils.exceptions.*;
 import jdk.jfr.ContentType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -33,6 +30,11 @@ public class GlobalHandler {
     @ExceptionHandler({EmailDuplicateException.class, PhoneNumberDuplicateException.class, ProposalNameDuplicateException.class})
     public ResponseEntity<String> handleDuplicateException(Exception e) {
         return new ResponseEntity<>(formatMessage(e.getMessage()), getHttpHeaders(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleNoSuchEntityException(AccessDeniedException e) {
+        return new ResponseEntity<>(formatMessage(e.getMessage()), getHttpHeaders(), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(NoSuchEntityException.class)

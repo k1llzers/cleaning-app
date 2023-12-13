@@ -39,7 +39,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderForUserDto createOrder(OrderCreationDto order) {
         OrderEntity entity = orderMapper.toEntity(order);
-        log.trace("Creating new order with id = {}", entity.getId());
         entity.setClient(SecurityContextAccessor.getAuthenticatedUser());
         entity.setCommercialProposals(order.getProposals().entrySet().stream()
                 .collect(Collectors.toMap(
@@ -47,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
                         Map.Entry::getValue)));
         if (order.getAddress().getId() == null) {
             order.getAddress().setId(0l);
-            log.trace("Creating new address for order id = {}", entity.getId());
+            log.debug("Creating new address for order id = {}", entity.getId());
         }
         entity.setAddress(addressRepository.findById(order.getAddress().getId())
                 .orElseGet(() -> addressRepository.save(addressMapper.toEntity(order.getAddress()))));
