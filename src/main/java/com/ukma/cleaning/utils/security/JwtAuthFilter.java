@@ -1,6 +1,5 @@
 package com.ukma.cleaning.utils.security;
 
-import com.ukma.cleaning.utils.exceptions.AccessDeniedException;
 import com.ukma.cleaning.utils.exceptions.CantRefreshTokenException;
 import com.ukma.cleaning.utils.exceptions.VerifyRefreshTokenException;
 import com.ukma.cleaning.utils.security.refresh.tokens.RefreshTokenEntity;

@@ -46,6 +46,8 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(login -> login.loginPage("/login").permitAll().failureUrl("/login?error"))
+                .logout(logout -> logout.deleteCookies("accessToken", "refreshToken")
+                        .permitAll().logoutUrl("/logout").logoutSuccessUrl("/"))
                 .build();
 //        SecurityContextHolder.getContext().getAuthentication().getCredentials();
     }
