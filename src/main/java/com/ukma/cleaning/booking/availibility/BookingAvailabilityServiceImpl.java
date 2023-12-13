@@ -1,5 +1,6 @@
 package com.ukma.cleaning.booking.availibility;
 
+import com.ukma.cleaning.commercialProposal.CommercialProposalEntity;
 import com.ukma.cleaning.order.OrderEntity;
 import com.ukma.cleaning.order.OrderRepository;
 import com.ukma.cleaning.order.Status;
@@ -60,7 +61,12 @@ public class BookingAvailabilityServiceImpl implements BookingAvailabilityServic
                                         .toMinutes()).isAfter(time)))
                                 .distinct()
                                 .count();
-                        return employees.size() - countOfInvalid - countOfExecutors >= 0;
+                        int employeeNeededForOtherOrder = bookedOrder.stream()
+                                .map(OrderEntity::getCommercialProposals)
+                                .flatMap(e -> e.keySet().stream())
+                                .mapToInt(CommercialProposalEntity::getRequiredCountOfEmployees)
+                                .sum();
+                        return employees.size() - countOfInvalid - employeeNeededForOtherOrder - countOfExecutors >= 0;
                     })
                     .toList();
             availableDate.put(date, localTimes);
