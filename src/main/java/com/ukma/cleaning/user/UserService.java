@@ -10,8 +10,7 @@ import org.springframework.data.domain.Pageable;
 public interface UserService {
     UserDto create(UserRegistrationDto user);
     UserDto update(UserDto user);
-    Boolean deleteById(Long id);
-    UserDto getById(Long id);
+    UserDto getUser();
     UserDto getByEmail(String email);
     UserDto updatePassword(UserPasswordDto user);
 

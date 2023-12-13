@@ -9,6 +9,7 @@ import com.ukma.cleaning.utils.exceptions.EmailDuplicateException;
 import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
 import com.ukma.cleaning.utils.exceptions.PhoneNumberDuplicateException;
 import com.ukma.cleaning.utils.mappers.UserMapper;
+import com.ukma.cleaning.utils.security.SecurityContextAccessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -37,9 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(UserDto user) {
-        UserEntity userEntity = userRepository.findById(user.getId()).orElseThrow(
-                () -> new NoSuchEntityException("Can`t find user by id: " + user.getId())
-        );
+        UserEntity userEntity = SecurityContextAccessor.getAuthenticatedUser();
         Optional<UserEntity> userEntityByEmail = userRepository.findUserEntityByEmail(user.getEmail());
         userEntityByEmail.ifPresent(existingUser -> {
             if (!Objects.equals(userEntity.getId(), existingUser.getId())) {
@@ -55,18 +54,10 @@ public class UserServiceImpl implements UserService {
         userMapper.updateFields(userEntity, user);
         return userMapper.toDto(userRepository.save(userEntity));
     }
-    @Override
-    public Boolean deleteById(Long id) {
-        userRepository.deleteById(id);
-        return true;
-    }
 
     @Override
-    public UserDto getById(Long id) {
-        UserEntity userEntity = userRepository.findById(id).orElseThrow(
-                () -> new NoSuchEntityException("Can`t find user by id: " + id)
-        );
-        return userMapper.toDto(userEntity);
+    public UserDto getUser() {
+        return userMapper.toDto(SecurityContextAccessor.getAuthenticatedUser());
     }
 
     @Override
@@ -79,9 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updatePassword(UserPasswordDto user) {
-        UserEntity userEntity = userRepository.findById(user.getId()).orElseThrow(
-                () -> new NoSuchEntityException("Can`t find user by id: " + user.getId())
-        );
+        UserEntity userEntity = SecurityContextAccessor.getAuthenticatedUser();
         userEntity.setPassword(encoder.encode(user.getPassword()));
         return userMapper.toDto(userRepository.save(userEntity));
     }
