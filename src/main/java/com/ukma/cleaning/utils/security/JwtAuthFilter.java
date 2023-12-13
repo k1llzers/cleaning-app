@@ -35,39 +35,40 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Optional<Cookie> accessToken = Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals("accessToken"))
-                .findAny();
-        String token = null;
-        if (accessToken.isPresent())
-            token = accessToken.get().getValue();
-        String username = null;
-        if (token != null) {
-            try {
-                username = jwtService.extractUsername(token);
-            } catch (ExpiredJwtException e) {
-                String refreshToken = Arrays.stream(request.getCookies())
-                        .filter(cookie -> cookie.getName().equals("refreshToken"))
-                        .findAny().get().getValue();
-                RefreshTokenEntity refreshTokenEntity = refreshTokenService.findByToken(refreshToken).orElseThrow(
-                        () -> new CantRefreshTokenException("Can`t find refresh token")
-                );
+        if (request.getCookies() != null) {
+            Optional<Cookie> accessToken = Arrays.stream(request.getCookies())
+                    .filter(cookie -> cookie.getName().equals("accessToken"))
+                    .findAny();
+            String token = null;
+            if (accessToken.isPresent())
+                token = accessToken.get().getValue();
+            String username = null;
+            if (token != null) {
                 try {
-                    refreshTokenService.verify(refreshTokenEntity);
-                    String newJwtToken = jwtService.generateToken(refreshTokenEntity.getUser().getEmail());
-                    accessToken.get().setValue(newJwtToken);
-                    Cookie newCookie = new Cookie("accessToken", newJwtToken);
-                    response.addCookie(newCookie);
-                } catch (VerifyRefreshTokenException ex) {
-                    Cookie newCookie = new Cookie("accessToken", null);
-                    newCookie.setMaxAge(0);
-                    response.addCookie(newCookie);
-                    newCookie = new Cookie("refreshToken", null);
-                    newCookie.setMaxAge(0);
-                    response.addCookie(newCookie);
-                    response.sendRedirect("/login");
-                    return;
-                }
+                    username = jwtService.extractUsername(token);
+                } catch (ExpiredJwtException e) {
+                    String refreshToken = Arrays.stream(request.getCookies())
+                            .filter(cookie -> cookie.getName().equals("refreshToken"))
+                            .findAny().get().getValue();
+                    RefreshTokenEntity refreshTokenEntity = refreshTokenService.findByToken(refreshToken).orElseThrow(
+                            () -> new CantRefreshTokenException("Can`t find refresh token")
+                    );
+                    try {
+                        refreshTokenService.verify(refreshTokenEntity);
+                        String newJwtToken = jwtService.generateToken(refreshTokenEntity.getUser().getEmail());
+                        accessToken.get().setValue(newJwtToken);
+                        Cookie newCookie = new Cookie("accessToken", newJwtToken);
+                        response.addCookie(newCookie);
+                    } catch (VerifyRefreshTokenException ex) {
+                        Cookie newCookie = new Cookie("accessToken", null);
+                        newCookie.setMaxAge(0);
+                        response.addCookie(newCookie);
+                        newCookie = new Cookie("refreshToken", null);
+                        newCookie.setMaxAge(0);
+                        response.addCookie(newCookie);
+                        response.sendRedirect("/login");
+                        return;
+                    }
 
 
 //                log.info("Caught expired JWT token");
@@ -83,14 +84,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 //                sb.append("} ");
 //                response.getWriter().write(sb.toString());
 //                return;
+                }
             }
-        }
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if (jwtService.validateToken(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                if (jwtService.validateToken(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
         }
         filterChain.doFilter(request, response);
