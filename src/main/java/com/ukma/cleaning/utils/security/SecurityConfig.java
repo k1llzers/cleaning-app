@@ -37,11 +37,11 @@ public class SecurityConfig {
         return http.
                 authorizeHttpRequests(
                         requests -> requests
-                                .requestMatchers("/").permitAll()
+                                .requestMatchers("/login").permitAll()
                                 .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
-//                .exceptionHandling(handler -> handler.accessDeniedPage("/"))
+//                .exceptionHandling(handler -> handler.accessDeniedPage("/login"))
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)

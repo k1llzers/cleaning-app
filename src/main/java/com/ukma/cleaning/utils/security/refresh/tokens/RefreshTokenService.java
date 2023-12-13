@@ -26,7 +26,7 @@ public class RefreshTokenService {
         while (findByToken(generatedRefreshToken).isPresent())
             generatedRefreshToken = UUID.randomUUID().toString();
         refreshToken.setToken(generatedRefreshToken);
-        refreshToken.setExpiryDate(LocalDateTime.now().plusSeconds(60 * 10)); // 10 min
+        refreshToken.setExpiryDate(LocalDateTime.now().plusSeconds(60 * 1)); // 10 min
         return refreshTokenRepository.save(refreshToken).getToken();
     }
 
