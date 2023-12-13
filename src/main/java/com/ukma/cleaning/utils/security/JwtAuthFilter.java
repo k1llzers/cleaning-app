@@ -54,11 +54,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                             () -> new CantRefreshTokenException("Can`t find refresh token")
                     );
                     try {
-                        refreshTokenService.verify(refreshTokenEntity);
+                        RefreshTokenEntity verify = refreshTokenService.verify(refreshTokenEntity);
                         String newJwtToken = jwtService.generateToken(refreshTokenEntity.getUser().getEmail());
+                        String newRefreshToken = refreshTokenService.refreshToken(verify.getToken());
                         accessToken.get().setValue(newJwtToken);
-                        Cookie newCookie = new Cookie("accessToken", newJwtToken);
-                        response.addCookie(newCookie);
+                        Cookie newAccess = new Cookie("accessToken", newJwtToken);
+                        response.addCookie(newAccess); // maybe don`t work, need the same as new jwt
+                        Cookie newRefresh = new Cookie("refreshToken", newRefreshToken);
+                        response.addCookie(newRefresh);
                     } catch (VerifyRefreshTokenException ex) {
                         Cookie newCookie = new Cookie("accessToken", null);
                         newCookie.setMaxAge(0);

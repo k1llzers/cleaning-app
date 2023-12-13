@@ -1,12 +1,12 @@
 package com.ukma.cleaning.utils.security.refresh.tokens;
 
+import com.ukma.cleaning.user.UserEntity;
 import com.ukma.cleaning.user.UserRepository;
 import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
 import com.ukma.cleaning.utils.exceptions.VerifyRefreshTokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,7 +26,7 @@ public class RefreshTokenService {
         while (findByToken(generatedRefreshToken).isPresent())
             generatedRefreshToken = UUID.randomUUID().toString();
         refreshToken.setToken(generatedRefreshToken);
-        refreshToken.setExpiryDate(LocalDateTime.now().plusSeconds(60 * 1)); // 10 min
+        refreshToken.setExpiryDate(LocalDateTime.now().plusSeconds(60 * 6)); // 6 min
         return refreshTokenRepository.save(refreshToken).getToken();
     }
 
@@ -40,5 +40,12 @@ public class RefreshTokenService {
             throw new VerifyRefreshTokenException("Can`t verify token: " + token.getToken());
         }
         return token;
+    }
+
+    public String refreshToken(String token) {
+        RefreshTokenEntity oldToken = refreshTokenRepository.findByToken(token).get();
+        UserEntity user = oldToken.getUser();
+        refreshTokenRepository.delete(oldToken);
+        return create(user.getUsername());
     }
 }
