@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AccountVC {
     private final UserService userService;
 
-    //TODO
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/account")
     String getAccount(Model model) {

@@ -33,7 +33,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final RefreshTokenService refreshTokenService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         if (request.getCookies() != null) {
             Optional<Cookie> accessToken = Arrays.stream(request.getCookies())
                     .filter(cookie -> cookie.getName().equals("accessToken"))
@@ -50,9 +51,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                             .filter(cookie -> cookie.getName().equals("refreshToken"))
                             .findAny().get().getValue();
                     try {
-                        RefreshTokenEntity refreshTokenEntity = refreshTokenService.findByToken(refreshToken).orElseThrow(
-                                () -> new CantRefreshTokenException("Can`t find refresh token")
-                        );
+                        RefreshTokenEntity refreshTokenEntity = refreshTokenService
+                                .findByToken(refreshToken).orElseThrow(
+                                        () -> new CantRefreshTokenException("Can`t find refresh token")
+                                );
                         RefreshTokenEntity verify = refreshTokenService.verify(refreshTokenEntity);
                         String newJwtToken = jwtService.generateToken(refreshTokenEntity.getUser().getEmail());
                         token = newJwtToken;
@@ -65,7 +67,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         response.addCookie(newCookie);
                         accessToken.get().setValue(newJwtToken);
                         Cookie newAccess = new Cookie("accessToken", newJwtToken);
-                        response.addCookie(newAccess); // maybe don`t work, need the same as new jwt
+                        response.addCookie(newAccess);
                         Cookie newRefresh = new Cookie("refreshToken", newRefreshToken);
                         response.addCookie(newRefresh);
                         username = refreshTokenEntity.getUser().getUsername();
@@ -79,21 +81,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         response.sendRedirect("/login");
                         return;
                     }
-
-
-//                log.info("Caught expired JWT token");
-//                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                response.setContentType("application/json");
-//                StringBuilder sb = new StringBuilder();
-//                sb.append("{ ");
-//                sb.append("\"error\": \"Unauthorized\",\n");
-//                sb.append("\"message\": \"Token expired\",\n");
-//                sb.append("\"path\": \"")
-//                        .append(request.getRequestURL())
-//                        .append("\",\n");
-//                sb.append("} ");
-//                response.getWriter().write(sb.toString());
-//                return;
                 }
             }
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -108,56 +95,3 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-
-
-//public class JwtAuthFilter extends OncePerRequestFilter {
-//    private final JwtService jwtService;
-//    private final UserDetailsService userDetailsService;
-//    private final RefreshTokenService refreshTokenService;
-//
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        Optional<Cookie> accessToken = Arrays.stream(request.getCookies())
-//                .filter(cookie -> cookie.getName().equals("accessToken"))
-//                .findAny();
-//        String token = null;
-//        if (accessToken.isPresent())
-//            token = accessToken.get().getValue();
-//        String username = null;
-//        if (token != null) {
-//            try {
-//                username = jwtService.extractUsername(token);
-//            } catch (ExpiredJwtException e) {
-//                if (!request.getRequestURI().contains("/api")) {
-//                    Cookie deleteTokenCookie = new Cookie("accessToken", null);
-//                    deleteTokenCookie.setMaxAge(0);
-//                    response.addCookie(deleteTokenCookie);
-//                    response.sendRedirect("/login");
-//                    return;
-//                }
-//                log.info("Caught expired JWT token");
-//                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                response.setContentType("application/json");
-//                StringBuilder sb = new StringBuilder();
-//                sb.append("{ ");
-//                sb.append("\"error\": \"Unauthorized\",\n");
-//                sb.append("\"message\": \"Token expired\",\n");
-//                sb.append("\"path\": \"")
-//                        .append(request.getRequestURL())
-//                        .append("\",\n");
-//                sb.append("} ");
-//                response.sendRedirect("/login");
-//                return;
-//            }
-//        }
-//        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-//            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-//            if (jwtService.validateToken(token, userDetails)) {
-//                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//                SecurityContextHolder.getContext().setAuthentication(authToken);
-//            }
-//        }
-//        filterChain.doFilter(request, response);
-//    }
-//}

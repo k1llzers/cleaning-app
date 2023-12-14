@@ -50,8 +50,10 @@ public class AddressServiceImpl implements AddressService {
             log.info("Can`t find address by id = {}", id);
             return new NoSuchEntityException("Can`t find address by id: " + id);
         });
-        if (addressEntity != null && !Objects.equals(addressEntity.getUserId(), SecurityContextAccessor.getAuthenticatedUserId())) {
-            log.info("User id = {} try to delete address of user id = {}", SecurityContextAccessor.getAuthenticatedUserId(), addressEntity.getUserId());
+        if (addressEntity != null && !Objects.equals(addressEntity.getUserId(),
+                SecurityContextAccessor.getAuthenticatedUserId())) {
+            log.info("User id = {} try to delete address of user id = {}",
+                    SecurityContextAccessor.getAuthenticatedUserId(), addressEntity.getUserId());
             throw new AccessDeniedException("Access denied");
         }
         addressRepository.deleteById(id);

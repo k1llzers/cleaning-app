@@ -7,7 +7,6 @@ import com.ukma.cleaning.user.Role;
 import com.ukma.cleaning.user.UserEntity;
 import com.ukma.cleaning.user.UserRepository;
 import com.ukma.cleaning.user.dto.EmployeeDto;
-import com.ukma.cleaning.user.dto.UserDto;
 import com.ukma.cleaning.utils.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,7 +30,8 @@ public class EmployeeAvailabilityServiceImpl implements EmployeeAvailabilityServ
         OrderEntity order = orderRepository.findById(orderId).orElseThrow();
         LocalDateTime startTime = order.getOrderTime().toLocalDate().atStartOfDay();
         LocalDateTime endTime = order.getOrderTime().toLocalDate().plusDays(1).atStartOfDay();
-        List<OrderEntity> orders = orderRepository.findAllByOrderTimeBetweenAndStatusNot(startTime, endTime, Status.CANCELLED);
+        List<OrderEntity> orders = orderRepository.findAllByOrderTimeBetweenAndStatusNot(startTime,
+                endTime, Status.CANCELLED);
 
         List<UserEntity> allUsers = userRepository.findAllByRole(Role.EMPLOYEE);
         List<UserEntity> unavailableEmployees = orders.stream()
@@ -41,16 +40,22 @@ public class EmployeeAvailabilityServiceImpl implements EmployeeAvailabilityServ
                 .map(OrderEntity::getExecutors)
                 .flatMap(Collection::stream)
                 .toList();
-        return userMapper.toEmployeeDtoList(allUsers.stream().filter(x -> !unavailableEmployees.contains(x)).toList());
+        return userMapper.toEmployeeDtoList(allUsers.stream()
+                .filter(x -> !unavailableEmployees.contains(x))
+                .toList());
     }
 
     private static boolean isBetween(OrderEntity order, LocalTime start, LocalTime end) {
-        return ((order.getOrderTime().toLocalTime().isBefore(end)) && (order.getOrderTime().toLocalTime().isAfter(start)))
+        return ((order.getOrderTime().toLocalTime().isBefore(end))
+                && (order.getOrderTime().toLocalTime().isAfter(start)))
                 ||
-                ((order.getOrderTime().toLocalTime().plus(order.getDuration()).plusMinutes(40).isBefore(end))
-                        && (order.getOrderTime().toLocalTime().plus(order.getDuration()).plusMinutes(40).isAfter(start)))
+                ((order.getOrderTime().toLocalTime().plus(order.getDuration())
+                        .plusMinutes(40).isBefore(end))
+                        && (order.getOrderTime().toLocalTime().plus(order.getDuration())
+                        .plusMinutes(40).isAfter(start)))
                 ||
                 (order.getOrderTime().toLocalTime().isAfter(start)
-                        && (order.getOrderTime().toLocalTime().plus(order.getDuration()).plusMinutes(40).isBefore(end)));
+                        && (order.getOrderTime().toLocalTime().plus(order.getDuration())
+                        .plusMinutes(40).isBefore(end)));
     }
 }

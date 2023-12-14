@@ -45,7 +45,8 @@ public class EmploymentServiceImpl implements EmploymentService {
         user.setAddressList(Collections.emptyList());
         user.setRole(Role.EMPLOYEE);
         userRepository.save(user);
-        log.debug("Admin id = {} accepted Employment request id = {}", SecurityContextAccessor.getAuthenticatedUserId(), employmentRequest.getId());
+        log.debug("Admin id = {} accepted Employment request id = {}",
+                SecurityContextAccessor.getAuthenticatedUserId(), employmentRequest.getId());
         return true;
     }
 
@@ -56,7 +57,8 @@ public class EmploymentServiceImpl implements EmploymentService {
             return new NoSuchEntityException("Can`t find application by user id: " + userId);
         });
         repository.delete(employmentRequest);
-        log.debug("Admin id = {} cancelled Employment request id = {}", SecurityContextAccessor.getAuthenticatedUserId(), employmentRequest.getId());
+        log.debug("Admin id = {} cancelled Employment request id = {}",
+                SecurityContextAccessor.getAuthenticatedUserId(), employmentRequest.getId());
         return true;
     }
 
@@ -73,7 +75,8 @@ public class EmploymentServiceImpl implements EmploymentService {
         });
         employee.setRole(Role.USER);
         userRepository.save(employee);
-        log.info("User id = {} was fired by Admin id = {}", userId, SecurityContextAccessor.getAuthenticatedUserId());
+        log.info("User id = {} was fired by Admin id = {}", userId,
+                SecurityContextAccessor.getAuthenticatedUserId());
         return true;
     }
 }
