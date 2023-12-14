@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Header</title>
     <link th:href="@{/css/header.css}" rel="stylesheet" />
@@ -9,17 +9,15 @@
         <div class="logo_and_buttons">
             <a th:href="@{/}" class="logo">Cleaning</a>
             <div class="login_buttons">
-                <!-- Uncomment when security appears
                 <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Log out</a>
                 <a th:href="@{/login}" sec:authorize="isAnonymous()">Log in</a>
-                <a th:href="@{/signUp}" sec:authorize="isAnonymous()">Sign up</a> -->
-                <a th:href="@{/login}">Log in</a>
-                <a th:href="@{/signup}">Sign up</a>
+                <a th:href="@{/signup}" sec:authorize="isAnonymous()">Sign up</a>
             </div>
         </div>
-        <nav>
-            <a th:href="@{/cart}">Cart</a>
-            <a th:href="@{/account}">Account</a>
+        <nav sec:authorize="isAuthenticated()">
+            <a th:href="@{/proposals}" sec:authorize="hasRole('ROLE_ADMIN')">Proposals</a>
+            <a th:href="@{/cart}" sec:authorize="hasRole('ROLE_USER')">Cart</a>
+            <a th:href="@{/account}" sec:authorize="hasRole('ROLE_USER')">Account</a>
         </nav>
         <!-- Uncomment when security appears
         <nav sec:authorize="isAuthenticated()">

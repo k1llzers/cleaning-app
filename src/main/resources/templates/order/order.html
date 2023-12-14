@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Order</title>
+    <link th:href="@{/css/pages/order/order.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div id="main_part">
+        <div id="main_part_content">
+            <h1>Create Order</h1>
+            <div id="time">
+                <h2>Choose Time</h2>
+                <p class="error_message"></p>
+                <table id="time_table">
+                </table>
+            </div>
+            <div id="address">
+                <h2>Address</h2>
+                <details id="choose_address">
+                    <summary>Choose Address</summary>
+                    <select id="address_select">
+                    </select>
+                </details>
+                <details id="write_address">
+                    <summary>Write Address</summary>
+                    <form id="add_address_form">
+                        <div class="form_field">
+                            <h3>City</h3>
+                            <input type="text" class="not_empty city" placeholder="Enter City" name="city">
+                            <p class="validation_error"></p>
+                        </div>
+                        <div class="form_field">
+                            <h3>Street</h3>
+                            <input type="text" class="not_empty street" placeholder="Enter Street" name="street">
+                            <p class="validation_error"></p>
+                        </div>
+                        <div class="form_field">
+                            <h3>House Number</h3>
+                            <input type="text" class="not_empty house_number" placeholder="Enter House Number" name="houseNumber">
+                            <p class="validation_error"></p>
+                        </div>
+                        <h3>Flat Number</h3>
+                        <input type="text" class="flat_number" placeholder="Enter Flat Number" name="flatNumber">
+                        <h3>Zip Code (optional)</h3>
+                        <input type="text" class="zip" placeholder="Enter Zip Code" name="zip">
+                    </form>
+                </details>
+            </div>
+            <div id="comment">
+                <h2>Comment (optional)</h2>
+                <textarea></textarea>
+            </div>
+            <div id="price">
+                <h2>Total cost: </h2><h2 class="total_cost"></h2>
+            </div>
+            <p class="request_message"></p>
+            <button class="order_button green">Order</button>
+        </div>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/dayjs.min.js" integrity="sha512-FwNWaxyfy2XlEINoSnZh1JQ5TRRtGow0D6XcmAWmYCRgvqOUTnzCxPc9uF35u5ZEpirk1uhlPVA19tflhvnW1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/plugin/duration.min.js" integrity="sha512-t0b2NyBypSms8nA81pldWo0mXbfMotsdYgvs4awmbi/GU/25YBNLnXj+I9DAMV7WGZ8+z8wtRolX7zSF2LN8UQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>dayjs.extend(window.dayjs_plugin_duration)</script>
+    <script type="module" src="../../scripts/pages/order/order.js"></script>
+    <script src="../../scripts/utils/general.js"></script>
+</body>
+</html>

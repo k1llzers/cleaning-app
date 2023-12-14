@@ -16,7 +16,7 @@
             <div class="empty_list" th:classappend="${addresses != null and !addresses.isEmpty()} ? not_visible : ''">
                 <span>Empty</span>
             </div>
-            <table id="addresses_table" th:attr="user-id=${user.id}" th:class="${addresses != null and !addresses.isEmpty()} ? '' : not_visible">
+            <table id="addresses_table" th:class="${addresses != null and !addresses.isEmpty()} ? '' : not_visible">
                 <thead>
                     <tr>
                         <th>City</th>

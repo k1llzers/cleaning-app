@@ -17,7 +17,10 @@ function isPasswordSecure(password) {
 }
 
 const showError = (input, message) => {
-    const formField = input.parentElement;
+    const formField = input.parentNode.closest('.form_field');
+    if(!formField) {
+        return;
+    }
     formField.classList.remove('success');
     formField.classList.add('error');
     const error = formField.querySelector('.validation_error');
@@ -25,7 +28,8 @@ const showError = (input, message) => {
 };
 
 const showSuccess = (input) => {
-    const formField = input.parentElement;
+    const formField = input.parentNode.closest('.form_field');
+    if(!formField) return;
     formField.classList.remove('error');
     formField.classList.add('success');
     const error = formField.querySelector('.validation_error');
@@ -116,6 +120,24 @@ function debounce(fn, delay = 500) {
     };
 }
 
+function validateEl(element) {
+    if(element.classList.contains('password_input')) {
+        checkPassword(element);
+    }
+    if(element.classList.contains('confirm_password_input')) {
+        checkConfirmPassword(element);
+    }
+    if(element.classList.contains('email_input')) {
+        checkEmail(element);
+    }
+    if(element.classList.contains('phone_input')) {
+        checkPhone(element);
+    }
+    if(element.classList.contains('not_empty')) {
+        checkNotEmpty(element);
+    }
+}
+
 export function initForms() {
     const forms = document.querySelectorAll('form');
     forms.forEach((form) => {
@@ -147,6 +169,54 @@ export function clearForm(form) {
         x.classList.remove('error');
         x.classList.remove('success');
         x.querySelector('.validation_error').textContent = '';
+    });
+}
+
+export function initCounter(counterEl) {
+    const min = parseInt(counterEl.getAttribute('min'));
+    const max = parseInt(counterEl.getAttribute('max'));
+    const inputEl = counterEl.querySelector('input');
+    setInputFilter(inputEl, (value) => {
+        const regex = /^([1-9][0-9]*)?$/;
+        if(value === '') return true;
+        if(regex.test(value)) {
+            const intValue = parseInt(value);
+            if(min <= intValue && intValue <= max) {
+                return true;
+            }
+        }
+        return false;
+    }, null);
+    const plusButton = counterEl.querySelector('.plus');
+    const minusButton = counterEl.querySelector('.minus');
+    plusButton.addEventListener('click', () => {
+        if(inputEl.value === '' && max >= 1) {
+            inputEl.value = '0';
+        }
+        else if(inputEl.value === '') {
+            inputEl.value = max;
+        }
+        const intValue = parseInt(inputEl.value);
+        if(intValue < max) {
+            inputEl.value = intValue + 1;
+        }
+        validateEl(inputEl);
+    });
+    minusButton.addEventListener('click', () => {
+        if(inputEl.value === '') {
+            inputEl.value = min;
+        }
+        const intValue = parseInt(inputEl.value);
+        if(intValue > min) {
+            inputEl.value = intValue - 1;
+        }
+        validateEl(inputEl);
+    });
+}
+
+export function initCounters() {
+    document.querySelectorAll('.counter').forEach((counterEl) => {
+        initCounter(counterEl);
     });
 }
 

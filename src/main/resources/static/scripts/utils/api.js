@@ -31,6 +31,9 @@ export async function tryPutRequest(requestMessageEl, url, body, successMessage,
         if(responseJson['errorMessage']) {
             errorRequest(requestMessageEl, responseJson['errorMessage']);
         }
+        else if(responseJson['errors']) {
+            errorRequest(requestMessageEl, responseJson['errors']);
+        }
         else {
             successRequest(requestMessageEl, successMessage);
             document.body.classList.remove('loading');
@@ -56,20 +59,16 @@ export async function tryPostRequest(requestMessageEl, url, body, successMessage
         if(responseJson['errorMessage']) {
             errorRequest(requestMessageEl, responseJson['errorMessage']);
         }
+        else if(responseJson['errors']) {
+            errorRequest(requestMessageEl, responseJson['errors']);
+        }
         else {
             successRequest(requestMessageEl, successMessage);
             document.body.classList.remove('loading');
             return {type: 'success', response: responseJson};
         }
     } catch (e) {
-        const responseText = await response.text();
-        const responseJson = JSON.parse(responseText);
-        if(responseJson['errorMessage']) {
-            errorRequest(requestMessageEl, responseJson['errorMessage']);
-        }
-        else {
-            errorRequest(requestMessageEl, errorMessage);
-        }
+        errorRequest(requestMessageEl, errorMessage);
     }
     document.body.classList.remove('loading');
     return {type: 'error', response: null};
@@ -86,6 +85,9 @@ export async function tryGetRequest(requestMessageEl, url, successMessage, error
         const responseJson = await response.json();
         if(responseJson['errorMessage']) {
             errorRequest(requestMessageEl, responseJson['errorMessage']);
+        }
+        else if(responseJson['errors']) {
+            errorRequest(requestMessageEl, responseJson['errors']);
         }
         else {
             successRequest(requestMessageEl, successMessage);
@@ -117,6 +119,9 @@ export async function tryDeleteRequest(requestMessageEl, url, successMessage, er
             const responseJson = await response.json();
             if(responseJson['errorMessage']) {
                 errorRequest(requestMessageEl, responseJson['errorMessage']);
+            }
+            else if(responseJson['errors']) {
+                errorRequest(requestMessageEl, responseJson['errors']);
             }
             else {
                 errorRequest(requestMessageEl, errorMessage);

@@ -15,6 +15,7 @@ async function tryLogin() {
         const jwtToken = response.response;
         document.cookie = `accessToken=${jwtToken['accessToken']}`;
         document.cookie = `refreshToken=${jwtToken['refreshToken']}`;
+        window.location.replace('/');
     }
 }
 

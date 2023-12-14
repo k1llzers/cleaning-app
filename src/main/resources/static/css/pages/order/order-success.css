@@ -1,0 +1,20 @@
+@import '../../utils/general.css';
+@import '../../utils/header.css';
+@import '../../utils/footer.css';
+@import '../../utils/popup.css';
+@import '../../utils/form.css';
+@import '../../utils/button.css';
+@import '../../utils/table.css';
+
+#main_part_content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#main_part_content p {
+    margin: auto;
+    font-size: 50px;
+    font-weight: bold;
+}
+

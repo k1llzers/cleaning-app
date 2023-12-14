@@ -59,7 +59,7 @@ function createHtmlAddress(address) {
 }
 
 async function initAddresses() {
-    const url = `/api/addresses/by-user/${userId}`;
+    const url = `/api/addresses/by-user`;
     const response = await tryGetRequest(null, url, '', '');
     const addresses = response.response;
     if(response.type === 'success' && addresses.length > 0) {

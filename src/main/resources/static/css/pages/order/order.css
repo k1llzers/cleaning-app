@@ -1,0 +1,98 @@
+@import '../../utils/general.css';
+@import '../../utils/header.css';
+@import '../../utils/footer.css';
+@import '../../utils/popup.css';
+@import '../../utils/form.css';
+@import '../../utils/button.css';
+@import '../../utils/table.css';
+
+#main_part_content * {
+    text-align: center;
+}
+
+#main_part_content {
+    display: flex;
+    flex-direction: column;
+}
+
+select {
+    width: 100%;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 10px;
+}
+
+#address {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#comment {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#comment textarea {
+    width: 100%;
+    height: 150px;
+    text-align: left;
+    resize: none;
+    font-size: 1em;
+}
+
+.order_button {
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+summary {
+    cursor: pointer;
+    color: white;
+    background-color: darkgrey;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+summary:hover {
+    filter: brightness(85%);
+}
+
+details.disabled summary {
+    filter: brightness(85%);
+    cursor: not-allowed;
+}
+
+details {
+    margin-bottom: 10px;
+}
+
+#time_table {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#time_table input[type="radio"] {
+    width: 20px;
+    height: 20px;
+}
+
+#price {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#price .total_cost {
+    margin-left: 20px;
+}
+
+#price .total_cost::after {
+    content: ' ₴';
+}

@@ -30,6 +30,7 @@ class ProposalComponent {
     }
 
     initButton() {
+        if(!this.addButton) return;
         this.addButton.addEventListener('click', () => {
             let count = 1;
             if(chosenProposals.get(this.proposal.id)) {

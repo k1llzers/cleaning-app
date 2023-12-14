@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Account</title>
@@ -35,8 +35,8 @@
                     <button type="button" class="not_visible grey cancel_button">Cancel</button>
                 </form>
                 <div class="account_buttons">
-                    <button id="orders_button" class="grey">Orders</button>
-                    <button id="addresses_button" class="grey">Addresses</button>
+                    <button sec:authorize="hasRole('ROLE_USER')" id="orders_button" class="grey">Orders</button>
+                    <button sec:authorize="hasRole('ROLE_USER')" id="addresses_button" class="grey">Addresses</button>
                     <button id="edit_button" class="grey">Edit Account</button>
                     <button id="change_password_button" class="grey">Change Password</button>
                     <!-- <button id="delete_account_button" class="red">Delete Account</button> -->

@@ -92,7 +92,7 @@ function addAddress(address) {
 }
 
 async function tryAddAddress() {
-    const url = `/api/addresses/${userId}`;
+    const url = `/api/addresses`;
     const address = {
         city: addAddressForm.querySelector('.city').value,
         street: addAddressForm.querySelector('.street').value,
@@ -114,12 +114,12 @@ async function tryDeleteAddress() {
     if(res) {
         currentAddressComponent.addressEl.remove();
         addresses.splice(addresses.indexOf(currentAddressComponent), 1);
-        currentAddressComponent = null;
         if(addresses.length === 0) {
             addressTable.classList.add('not_visible');
             emptyList.classList.remove('not_visible');
         }
     }
+    currentAddressComponent = null;
     closePopup(deleteAddressPopup);
 }
 
@@ -137,8 +137,9 @@ async function tryEditAddress() {
     const res = await tryPutRequest(requestMessageEl, url, JSON.stringify(address), 'Address was successfully edited!', 'Address wasn\'t edited!');
     if(res.type === 'success') {
         currentAddressComponent.edit(res.response);
-        currentAddressComponent = null;
+
     }
+    currentAddressComponent = null;
     closePopup(editAddressPopup);
 }
 

@@ -18,7 +18,7 @@
                     <p class="proposal_short_description" th:text="${proposal.shortDescription}"/>
                     <p class="proposal_full_description not_visible" th:text="${proposal.fullDescription}"/>
                     <h3 class="proposal_price" th:text="${proposal.price}"/>
-                    <button class="add_button green">Add</button>
+                    <button sec:authorize="hasRole('ROLE_USER')" class="add_button green">Add</button>
                 </div>
             </div>
             <hr/>
@@ -36,7 +36,8 @@
             </p>
         </div>
     </div>
-    <dialog id="add_proposal_popup" class="popup">
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <dialog id="add_proposal_popup" class="popup" sec:authorize="hasRole('ROLE_USER')">
         <div class="popup_content">
             <form id="add_proposal_form">
                 <h1 class="proposal_name"></h1>
@@ -55,6 +56,5 @@
     </dialog>
     <script type="module" src="../scripts/pages/index.js"></script>
     <script src="../scripts/utils/general.js"></script>
-    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

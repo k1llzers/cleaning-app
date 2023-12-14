@@ -156,12 +156,16 @@ initPopups();
 initForms();
 editButton.addEventListener('click', edit);
 cancelButton.addEventListener('click', cancel);
-ordersButton.addEventListener('click', () => {
-    window.location.replace('/');
-});
-addressesButton.addEventListener('click', () => {
-    window.location.replace('/addresses');
-});
+if(ordersButton) {
+    ordersButton.addEventListener('click', () => {
+        window.location.replace('/');
+    });
+}
+if(addressesButton) {
+    addressesButton.addEventListener('click', () => {
+        window.location.replace('/addresses');
+    });
+}
 /*deleteAccountButton.addEventListener('click', () => {
     showPopup(deleteAccountPopup);
 });*/

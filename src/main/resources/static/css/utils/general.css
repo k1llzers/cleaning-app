@@ -31,6 +31,10 @@ body.loading, body.loading * {
     overflow: hidden;
 }
 
+#main_part_content * {
+    text-align: center;
+}
+
 .warning {
     color: red;
 }
