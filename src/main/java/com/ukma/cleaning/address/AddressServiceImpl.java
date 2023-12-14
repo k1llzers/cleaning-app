@@ -1,5 +1,6 @@
 package com.ukma.cleaning.address;
 
+import com.ukma.cleaning.utils.exceptions.AccessDeniedException;
 import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
 import com.ukma.cleaning.utils.mappers.AddressMapper;
 import com.ukma.cleaning.utils.security.SecurityContextAccessor;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -20,7 +22,9 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto create(AddressDto addressDto) {
+        log.info("inside address service");
         AddressEntity addressEntity = addressMapper.toEntity(addressDto);
+        log.info("inside address service");
         addressEntity.setUser(SecurityContextAccessor.getAuthenticatedUser());
         log.info("Created new address with id = {}",addressEntity.getId());
         return addressMapper.toDto(addressRepository.save(addressEntity));
@@ -43,6 +47,11 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Boolean deleteById(Long id) {
+        AddressEntity addressEntity = addressRepository.findById(id).orElse(null);
+        if (addressEntity != null && !Objects.equals(addressEntity.getUserId(), SecurityContextAccessor.getAuthenticatedUserId())) {
+            log.info("User id = {} try to delete address of user id = {}", SecurityContextAccessor.getAuthenticatedUserId(), addressEntity.getUserId());
+            throw new AccessDeniedException("Access denied");
+        }
         addressRepository.deleteById(id);
         log.info("Address with id = {} was deleted", id);
         return true;
