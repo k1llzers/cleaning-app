@@ -8,7 +8,7 @@
 <body>
     <div th:replace="~{fragments/header :: header}"></div>
     <div id="main_part">
-        <div id="main_part_content">
+        <div id="main_part_content"  th:attr="user-id=${user.id}">
             <h1>Create Order</h1>
             <div id="time">
                 <h2>Choose Time</h2>

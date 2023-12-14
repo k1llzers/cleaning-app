@@ -158,7 +158,7 @@ editButton.addEventListener('click', edit);
 cancelButton.addEventListener('click', cancel);
 if(ordersButton) {
     ordersButton.addEventListener('click', () => {
-        window.location.replace('/');
+        window.location.replace('/orders');
     });
 }
 if(addressesButton) {

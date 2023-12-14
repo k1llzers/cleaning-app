@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/pages/order/orders.css}" rel="stylesheet" />
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div id="main_part">
+        <div id="main_part_content" th:attr="user-id=${user.id}">
+            <h1>Orders</h1>
+            <p class="request_message"></p>
+            <div class="empty_list not_visible">
+                <span>Empty</span>
+            </div>
+            <table id="orders_table" class="not_visible">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Price</th>
+                    <th>Order Time</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div class="pagination not_visible">
+                <!--span class="pagination_link_chosen">1</span>
+                <span class="pagination_link">2</span>
+                <span class="pagination_link">3</span>
+                <span class="pagination_dots">...</span>
+                <span class="pagination_link">Last</span-->
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/dayjs.min.js" integrity="sha512-FwNWaxyfy2XlEINoSnZh1JQ5TRRtGow0D6XcmAWmYCRgvqOUTnzCxPc9uF35u5ZEpirk1uhlPVA19tflhvnW1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/plugin/duration.min.js" integrity="sha512-t0b2NyBypSms8nA81pldWo0mXbfMotsdYgvs4awmbi/GU/25YBNLnXj+I9DAMV7WGZ8+z8wtRolX7zSF2LN8UQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>dayjs.extend(window.dayjs_plugin_duration)</script>
+    <script type="module" th:src="@{/scripts/pages/order/orders.js}"></script>
+    <script th:src="@{/scripts/utils/general.js}"></script>
+</body>
+</html>
