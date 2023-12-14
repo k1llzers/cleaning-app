@@ -135,8 +135,9 @@ public class OrderServiceImpl implements OrderService {
             log.warn("User id = {} trying to cancel order of user id = {}", SecurityContextAccessor.getAuthenticatedUserId(), entity.getClient().getId());
             throw new AccessDeniedException("Access denied");
         }
-        log.info("Order id = {} was cancelled", orderId);
         entity.setStatus(Status.CANCELLED);
+        orderRepository.save(entity);
+        log.info("Order id = {} was cancelled", orderId);
         return true;
     }
 
