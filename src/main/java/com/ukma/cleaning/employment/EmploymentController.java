@@ -21,35 +21,35 @@ import java.util.List;
 public class EmploymentController {
     private final EmploymentService service;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @Operation(summary = "Create employment request", description = "Create employment request (user id take from security)")
     @PostMapping
     public EmploymentDto createRequest(@RequestBody String motivationList) {
         return service.create(motivationList);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Succeed employment request", description = "Succeed employment request")
     @PutMapping("/{userId}/succeed")
     public Boolean succeed(@PathVariable Long userId) {
         return service.succeed(userId);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Cancel employment request", description = "Cancel employment request")
     @PutMapping("/{userId}/cancel")
     public Boolean cancel(@PathVariable Long userId) {
         return service.cancel(userId);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Unemployment", description = "Unemployed employee")
     @PutMapping("/{userId}/unemployment")
     public Boolean unemployment(@PathVariable Long userId) {
         return service.unemployment(userId);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Get all employment request", description = "Get all employment request")
     @GetMapping
     public List<EmploymentDto> getAllEmploymentRequests() {

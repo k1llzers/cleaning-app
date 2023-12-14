@@ -26,14 +26,14 @@ public class BookingAvailabilityController {
     private final BookingAvailabilityService bookingAvailabilityService;
     private final EmployeeAvailabilityService employeeAvailabilityService;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @Operation(summary = "Get available time", description = "Get available time for time from next day till 7 days for required count of employees and max duration")
     @GetMapping("/time/{count}/{duration}")
     public Map<LocalDate, List<LocalTime>> getAvailable(@PathVariable Long count, @PathVariable Duration duration) {
         return bookingAvailabilityService.getAvailableTime(count, duration);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Get available employee", description = "Get available employee for order")
     @GetMapping("/employees/{orderId}")
     public List<EmployeeDto> getAvailable(@PathVariable Long orderId) {
