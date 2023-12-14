@@ -131,7 +131,7 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity entity = orderRepository.findById(orderId).orElseThrow(() ->
                 new NoSuchEntityException("Can`t find order by id: " + orderId)
         );
-        if (!Objects.equals(orderId, SecurityContextAccessor.getAuthenticatedUserId())) {
+        if (!Objects.equals(entity.getClient().getId(), SecurityContextAccessor.getAuthenticatedUserId())) {
             log.warn("User id = {} trying to cancel order of user id = {}", SecurityContextAccessor.getAuthenticatedUserId(), entity.getClient().getId());
             throw new AccessDeniedException("Access denied");
         }
