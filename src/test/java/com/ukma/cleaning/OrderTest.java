@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource("classpath:test.properties")
+@TestPropertySource("classpath:com/ukma/cleaning/resources/test.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestMethodOrder(org.junit.jupiter.api.MethodOrderer.OrderAnnotation.class)
 public class OrderTest {
@@ -66,6 +66,5 @@ public class OrderTest {
     @Order(2)
     public void getOrders() {
         var response = restTemplate.getForEntity("http://localhost:" + port + "/api/orders/user/3", OrderForUserDto.class);
-        log.info(response.getBody().toString());
     }
 }

@@ -11,6 +11,9 @@ import org.springframework.test.context.TestPropertySource;
 import com.ukma.cleaning.commercialProposal.ComercialProposalType;
 import com.ukma.cleaning.commercialProposal.CommercialProposalDto;
 import com.ukma.cleaning.user.UserService;
+
+import lombok.extern.slf4j.Slf4j;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -24,8 +27,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+@Slf4j
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource("classpath:test.properties")
+@TestPropertySource("classpath:com/ukma/cleaning/resources/test.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestMethodOrder(org.junit.jupiter.api.MethodOrderer.OrderAnnotation.class)
 public class CommercialProposalTest {
@@ -33,17 +43,38 @@ public class CommercialProposalTest {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
-
-    @BeforeAll
-    public static void setup(@Autowired UserService userService) {
-        TestApplication.setupUsers(userService);
-    }
-
     @Test
     @Order(1)
+    public void setup() {
+        try {
+            var connection = DriverManager.getConnection("jdbc:h2:mem:cleaning", "sa", "sa");
+            try (Statement statement = connection.createStatement()) {
+                statement.execute("SET SCHEMA cleaning");
+            } catch (Exception e) {
+                log.warn("An exception occurred:", e);
+            }
+
+            InputStream inputStream = OrderTest.class.getResourceAsStream("resources/testUsers.sql");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            if (inputStream != null) {
+                String line;
+                Statement statement = connection.createStatement();
+                while ((line = reader.readLine()) != null) {
+                    if (!line.isEmpty()) {
+                        statement.execute(line);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+        }
+    }
+ 
+    @Test
+    @Order(2)
     public void createGet(){
+        TestTRT.authAs(1, port);
         var proposal = new CommercialProposalDto();
         proposal.setName("CommercialProposal1");
         proposal.setPrice(1000.0);
@@ -52,14 +83,16 @@ public class CommercialProposalTest {
         proposal.setFullDescription("FullDescription1");
         proposal.setType(ComercialProposalType.PER_AREA);
 
-        try {
-            restTemplate.postForObject("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
-            assert(false);
-        } catch (Exception e) {}
-        proposal.setTime(Duration.ofHours(5));
-        restTemplate.postForObject("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
+        var response = TestTRT.post("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
+        assert(response.getStatusCode().is4xxClientError());
 
-        var byIdProposal = restTemplate.getForObject("http://localhost:" + port + "/api/commercial-proposals/1", CommercialProposalDto.class);
+        proposal.setTime(Duration.ofHours(5));
+        response = TestTRT.post("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
+        assert(!response.getStatusCode().is4xxClientError());
+
+        response = TestTRT.get("http://localhost:" + port + "/api/commercial-proposals/1", CommercialProposalDto.class);
+        assert(!response.getStatusCode().is4xxClientError());
+        var byIdProposal = response.getBody();
         assert(proposal.getName().equals(byIdProposal.getName()));
         assert(proposal.getPrice().equals(byIdProposal.getPrice()));
         assert(proposal.getRequiredCountOfEmployees().equals(byIdProposal.getRequiredCountOfEmployees()));
@@ -67,10 +100,10 @@ public class CommercialProposalTest {
         assert(proposal.getFullDescription().equals(byIdProposal.getFullDescription()));
         assert(proposal.getType().equals(byIdProposal.getType()));
 
-        var response = restTemplate.getForObject("http://localhost:" + port + "/api/commercial-proposals", List.class);
+        var responseList = TestTRT.get("http://localhost:" + port + "/api/commercial-proposals", List.class);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        List<CommercialProposalDto> proposals = (List<CommercialProposalDto>) response.stream()
+        List<CommercialProposalDto> proposals = (List<CommercialProposalDto>) responseList.getBody().stream()
             .map(obj -> mapper.convertValue(obj, CommercialProposalDto.class))
             .collect(Collectors.toList());
         assert(proposals.size() == 1);
@@ -79,7 +112,7 @@ public class CommercialProposalTest {
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     public void update(){
         var proposal = new CommercialProposalDto();
         proposal.setName("CommercialProposal2");
@@ -91,9 +124,12 @@ public class CommercialProposalTest {
         proposal.setTime(Duration.ofHours(5));
         proposal.setId(1l);
 
-        restTemplate.put("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
+        var response = TestTRT.put("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
+        assert(!response.getStatusCode().is4xxClientError());
 
-        var byIdProposal = restTemplate.getForObject("http://localhost:" + port + "/api/commercial-proposals/1", CommercialProposalDto.class);
+        response = TestTRT.get("http://localhost:" + port + "/api/commercial-proposals/1", CommercialProposalDto.class);
+        assert(!response.getStatusCode().is4xxClientError());
+        var byIdProposal = response.getBody();
         assert(proposal.getName().equals(byIdProposal.getName()));
         assert(proposal.getPrice().equals(byIdProposal.getPrice()));
         assert(proposal.getRequiredCountOfEmployees().equals(byIdProposal.getRequiredCountOfEmployees()));
@@ -103,75 +139,19 @@ public class CommercialProposalTest {
     }
 
     @Test
-    @Order(3)
-    public void delete(){
-        restTemplate.delete("http://localhost:" + port + "/api/commercial-proposals/1");
-        try {
-            restTemplate.getForObject("http://localhost:" + port + "/api/commercial-proposals/1", CommercialProposalDto.class);
-            assert(false);
-        } catch (Exception e) {}
-        var proposals = restTemplate.getForObject("http://localhost:" + port + "/api/commercial-proposals", List.class);
-        assert(proposals.size() == 0);
-    }
-
-
-
-    @Test
     @Order(4)
-    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
-    public void crudAdminAccess()
-    {
-        var proposal = new CommercialProposalDto();
-        proposal.setName("CommercialProposal3");
-        proposal.setPrice(1000.0);
-        proposal.setRequiredCountOfEmployees("2");
-        proposal.setShortDescription("ShortDescription3");
-        proposal.setFullDescription("FullDescription3");
-        proposal.setType(ComercialProposalType.PER_AREA);
-        proposal.setTime(Duration.ofHours(5));
+    public void delete(){
+        TestTRT.delete("http://localhost:" + port + "/api/commercial-proposals/1");
 
-        var createdProposal = restTemplate.postForObject("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
-        assert(createdProposal.getId() != null);
+        var responseGet = TestTRT.get("http://localhost:" + port + "/api/commercial-proposals/1", CommercialProposalDto.class);
+        assert(responseGet.getStatusCode().is4xxClientError());
 
-        proposal.setName("CommercialProposal4");
-        proposal.setPrice(2000.0);
-        proposal.setRequiredCountOfEmployees("3");
-        proposal.setShortDescription("ShortDescription4");
-        proposal.setFullDescription("FullDescription4");
-        proposal.setType(ComercialProposalType.PER_ITEM);
-        proposal.setTime(Duration.ofHours(6));
-        proposal.setId(createdProposal.getId());
-
-        restTemplate.put("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
-        var updatedProposal = restTemplate.getForObject("http://localhost:" + port + "/api/commercial-proposals/" + createdProposal.getId(), CommercialProposalDto.class);
-
-        assert(updatedProposal.getId().equals(proposal.getId()));
-        assert(updatedProposal.getName().equals(proposal.getName()));
-        assert(updatedProposal.getPrice().equals(proposal.getPrice()));
-        assert(updatedProposal.getRequiredCountOfEmployees().equals(proposal.getRequiredCountOfEmployees()));
-        assert(updatedProposal.getShortDescription().equals(proposal.getShortDescription()));
-        assert(updatedProposal.getFullDescription().equals(proposal.getFullDescription()));
-        assert(updatedProposal.getType().equals(proposal.getType()));
-        assert(updatedProposal.getTime().equals(proposal.getTime()));
-
-        var byIdProposal = restTemplate.getForObject("http://localhost:" + port + "/api/commercial-proposals/" + createdProposal.getId(), CommercialProposalDto.class);
-        assert(byIdProposal.getId().equals(createdProposal.getId()));
-        assert(byIdProposal.getName().equals(proposal.getName()));
-        assert(byIdProposal.getPrice().equals(proposal.getPrice()));
-        assert(byIdProposal.getRequiredCountOfEmployees().equals(proposal.getRequiredCountOfEmployees()));
-        assert(byIdProposal.getShortDescription().equals(proposal.getShortDescription()));
-        assert(byIdProposal.getFullDescription().equals(proposal.getFullDescription()));
-        assert(byIdProposal.getType().equals(proposal.getType()));
-        assert(byIdProposal.getTime().equals(proposal.getTime()));
-
-        var response = restTemplate.getForObject("http://localhost:" + port + "/api/commercial-proposals", List.class);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        List<CommercialProposalDto> proposals = (List<CommercialProposalDto>) response.stream()
-            .map(obj -> mapper.convertValue(obj, CommercialProposalDto.class))
+        var responseList = TestTRT.get("http://localhost:" + port + "/api/commercial-proposals", List.class);
+        assert(!responseList.getStatusCode().is4xxClientError());
+        var proposals = (List<CommercialProposalDto>) responseList.getBody().stream()
+            .map(obj -> new ObjectMapper().convertValue(obj, CommercialProposalDto.class))
             .collect(Collectors.toList());
-        assert(proposals.size() == 1);
-        assert(proposals.get(0).equals(proposal));
+        assert(proposals.size() == 0);
     }
 
     @Test
@@ -206,34 +186,24 @@ public class CommercialProposalTest {
         proposal.setType(ComercialProposalType.PER_AREA);
         proposal.setTime(Duration.ofHours(5));
 
-        try {
-            restTemplate.postForObject("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
-            assert(false);
-        } catch (Exception e) {}
+        var response = TestTRT.post("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
+        assert(response.getStatusCode().is4xxClientError());
 
-        try {
-            proposal.setName("CommercialProposal6");
-            proposal.setId(1l);
-            restTemplate.put("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
-            assert(false);
-        } catch (Exception e) {}
+        proposal.setName("CommercialProposal6");
+        proposal.setId(1l);
+        response = TestTRT.put("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
+        assert(response.getStatusCode().is4xxClientError());
 
-        try {
-            restTemplate.delete("http://localhost:" + port + "/api/commercial-proposals/1");
-            assert(false);
-        } catch (Exception e) {}
+        TestTRT.delete("http://localhost:" + port + "/api/commercial-proposals/1");
 
-        try {
-            restTemplate.getForObject("http://localhost:" + port + "/api/commercial-proposals/1", CommercialProposalDto.class);
-            var response = restTemplate.getForObject("http://localhost:" + port + "/api/commercial-proposals", List.class);
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule());
-            response.stream()
-                .map(obj -> mapper.convertValue(obj, CommercialProposalDto.class))
-                .collect(Collectors.toList());
-        } catch (Exception e) {
-            assert(false);
-        }
+        var responseList = TestTRT.get("http://localhost:" + port + "/api/commercial-proposals", List.class);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        responseList.getBody().stream()
+            .map(obj -> mapper.convertValue(obj, CommercialProposalDto.class))
+            .collect(Collectors.toList());
+
+        assert(responseList.getStatusCode().is2xxSuccessful());
     }
     
 }

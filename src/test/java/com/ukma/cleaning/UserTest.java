@@ -3,6 +3,8 @@ package com.ukma.cleaning;
 import com.ukma.cleaning.user.*;
 import com.ukma.cleaning.user.dto.*;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -11,14 +13,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.sql.DriverManager;
+import java.sql.Statement;
 
+@Slf4j
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource("classpath:test.properties")
+@TestPropertySource("classpath:com/ukma/cleaning/resources/test.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestMethodOrder(org.junit.jupiter.api.MethodOrderer.OrderAnnotation.class)
 public class UserTest {
@@ -26,30 +35,50 @@ public class UserTest {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    @Test
+    @Order(0)
+    public static void setup() {
+        try {
+            var connection = DriverManager.getConnection("jdbc:h2:mem:cleaning", "sa", "sa");
+            try (Statement statement = connection.createStatement()) {
+                statement.execute("SET SCHEMA cleaning");
+            } catch (Exception e) {
+                log.warn("An exception occurred:", e);
+            }
 
-    @BeforeAll
-    public static void setup(@Autowired UserService userService) {
-        TestApplication.setupUsers(userService);
+            InputStream inputStream = OrderTest.class.getResourceAsStream("resources/testUsers.sql");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            if (inputStream != null) {
+                String line;
+                Statement statement = connection.createStatement();
+                while ((line = reader.readLine()) != null) {
+                    if (!line.isEmpty()) {
+                        statement.execute(line);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+        }
     }
-
+ 
     @Test
     @Order(1)
     public void register(){
+        SecurityContextHolder.clearContext();
         var user = new UserRegistrationDto();
         user.setName("John");
         user.setSurname("Doe");
         user.setPatronymic("Patronymic");
         user.setEmail("example@mail.com");
         user.setPassword("P4ss");
-        try {
-            assert(restTemplate.postForEntity("http://localhost:" + port + "/api/users", user, UserDto.class) == null);
-            var _user = restTemplate.getForEntity("http://localhost:" + port + "/api/users/by-email/example@mail.com", UserDto.class).getBody();
-            assert(_user == null);
-        } catch (Exception e) {}
+
+        assert(TestTRT.post("http://localhost:" + port + "/api/users", user, UserDto.class).getBody().getEmail() == null);
+        assert(TestTRT.get("http://localhost:" + port + "/api/users/by-email/example@mail.com", UserDto.class).getBody().getEmail() == null);
+
         user.setPassword("P4ssw()rds12");
-        var response = restTemplate.postForEntity("http://localhost:" + port + "/api/users", user, UserDto.class);
+        var response = TestTRT.post("http://localhost:" + port + "/api/users", user, UserDto.class);
         
         var userDto = response.getBody();
         assert(response != null);
@@ -62,41 +91,27 @@ public class UserTest {
     @Test
     @Order(2)
     public void update(){
-        var user = restTemplate.getForEntity("http://localhost:" + port + "/api/users/by-email/example@mail.com", UserDto.class).getBody();
+        var user = TestTRT.get("http://localhost:" + port + "/api/users/by-email/example@mail.com", UserDto.class).getBody();
         assert(user != null);
-        user.setName("Johnny");
-        restTemplate.put("http://localhost:" + port + "/api/users", user);
-        user = restTemplate.getForEntity("http://localhost:" + port + "/api/users/by-email/example@mail.com", UserDto.class).getBody();
+        user.setName("J");
+        TestTRT.put("http://localhost:" + port + "/api/users", user, UserDto.class);
+        user = TestTRT.get("http://localhost:" + port + "/api/users/by-email/example@mail.com", UserDto.class).getBody();
         assert(user != null);
-        //FIXME: assert(user.getName().equals("Johnny"));
+        assert(user.getName().equals("J"));
     }
 
     @Test
     @Order(3)
     public void changePassword(){
-        var user = restTemplate.getForEntity("http://localhost:" + port + "/api/users/by-email/example@mail.com", UserDto.class);
+        var response = TestTRT.get("http://localhost:" + port + "/api/users/pass", UserPasswordDto.class);
+        var user = TestTRT.get("http://localhost:" + port + "/api/users/by-email/example@mail.com", UserDto.class);
         assert(user != null);
         var userDto = user.getBody();
         var userPasswordDto = new UserPasswordDto();
         userPasswordDto.setId(userDto.getId());
         userPasswordDto.setPassword("P4ssw()rds12345");
-        restTemplate.put("http://localhost:" + port + "/api/users/pass", userPasswordDto);
+        assert(TestTRT.put("http://localhost:" + port + "/api/users/pass", userPasswordDto, UserDto.class).getBody().getEmail() == null);
     }
-
-    /* 
-    @Test
-    @Order(4)
-    public void delete(){
-        var user = restTemplate.getForEntity("http://localhost:" + port + "/api/users/by-email/example@mail.com", UserDto.class);
-        assert(user != null);
-        var userDto = user.getBody();
-        restTemplate.delete("http://localhost:" + port + "/api/users/" + userDto.getId());
-        try {
-            restTemplate.getForEntity("http://localhost:" + port + "/api/users/" + userDto.getId(), UserDto.class);
-            assert(false);
-        } catch (Exception e) {}
-    }
-    */
 
     @Test
     @Order(5)
@@ -122,7 +137,7 @@ public class UserTest {
     @Test
     @Order(8)
     @WithAnonymousUser
-    public void crudAnonymAccess(){
+    public void AnonymAccess(){
         //TODO:
     }
 

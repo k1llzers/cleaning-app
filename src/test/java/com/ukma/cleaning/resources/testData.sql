@@ -5,6 +5,7 @@ INSERT INTO users (id,name,surname,patronymic,email,password,role,phone_number) 
 INSERT INTO users (id,name,surname,patronymic,email,password,role,phone_number) VALUES (5,'Micheal','Jacobson','Olegovich','m.jacobs@gmail.com','$2a$10$jt6bt5yQowuPz.W0KFvqu.Q1LdJpl0C0nRaTd2VQkby194BitHoBO','USER','+380521785665');
 INSERT INTO users (id,name,surname,patronymic,email,password,role,phone_number) VALUES (6,'Kallum','Charles','Ivanovna','k.charles@i.ua','$2a$10$mLur1uQN0ZRORjvPMAo.OeBOYsTbz4h3fp/hOEoaWvBEiiNDr/5S2','EMPLOYEE','+380951234567');
 INSERT INTO users (id,name,surname,patronymic,email,password,role,phone_number) VALUES (7,'Alys','Bonner','Semenivna','a.bonner@gmail.com','$2a$10$khRH0cGfqeo6S8uux6o.suCG32m1qxxj60mP3m7eIK3ibWjkB4nXW','EMPLOYEE','+380679831471');
+
 INSERT INTO commercial_proposals (id,name,short_description,full_description,price,duration,count_of_employee,deleted,type) VALUES (1,'Подушка велика','Велика подушка з легкоочищуваного матеріалу','Подушка 70х70 з екопуху/пуху/бамбуку, без глибоких складних забруднень, без пошкоджень, що вимагають делікатної чистки. Білосніжні подушки не підпадають у цю категорію.',220,900000000000,1,'0','PER_ITEM');
 INSERT INTO commercial_proposals (id,name,short_description,full_description,price,duration,count_of_employee,deleted,type) VALUES (2,'Подушка велика+','Білосніжні або шовкові подушки','Подушка 70х70 з шовку, без глибоких складних забруднень, без пошкоджень, що вимагають делікатної чистки. Білосніжні подушки підпадають у цю категорію.',570,1800000000000,1,'0','PER_ITEM');
 INSERT INTO commercial_proposals (id,name,short_description,full_description,price,duration,count_of_employee,deleted,type) VALUES (3,'Диван середній','Диван 200х100х70','Диван 200х100х70 з легкоочищуваного матеріалу, без глибоких складних забруднень, без пошкоджень, що вимагають делікатної чистки. Білосніжні дивани не підпадають у цю категорію.',1100,3600000000000,2,'0','PER_ITEM');
@@ -13,11 +14,13 @@ INSERT INTO commercial_proposals (id,name,short_description,full_description,pri
 INSERT INTO commercial_proposals (id,name,short_description,full_description,price,duration,count_of_employee,deleted,type) VALUES (6,'Офіс (паркет)','Вологе прибирання офісу','Офіс з паркетом, без складних забруднень, до 2 санвузлів, прибирання коли офіс пустий.',250,10800000000000,6,'0','PER_AREA');
 INSERT INTO commercial_proposals (id,name,short_description,full_description,price,duration,count_of_employee,deleted,type) VALUES (7,'Ремонт','Вологе прибирання після ремонту','Прибирання після ремонту – фінальна точка перед приїздом на місце нову квартиру. Навіть якщо ви проводили косметичний ремонт, на меблях, техніці, підлозі та інших поверхнях міг залишитися будівельний пил, від якого складно позбутися самостійно.',110,10800000000000,3,'0','PER_AREA');
 INSERT INTO commercial_proposals (id,name,short_description,full_description,price,duration,count_of_employee,deleted,type) VALUES (8,'Вікна','Миття вікон','Миття вікон, віконних рам, віконних жалюзі, віконних решіток, віконних москітних сіток, підвіконь',170,1800000000000,1,'0','PER_AREA');
+
 INSERT INTO addresses (id,city,street,house_number,flat_number,zip,user_id) VALUES (1,'Київ','Хрещатик','1Д','1','01001',2);
 INSERT INTO addresses (id,city,street,house_number,flat_number,zip,user_id) VALUES (2,'Київ','Гончаренка','10Г','12','02345',2);
 INSERT INTO addresses (id,city,street,house_number,flat_number,zip,user_id) VALUES (3,'Львів','Петлюри','10',NULL,'01231',NULL);
 INSERT INTO addresses (id,city,street,house_number,flat_number,zip,user_id) VALUES (4,'Київ','Лумумби','10','40К','01671',NULL);
 INSERT INTO addresses (id,city,street,house_number,flat_number,zip,user_id) VALUES (5,'Дніпро','Тичини','10В','15К','01501',3);
+
 INSERT INTO reviews (id,cleaning_rate,employee_rate,details) VALUES (1,5,5,'Все було ідеально');
 INSERT INTO reviews (id,cleaning_rate,employee_rate,details) VALUES (2,4,5,'Все було добре');
 INSERT INTO reviews (id,cleaning_rate,employee_rate,details) VALUES (3,2,1,'Все було жахливо. Хамське выдношення та погана якість прибирання');
