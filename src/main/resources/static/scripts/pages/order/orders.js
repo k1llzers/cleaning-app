@@ -31,7 +31,7 @@ function createOrderTr(order) {
     const orderTr = document.createElement('tr');
     //orderTr.setAttribute('data-id', order.id);
     orderTr.innerHTML = `
-        <td class="id">${order.city}</td>
+        <td class="id">${order.id}</td>
         <td class="price">${order.price}</td>
         <td class="order_time">${dayjs(order.orderTime).format('DD.MM.YYYY HH:mm')}</td>
         <td class="address">${addressToString(order.address)}</td>
@@ -66,4 +66,4 @@ async function getPage(page) {
     }
 }
 
-getPage(1);
+getPage(0);

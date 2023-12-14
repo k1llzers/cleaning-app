@@ -10,7 +10,7 @@
     text-align: center;
 }
 
-#proposals_table {
+#orders_table {
     width: 80%;
     margin-right: auto;
     margin-left: auto;
@@ -32,4 +32,8 @@
     font-size: 80px;
     font-weight: bold;
     margin: auto;
+}
+
+.price::after {
+    content: ' ₴';
 }
