@@ -84,7 +84,7 @@ public class OrderController {
     }
 
     @Operation(summary = "Create order", description = "Create order")
-    @PreAuthorize("hasAuthority('ROLE_EMPLOYEE')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping
     public OrderForUserDto createOrder(@Valid @RequestBody OrderCreationDto order) {
         return orderService.createOrder(order);
