@@ -35,7 +35,7 @@ import java.sql.Statement;
 
 @Slf4j
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource("classpath:com/ukma/cleaning/resources/test.properties")
+//@TestPropertySource("classpath:com/ukma/cleaning/resources/application.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestMethodOrder(org.junit.jupiter.api.MethodOrderer.OrderAnnotation.class)
 public class CommercialProposalTest {
