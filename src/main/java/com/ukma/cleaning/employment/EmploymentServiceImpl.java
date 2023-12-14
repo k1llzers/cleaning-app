@@ -8,7 +8,6 @@ import com.ukma.cleaning.utils.mappers.EmploymentMapper;
 import com.ukma.cleaning.utils.security.SecurityContextAccessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,18 +33,14 @@ public class EmploymentServiceImpl implements EmploymentService {
     @Transactional
     @Override
     public Boolean succeed(Long userId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(() ->
-                {
-                    log.info("Can`t find user by id = {}", userId);
-                    return new NoSuchEntityException("Can`t find user by id: " + userId);
-                }
-        );
-        EmploymentEntity employmentRequest = repository.findByApplicant_Id(userId).orElseThrow(() ->
-                {
-                    log.info("Can`t find application by user id = {}", userId);
-                    return new NoSuchEntityException("Can`t find application by user id: " + userId);
-                }
-        );
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> {
+            log.info("Can`t find user by id = {}", userId);
+            return new NoSuchEntityException("Can`t find user by id: " + userId);
+        });
+        EmploymentEntity employmentRequest = repository.findByApplicant_Id(userId).orElseThrow(() -> {
+            log.info("Can`t find application by user id = {}", userId);
+            return new NoSuchEntityException("Can`t find application by user id: " + userId);
+        });
         repository.delete(employmentRequest);
         user.setAddressList(Collections.emptyList());
         user.setRole(Role.EMPLOYEE);
@@ -56,12 +51,10 @@ public class EmploymentServiceImpl implements EmploymentService {
 
     @Override
     public Boolean cancel(Long userId) {
-        EmploymentEntity employmentRequest = repository.findByApplicant_Id(userId).orElseThrow(() ->
-                {
-                    log.info("Can`t find application by user id = {}", userId);
-                    return new NoSuchEntityException("Can`t find application by user id: " + userId);
-                }
-        );
+        EmploymentEntity employmentRequest = repository.findByApplicant_Id(userId).orElseThrow(() -> {
+            log.info("Can`t find application by user id = {}", userId);
+            return new NoSuchEntityException("Can`t find application by user id: " + userId);
+        });
         repository.delete(employmentRequest);
         log.debug("Admin id = {} cancelled Employment request id = {}", SecurityContextAccessor.getAuthenticatedUserId(), employmentRequest.getId());
         return true;
@@ -74,12 +67,10 @@ public class EmploymentServiceImpl implements EmploymentService {
 
     @Override
     public Boolean unemployment(Long userId) {
-        UserEntity employee = userRepository.findById(userId).orElseThrow(() ->
-                {
-                    log.info("Can`t find user by id = {}", userId);
-                    return new NoSuchEntityException("Can`t find user by id: " + userId);
-                }
-        );
+        UserEntity employee = userRepository.findById(userId).orElseThrow(() -> {
+            log.info("Can`t find user by id = {}", userId);
+            return new NoSuchEntityException("Can`t find user by id: " + userId);
+        });
         employee.setRole(Role.USER);
         userRepository.save(employee);
         log.info("User id = {} was fired by Admin id = {}", userId, SecurityContextAccessor.getAuthenticatedUserId());

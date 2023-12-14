@@ -1,12 +1,10 @@
 package com.ukma.cleaning.commercialProposal;
 
-import com.ukma.cleaning.user.UserEntity;
 import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
 import com.ukma.cleaning.utils.exceptions.ProposalNameDuplicateException;
 import com.ukma.cleaning.utils.mappers.CommercialProposalMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import java.util.List;
 

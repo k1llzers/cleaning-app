@@ -22,9 +22,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto create(AddressDto addressDto) {
-        log.info("inside address service");
         AddressEntity addressEntity = addressMapper.toEntity(addressDto);
-        log.info("inside address service");
         addressEntity.setUser(SecurityContextAccessor.getAuthenticatedUser());
         log.info("Created new address with id = {}",addressEntity.getId());
         return addressMapper.toDto(addressRepository.save(addressEntity));
@@ -47,7 +45,11 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Boolean deleteById(Long id) {
-        AddressEntity addressEntity = addressRepository.findById(id).orElse(null);
+        AddressEntity addressEntity = addressRepository.findById(id).orElseThrow(() ->
+        {
+            log.info("Can`t find address by id = {}", id);
+            return new NoSuchEntityException("Can`t find address by id: " + id);
+        });
         if (addressEntity != null && !Objects.equals(addressEntity.getUserId(), SecurityContextAccessor.getAuthenticatedUserId())) {
             log.info("User id = {} try to delete address of user id = {}", SecurityContextAccessor.getAuthenticatedUserId(), addressEntity.getUserId());
             throw new AccessDeniedException("Access denied");
