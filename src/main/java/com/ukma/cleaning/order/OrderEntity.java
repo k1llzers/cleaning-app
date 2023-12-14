@@ -6,7 +6,9 @@ import com.ukma.cleaning.review.ReviewEntity;
 import com.ukma.cleaning.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 
 import java.time.Duration;
@@ -16,7 +18,8 @@ import java.util.Set;
 
 @Entity
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Table(name = "orders")
 public class OrderEntity {
     @Id

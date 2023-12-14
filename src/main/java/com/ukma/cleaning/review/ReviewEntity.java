@@ -2,11 +2,14 @@ package com.ukma.cleaning.review;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Table(name = "reviews")
 public class ReviewEntity {
     @Id

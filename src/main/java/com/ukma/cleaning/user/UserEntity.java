@@ -4,7 +4,9 @@ import com.ukma.cleaning.address.AddressEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringExclude;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,7 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -48,6 +51,7 @@ public class UserEntity implements UserDetails {
     @Column(name = "phone_number",unique = true)
     private String phoneNumber;
 
+    @ToStringExclude
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<AddressEntity> addressList;
 

@@ -3,12 +3,16 @@ package com.ukma.cleaning.address;
 import com.ukma.cleaning.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.apache.commons.lang3.builder.ToStringExclude;
 import org.hibernate.annotations.SQLDelete;
 
 @Entity
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @SQLDelete(sql = "UPDATE addresses SET user_id = null WHERE id=?")
 @Table(name = "addresses")
 public class AddressEntity {
@@ -32,6 +36,7 @@ public class AddressEntity {
     @Column(name = "zip")
     private String zip;
 
+    @ToStringExclude
     @ManyToOne
     @JoinColumn(name="user_id")
     private UserEntity user;
