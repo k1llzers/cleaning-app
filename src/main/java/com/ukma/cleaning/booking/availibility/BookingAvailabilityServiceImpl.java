@@ -60,13 +60,11 @@ public class BookingAvailabilityServiceImpl implements BookingAvailabilityServic
                                         && booked.getOrderTime().toLocalTime().plusMinutes(booked.getDuration()
                                         .toMinutes()).isAfter(time)))
                                 .distinct()
-                                .count();
-                        int employeeNeededForOtherOrder = bookedOrder.stream()
                                 .map(OrderEntity::getCommercialProposals)
                                 .flatMap(e -> e.keySet().stream())
                                 .mapToInt(CommercialProposalEntity::getRequiredCountOfEmployees)
                                 .sum();
-                        return employees.size() - countOfInvalid - employeeNeededForOtherOrder - countOfExecutors >= 0;
+                        return employees.size() - countOfInvalid - countOfExecutors >= 0;
                     })
                     .toList();
             availableDate.put(date, localTimes);

@@ -2,7 +2,6 @@ package com.ukma.cleaning.address;
 
 import com.ukma.cleaning.user.UserEntity;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
