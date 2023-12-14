@@ -17,7 +17,6 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
     private final CommercialProposalRepository commercialProposalRepository;
     private final CommercialProposalMapper mapper;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public CommercialProposalDto create(CommercialProposalDto commercialProposal) {
         if (commercialProposalRepository.findCommercialProposalEntityByName(commercialProposal.getName()).isPresent()) {
@@ -28,7 +27,6 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
         return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public CommercialProposalDto update(CommercialProposalDto commercialProposal) {
         if (commercialProposalRepository.findCommercialProposalEntityByName(commercialProposal.getName()).isPresent()) {
@@ -39,7 +37,6 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
         return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));
     }
 
-    @PreAuthorize("isAuthenticated()")
     @Override
     public CommercialProposalDto getById(Long id) {
         CommercialProposalEntity entity = commercialProposalRepository.findById(id).orElseThrow(
@@ -48,13 +45,11 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
         return mapper.toDto(entity);
     }
 
-    @PreAuthorize("permitAll()")
     @Override
     public List<CommercialProposalDto> getAll() {
         return mapper.toDtoList(commercialProposalRepository.findAll());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public Boolean deleteById(Long id) {
         commercialProposalRepository.deleteById(id);

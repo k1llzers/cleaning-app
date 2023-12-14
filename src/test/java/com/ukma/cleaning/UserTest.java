@@ -65,8 +65,8 @@ public class UserTest {
  
     @Test
     @Order(1)
+    @WithAnonymousUser
     public void register(){
-        SecurityContextHolder.clearContext();
         var user = new UserRegistrationDto();
         user.setName("John");
         user.setSurname("Doe");
@@ -91,11 +91,13 @@ public class UserTest {
     @Test
     @Order(2)
     public void update(){
-        var user = TestTRT.get("http://localhost:" + port + "/api/users/by-email/example@mail.com", UserDto.class).getBody();
+        TestTRT.authAs(2, port);
+        var user = TestTRT.get("http://localhost:" + port + "/api/users", UserDto.class).getBody();
         assert(user != null);
         user.setName("J");
-        TestTRT.put("http://localhost:" + port + "/api/users", user, UserDto.class);
-        user = TestTRT.get("http://localhost:" + port + "/api/users/by-email/example@mail.com", UserDto.class).getBody();
+        log.warn(user.toString());
+        user = TestTRT.put("http://localhost:" + port + "/api/users", user, UserDto.class).getBody();
+        user = TestTRT.get("http://localhost:" + port + "/api/users", UserDto.class).getBody();
         assert(user != null);
         assert(user.getName().equals("J"));
     }
@@ -115,21 +117,18 @@ public class UserTest {
 
     @Test
     @Order(5)
-    @WithMockUser(username = "user2", password = "User2")
     public void userAccess(){
         //TODO: 
     }
 
     @Test
     @Order(6)
-    @WithMockUser(username = "ee@mail.com", password = "12345", roles = "EMPLOYEE")
     public void employeeAccess(){
         //TODO: 
     }
 
     @Test
     @Order(7)
-    @WithMockUser(username = "admin", password = "Admin", roles = "ADMIN")
     public void adminAccess(){
         //TODO:
     }

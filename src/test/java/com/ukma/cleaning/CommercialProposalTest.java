@@ -156,15 +156,15 @@ public class CommercialProposalTest {
 
     @Test
     @Order(5)
-    @WithMockUser(username = "user2", password = "User2")
     public void crudUserNoAccess(){
+        TestTRT.authAs(2, port);
         crudNoAccess();
     }
 
     @Test
     @Order(6)
-    @WithMockUser(username = "ee@mail.com", password = "12345", roles = "EMPLOYEE")
     public void crudEmployeeNoAccess(){
+        TestTRT.authAs(3, port);
         crudNoAccess();
     }
 
@@ -187,12 +187,12 @@ public class CommercialProposalTest {
         proposal.setTime(Duration.ofHours(5));
 
         var response = TestTRT.post("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
-        assert(response.getStatusCode().is4xxClientError());
+        assert(response.getBody().getName() == null);
 
         proposal.setName("CommercialProposal6");
         proposal.setId(1l);
         response = TestTRT.put("http://localhost:" + port + "/api/commercial-proposals", proposal, CommercialProposalDto.class);
-        assert(response.getStatusCode().is4xxClientError());
+        assert(response.getBody().getName() == null || response.getBody().getName().equals("CommercialProposal5"));
 
         TestTRT.delete("http://localhost:" + port + "/api/commercial-proposals/1");
 

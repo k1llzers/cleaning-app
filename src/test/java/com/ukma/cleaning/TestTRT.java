@@ -25,12 +25,17 @@ import java.util.Arrays;
 public class TestTRT {
     private static String jwtCookie;
 
+    public static void clear(){
+        jwtCookie = "";
+        SecurityContextHolder.clearContext();
+    }
+
     public static void authAs(long id, int port)
     {
         SecurityContextHolder.clearContext();
-        
         String username;
         String password;
+        
         switch ((int)id) {
             case 1:
                 username = "admin";
@@ -66,7 +71,6 @@ public class TestTRT {
         AuthRequest authRequest = new AuthRequest();
         authRequest.setUsername(username);
         authRequest.setPassword(password);
-        log.info("Authenticating as " + username + "...");
 
         try {
             ResponseEntity<JwtResponse> response = restTemplate.postForEntity("http://localhost:" + port + "/api/auth/login", authRequest, JwtResponse.class);
@@ -110,6 +114,9 @@ public class TestTRT {
         TestRestTemplate restTemplate = new TestRestTemplate();
         try {
             var response = restTemplate.exchange(url, HttpMethod.DELETE, request, String.class, urlVariables);
+            log.warn("-------------------");
+            log.warn(response.getStatusCode().toString());
+            log.warn(response.getBody());
             return response.getStatusCode().is2xxSuccessful();
         } catch (Exception e) {
             return false;

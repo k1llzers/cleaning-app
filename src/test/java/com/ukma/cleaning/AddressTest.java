@@ -209,7 +209,8 @@ public class AddressTest {
         response = TestTRT.put("http://localhost:" + port + "/api/addresses", address, AddressDto.class);
         assert(response.getStatusCode().is4xxClientError());
 
-        assert(!TestTRT.delete("http://localhost:" + port + "/api/addresses/5", Boolean.class));
+        assert(!TestTRT.delete("http://localhost:" + port + "/api/addresses/3", Boolean.class));
+        assert(!TestTRT.delete("http://localhost:" + port + "/api/addresses/305", Boolean.class));
     }
 
 }
