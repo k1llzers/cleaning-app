@@ -7,7 +7,10 @@
 <body>
     <header th:fragment="header">
         <div class="logo_and_buttons">
-            <a th:href="@{/}" class="logo">Cleaning</a>
+            <div class="logo">
+                <img th:src="@{/images/logo/logo.png}">
+                <span>Cleaning</span>
+            </div>
             <div class="login_buttons">
                 <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Log out</a>
                 <a th:href="@{/login}" sec:authorize="isAnonymous()">Log in</a>
