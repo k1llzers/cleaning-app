@@ -192,6 +192,7 @@ public class OrderServiceImpl implements OrderService {
         return new OrderPageDto(pageable.getPageNumber(), totalPages, orderMapper.toListDto(orders.stream().toList()));
     }
 
+    @Override
     public OrderListDto changeOrderStatus(Long orderId, Status status) {
         OrderEntity orderEntity = orderRepository.findById(orderId).orElseThrow(() -> {
             log.warn("User {}, try to change status of order {}, but order with this id not found",
