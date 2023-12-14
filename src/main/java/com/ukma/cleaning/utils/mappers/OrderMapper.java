@@ -20,7 +20,7 @@ import java.util.Map;
 @Mapper(config = MapperConfig.class, uses = {AddressMapper.class, UserMapper.class})
 public interface OrderMapper {
     @Mappings({
-            @Mapping(target = "creationTime", expression = "java(java.time.LocalDateTime.now(java.time.ZoneId.of(\"ART\")))"),
+            @Mapping(target = "creationTime", expression = "java(java.time.LocalDateTime.now())"),
             @Mapping(target = "address", ignore = true),
             @Mapping(target = "status", expression = "java(com.ukma.cleaning.order.Status.NOT_VERIFIED)")
     })

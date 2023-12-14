@@ -68,6 +68,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         response.addCookie(newAccess); // maybe don`t work, need the same as new jwt
                         Cookie newRefresh = new Cookie("refreshToken", newRefreshToken);
                         response.addCookie(newRefresh);
+                        username = refreshTokenEntity.getUser().getUsername();
                     } catch (VerifyRefreshTokenException | CantRefreshTokenException ex) {
                         Cookie newCookie = new Cookie("accessToken", null);
                         newCookie.setMaxAge(0);
