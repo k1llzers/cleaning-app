@@ -37,19 +37,16 @@ public class SecurityConfig {
         return http.
                 authorizeHttpRequests(
                         requests -> requests
-                                .requestMatchers("/login").permitAll()
                                 .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
-//                .exceptionHandling(handler -> handler.accessDeniedPage("/login"))
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin(login -> login.loginPage("/login").permitAll().failureUrl("/login?error"))
+                .formLogin(login -> login.loginPage("/login").permitAll())
                 .logout(logout -> logout.deleteCookies("accessToken", "refreshToken")
                         .permitAll().logoutUrl("/logout").logoutSuccessUrl("/"))
                 .build();
-//        SecurityContextHolder.getContext().getAuthentication().getCredentials();
     }
 
     @Bean
@@ -64,9 +61,4 @@ public class SecurityConfig {
     public AuthenticationManager getAuthenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
-//    @Bean
-//    public AccessDeniedHandler getAccessDeniedHandler() {
-//        return new CustomAccessDeniedHandler();
-//    }
 }
