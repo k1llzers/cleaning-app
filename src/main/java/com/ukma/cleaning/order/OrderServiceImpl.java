@@ -135,13 +135,8 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity entity = orderRepository.findById(id).orElseThrow(() ->
                 new NoSuchEntityException("Can`t find order by id: " + id)
         );
-        boolean employeePresent = entity.getExecutors()
-                .stream()
-                .map(UserEntity::getId)
-                .anyMatch(number -> Objects.equals(number, SecurityContextAccessor.getAuthenticatedUserId()));
-        if (!employeePresent) {
-            log.warn("User id = {} trying to get order of user id = {}",
-                    SecurityContextAccessor.getAuthenticatedUserId(), entity.getClient().getId());
+        if (!entity.getExecutors().contains(SecurityContextAccessor.getAuthenticatedUser())) {
+            log.warn("Employee id = {} trying to get order id = {}", SecurityContextAccessor.getAuthenticatedUserId(), id);
             throw new AccessDeniedException("Access denied");
         }
         return orderMapper.toUserDto(entity);
