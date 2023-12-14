@@ -1,3 +1,5 @@
+const logoEl = document.querySelector('.logo');
+
 // check header height
 function checkHeaderHeight() {
     // select header element
@@ -9,6 +11,10 @@ function checkHeaderHeight() {
     // set CSS as a value
     document.documentElement.style.setProperty("--sl-header-height", headerHeight);
 }
+
 addEventListener("resize", checkHeaderHeight);
 addEventListener("orientationchange", checkHeaderHeight);
 checkHeaderHeight();
+logoEl.addEventListener('click', () => {
+    window.location.replace('/');
+});

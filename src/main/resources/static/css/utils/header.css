@@ -11,10 +11,29 @@ header .logo_and_buttons {
 }
 
 header .logo {
+    display: flex;
+    flex-direction: row;
     font-size: 50px;
     color: white;
     margin: 10px;
     font-weight: bold;
+}
+
+header .logo:hover {
+    cursor: pointer;
+    filter: brightness(85%);
+}
+
+header .logo img {
+    height: 50px;
+    object-fit: contain;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+header .logo span {
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 header .login_buttons {
@@ -34,7 +53,7 @@ header a {
 
 header a:hover {
     cursor: pointer;
-    color: lightgray;
+    filter: brightness(85%);
 }
 
 header nav {
