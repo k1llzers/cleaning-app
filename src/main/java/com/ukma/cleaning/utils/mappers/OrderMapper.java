@@ -54,6 +54,8 @@ public interface OrderMapper {
 
     List<OrderListDto> toListDto(List<OrderEntity> entity);
 
+    OrderListDto toListDto(OrderEntity entity);
+
     @Named("mapCommercialProposals")
     default Map<String, Integer> mapCommercialProposals(Map<CommercialProposalEntity, Integer> commercialProposals) {
         Map<String, Integer> result = new HashMap<>();

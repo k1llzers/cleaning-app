@@ -4,7 +4,6 @@ import com.ukma.cleaning.order.dto.*;
 import com.ukma.cleaning.review.ReviewDto;
 import org.springframework.data.domain.Pageable;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 public interface OrderService {
@@ -23,4 +22,5 @@ public interface OrderService {
     OrderPageDto findOrdersByStatusAndPage(Status status, Pageable pageable);
     OrderPageDto findOrdersByExecutorId(Long id, Pageable pageable);
     OrderPageDto findOrdersByUserId(Long id, Pageable pageable);
+    OrderListDto changeOrderStatus(Long orderId, Status status);
 }

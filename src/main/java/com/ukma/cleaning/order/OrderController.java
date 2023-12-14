@@ -84,6 +84,7 @@ public class OrderController {
     }
 
     @Operation(summary = "Create order", description = "Create order")
+    @PreAuthorize("hasAuthority('ROLE_EMPLOYEE')")
     @PostMapping
     public OrderForUserDto createOrder(@Valid @RequestBody OrderCreationDto order) {
         return orderService.createOrder(order);
@@ -94,5 +95,12 @@ public class OrderController {
     @DeleteMapping("/{id}")
     public Boolean cancelOrder(@PathVariable Long id) {
         return orderService.cancelOrderById(id);
+    }
+
+    @Operation(summary = "Change order status", description = "Change order status")
+    @PreAuthorize("hasAnyAuthority('ROLE_EMPLOYEE','ROLE_ADMIN')")
+    @PutMapping("/change/status/{orderId}/{status}")
+    public OrderListDto changeOrderStatus(@PathVariable Long orderId, @PathVariable Status status) {
+        return orderService.changeOrderStatus(orderId, status);
     }
 }

@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final CommercialProposalRepository commercialProposalRepository;
-    private final UserRepository userRepository;
     private final OrderMapper orderMapper;
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
@@ -191,5 +190,20 @@ public class OrderServiceImpl implements OrderService {
         Page<OrderEntity> orders = orderRepository.findOrdersByClientId(id, pageable);
         int totalPages = orders.getTotalPages();
         return new OrderPageDto(pageable.getPageNumber(), totalPages, orderMapper.toListDto(orders.stream().toList()));
+    }
+
+    public OrderListDto changeOrderStatus(Long orderId, Status status) {
+        OrderEntity orderEntity = orderRepository.findById(orderId).orElseThrow(() -> {
+            log.warn("User {}, try to change status of order {}, but order with this id not found",
+                    SecurityContextAccessor.getAuthenticatedUser(), orderId);
+            return new NoSuchEntityException("Can`t find order by id: " + orderId);
+        });
+        if (!orderEntity.getExecutors().contains(SecurityContextAccessor.getAuthenticatedUser())) {
+            log.warn("User id = {} trying to get change order by id id = {}",
+                    SecurityContextAccessor.getAuthenticatedUserId(), orderEntity.getId());
+            throw new AccessDeniedException("Access denied");
+        }
+        orderEntity.setStatus(status);
+        return orderMapper.toListDto(orderRepository.save(orderEntity));
     }
 }
