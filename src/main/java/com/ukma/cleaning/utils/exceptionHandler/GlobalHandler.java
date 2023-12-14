@@ -2,7 +2,6 @@ package com.ukma.cleaning.utils.exceptionHandler;
 
 
 import com.ukma.cleaning.utils.exceptions.*;
-import jdk.jfr.ContentType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.stream.Collectors;
 
@@ -33,8 +33,8 @@ public class GlobalHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<String> handleNoSuchEntityException(AccessDeniedException e) {
-        return new ResponseEntity<>(formatMessage(e.getMessage()), getHttpHeaders(), HttpStatus.FORBIDDEN);
+    public RedirectView handleAccessDeniedException(AccessDeniedException e) {
+        return new RedirectView("/");
     }
 
     @ExceptionHandler(NoSuchEntityException.class)
@@ -42,10 +42,10 @@ public class GlobalHandler {
         return new ResponseEntity<>(formatMessage(e.getMessage()), getHttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
-//    @ExceptionHandler
-//    public ResponseEntity<String> handleException(Exception e) {
-//        return new ResponseEntity<>(formatMessage(e.getMessage()), getHttpHeaders(), HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler
+    public String handleUnexpectedException(Exception e) {
+        return "unexpectedError";
+    }
 
     private static String formatMessage(String message) {
         StringBuilder sb = new StringBuilder();

@@ -4,7 +4,6 @@ import com.ukma.cleaning.user.dto.EmployeeDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import com.ukma.cleaning.booking.availibility.employee.EmployeeAvailabilityService;
-import com.ukma.cleaning.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
