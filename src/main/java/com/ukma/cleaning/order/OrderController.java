@@ -33,6 +33,13 @@ public class OrderController {
         return orderService.getOrderByIdForAdmin(id);
     }
 
+    @Operation(summary = "Get order for employee by order id", description = "Get order for employee by order id")
+    @PreAuthorize("hasAuthority('ROLE_EMPLOYEE')")
+    @GetMapping("/employee/{id}")
+    public OrderForAdminDto getOrderForEmployee(@PathVariable Long id) {
+        return orderService.getOrderByIdForAdmin(id);
+    }
+
     @Operation(summary = "Get all orders with status (pageable)", description = "Get all orders with status (pageable)")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/all/by-status")

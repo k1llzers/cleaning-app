@@ -4,6 +4,7 @@ import com.ukma.cleaning.address.AddressRepository;
 import com.ukma.cleaning.commercialProposal.CommercialProposalRepository;
 import com.ukma.cleaning.order.dto.*;
 import com.ukma.cleaning.review.ReviewDto;
+import com.ukma.cleaning.user.UserEntity;
 import com.ukma.cleaning.utils.exceptions.AccessDeniedException;
 import com.ukma.cleaning.utils.exceptions.CantChangeEntityException;
 import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
@@ -127,6 +128,23 @@ public class OrderServiceImpl implements OrderService {
                 new NoSuchEntityException("Can`t find order by id: " + id)
         );
         return orderMapper.toAdminDto(entity);
+    }
+
+    @Override
+    public OrderForUserDto getOrderByIdForEmployee(Long id) {
+        OrderEntity entity = orderRepository.findById(id).orElseThrow(() ->
+                new NoSuchEntityException("Can`t find order by id: " + id)
+        );
+        boolean employeePresent = entity.getExecutors()
+                .stream()
+                .map(UserEntity::getId)
+                .anyMatch(number -> Objects.equals(number, SecurityContextAccessor.getAuthenticatedUserId()));
+        if (!employeePresent) {
+            log.warn("User id = {} trying to get order of user id = {}",
+                    SecurityContextAccessor.getAuthenticatedUserId(), entity.getClient().getId());
+            throw new AccessDeniedException("Access denied");
+        }
+        return orderMapper.toUserDto(entity);
     }
 
     @Override

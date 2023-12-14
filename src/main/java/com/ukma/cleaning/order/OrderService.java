@@ -13,6 +13,7 @@ public interface OrderService {
     OrderForUserDto updateReview(ReviewDto order);
     OrderForUserDto getOrderByIdForUser(Long id);
     OrderForAdminDto getOrderByIdForAdmin(Long id);
+    OrderForUserDto getOrderByIdForEmployee(Long id);
     Boolean cancelOrderById(Long orderId);
     List<OrderListDto> getAllOrders();
     List<OrderListDto> getAllOrdersByStatus(Status status);
