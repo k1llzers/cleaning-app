@@ -25,26 +25,26 @@ INSERT INTO reviews (id,cleaning_rate,employee_rate,details) VALUES (1,5,5,'Вс
 INSERT INTO reviews (id,cleaning_rate,employee_rate,details) VALUES (2,4,5,'Все було добре');
 INSERT INTO reviews (id,cleaning_rate,employee_rate,details) VALUES (3,2,1,'Все було жахливо. Хамське выдношення та погана якість прибирання');
 
-INSERT INTO orders (id,price,order_time,creation_time,client,comment,address,review,status,duration) VALUES (1,1100,'2023-09-01 12:00:00.000000','2023-08-22 18:00:00.000000',2,NULL,5,2,'DONE',3650000000000);
-INSERT INTO orders (id,price,order_time,creation_time,client,comment,address,review,status,duration) VALUES (2,1000,'2023-09-27 12:00:00.000000','2023-09-22 18:00:00.000000',2,'Нікого не буде вдома під час прибирання',3,3,'DONE',3100000000000);
-INSERT INTO orders (id,price,order_time,creation_time,client,comment,address,review,status,duration) VALUES (3,1900,'2023-10-27 12:00:00.000000','2023-10-22 18:00:00.000000',3,'-',4,1,'DONE',3600000000000);
-INSERT INTO orders (id,price,order_time,creation_time,client,comment,address,review,status,duration) VALUES (4,1900,'2024-01-01 15:00:00.000000','2023-12-13 13:07:05.000000',4,'Не чистити подушки',4,NULL,'NOT_VERIFIED',3600000000000);
+INSERT INTO orders (id,price,order_time,creation_time,client,comment,address,review,status,duration) VALUES (5,1100,'2023-09-01 12:00:00.000000','2023-08-22 18:00:00.000000',2,NULL,5,2,'DONE',3650000000000);
+INSERT INTO orders (id,price,order_time,creation_time,client,comment,address,review,status,duration) VALUES (6,1000,'2023-09-27 12:00:00.000000','2023-09-22 18:00:00.000000',2,'Нікого не буде вдома під час прибирання',3,3,'DONE',3100000000000);
+INSERT INTO orders (id,price,order_time,creation_time,client,comment,address,review,status,duration) VALUES (7,1900,'2023-10-27 12:00:00.000000','2023-10-22 18:00:00.000000',3,'-',4,1,'DONE',3600000000000);
+INSERT INTO orders (id,price,order_time,creation_time,client,comment,address,review,status,duration) VALUES (8,1900,'2024-01-01 15:00:00.000000','2023-12-13 13:07:05.000000',2,'Не чистити подушки',4,NULL,'NOT_VERIFIED',3600000000000);
 
-INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (1,1,2);
-INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (2,1,2);
-INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (3,1,6);
-INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (3,4,2);
-INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (4,2,7);
-INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (5,2,1);
-INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (6,2,9);
-INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (7,3,27);
-INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (8,3,7);
-INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (8,4,4);
+INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (1,5,2);
+INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (2,5,2);
+INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (3,5,6);
+INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (3,7,2);
+INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (4,6,7);
+INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (5,6,1);
+INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (6,6,9);
+INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (7,7,27);
+INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (8,8,7);
+INSERT INTO order_commercial_proposals_mapping (commercial_proposal_id,order_id,quantity) VALUES (8,8,4);
 
-INSERT INTO executors (order_id,user_id) VALUES (1,3);
-INSERT INTO executors (order_id,user_id) VALUES (2,3);
-INSERT INTO executors (order_id,user_id) VALUES (1,6);
-INSERT INTO executors (order_id,user_id) VALUES (2,6);
-INSERT INTO executors (order_id,user_id) VALUES (4,6);
-INSERT INTO executors (order_id,user_id) VALUES (1,7);
-INSERT INTO executors (order_id,user_id) VALUES (3,7);
+INSERT INTO executors (order_id,user_id) VALUES (5,3);
+INSERT INTO executors (order_id,user_id) VALUES (6,3);
+INSERT INTO executors (order_id,user_id) VALUES (5,6);
+INSERT INTO executors (order_id,user_id) VALUES (6,6);
+INSERT INTO executors (order_id,user_id) VALUES (8,6);
+INSERT INTO executors (order_id,user_id) VALUES (5,7);
+INSERT INTO executors (order_id,user_id) VALUES (7,7);

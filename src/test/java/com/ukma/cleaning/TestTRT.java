@@ -1,25 +1,20 @@
 package com.ukma.cleaning;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.ukma.cleaning.user.UserEntity;
 import com.ukma.cleaning.utils.security.dto.AuthRequest;
 import com.ukma.cleaning.utils.security.dto.JwtResponse;
 
 import lombok.extern.slf4j.Slf4j;
-import java.util.Arrays;
 
 @Slf4j
 public class TestTRT {
@@ -46,7 +41,7 @@ public class TestTRT {
                 password = "Qw3rty*";
                 break;
             case 3:
-                username = "c.burnatt@outlook.com";
+                username = "c.burnett@outlook.com";
                 password = "P4ssw()rd";
                 break;
             case 4:
@@ -74,10 +69,21 @@ public class TestTRT {
 
         try {
             ResponseEntity<JwtResponse> response = restTemplate.postForEntity("http://localhost:" + port + "/api/auth/login", authRequest, JwtResponse.class);
-            jwtCookie = "accessToken=" + response.getBody().getAccessToken() + "; refreshToken=" + response.getBody().getRefreshToken();
+            if (response.getStatusCode() == HttpStatus.OK) {
+                JwtResponse responseBody = response.getBody();
+                jwtCookie = "accessToken=" + responseBody.getAccessToken() + "; refreshToken=" + responseBody.getRefreshToken();
+            } else {
+                log.warn("Received status code: " + response.getStatusCode().toString());
+            }
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                log.warn("Unauthorized - Invalid credentials provided");
+            } else {
+                log.warn("HTTP error occurred: " + e.getStatusCode());
+            }
         } catch (Exception e) {
-            log.warn(e.getMessage());
-        }  
+            log.warn("An error occurred: " + e.getMessage());
+        }
     }
 
     private static HttpHeaders headers(){
@@ -109,15 +115,19 @@ public class TestTRT {
         return restTemplate.exchange(url, HttpMethod.PUT, _request, T, (Object)urlVariables);
     }
 
+    public static <T> ResponseEntity<T> putNothing(String url, Class<T> T, Object... urlVariables){
+        HttpEntity<?> _request = new HttpEntity<>(headers());
+        TestRestTemplate restTemplate = new TestRestTemplate();
+        return restTemplate.exchange(url, HttpMethod.PUT, _request, T, (Object)urlVariables);
+    }
+
     public static boolean delete(String url, Object... urlVariables){
         HttpEntity<?> request = new HttpEntity<>(headers());
         TestRestTemplate restTemplate = new TestRestTemplate();
         try {
             var response = restTemplate.exchange(url, HttpMethod.DELETE, request, String.class, urlVariables);
-            log.warn("-------------------");
-            log.warn(response.getStatusCode().toString());
             log.warn(response.getBody());
-            return response.getStatusCode().is2xxSuccessful();
+            return !response.getBody().startsWith("<!DOCTYPE html>");
         } catch (Exception e) {
             return false;
         }
