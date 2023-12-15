@@ -119,7 +119,7 @@ async function tryEditProposal() {
     const url = `/api/commercial-proposals`;
     const proposalId = currentProposalComponent.proposal.id;
     const price = editProposalForm.querySelector('.price').value ? editProposalForm.querySelector('.price').value : 1;
-    const time = editProposalForm.querySelector('.time').value ? dayjs.duration(editProposalForm.querySelector('.price').value, 'minutes').toISOString() : dayjs.duration(1, 'minutes').toISOString();
+    const time = editProposalForm.querySelector('.time').value ? dayjs.duration(editProposalForm.querySelector('.time').value, 'minutes').toISOString() : dayjs.duration(1, 'minutes').toISOString();
     const employees = editProposalForm.querySelector('.employees').value ? editProposalForm.querySelector('.employees').value : 1;
     const proposal = {
         id: proposalId,
@@ -153,7 +153,7 @@ function addProposal(proposal) {
 async function tryAddProposal() {
     const url = `/api/commercial-proposals`;
     const price = addProposalForm.querySelector('.price').value ? addProposalForm.querySelector('.price').value : 1;
-    const time = addProposalForm.querySelector('.time').value ? dayjs.duration(addProposalForm.querySelector('.price').value, 'minutes').toISOString() : dayjs.duration(1, 'minutes').toISOString();
+    const time = addProposalForm.querySelector('.time').value ? dayjs.duration(addProposalForm.querySelector('.time').value, 'minutes').toISOString() : dayjs.duration(1, 'minutes').toISOString();
     const employees = addProposalForm.querySelector('.employees').value ? addProposalForm.querySelector('.employees').value : 1;
     const proposal = {
         name: addProposalForm.querySelector('.name').value,
