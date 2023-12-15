@@ -8,7 +8,7 @@ const requestMessageEl = document.querySelector('.request_message');
 async function trySendRequest() {
     const url = '/api/employment';
     const body = motivationList.value;
-    const response = await tryPostRequest(requestMessageEl, url, JSON.stringify(body), 'We received your request!', 'Something went wrong...');
+    const response = await tryPostRequest(requestMessageEl, url, JSON.stringify(body), 'We received your request!', 'Request already sent.');
 
 }
 

@@ -18,3 +18,17 @@ checkHeaderHeight();
 logoEl.addEventListener('click', () => {
     window.location.replace('/');
 });
+
+var link = document.querySelector("link[rel~='icon']");
+if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.head.appendChild(link);
+}
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    console.log('dark mode');
+    link.href = 'images/favicon_light.ico';
+} else {
+    console.log('light mode');
+    link.href = 'images/favicon_dark.ico';
+}
