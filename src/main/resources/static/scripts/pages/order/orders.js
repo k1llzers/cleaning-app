@@ -337,7 +337,7 @@ async function tryVerify() {
     });
     currentOrder.executors = executors;
     currentOrder.status = 'VERIFIED';
-    const url = `/api/order/admin`;
+    const url = `/api/orders/admin`;
     console.log(currentOrder);
     const response = await tryPutRequest(requestMessageEl, url, JSON.stringify(currentOrder), 'Order was successfully verified!', 'Order wasn\'t verified!');
     if(response.type === 'success') {
