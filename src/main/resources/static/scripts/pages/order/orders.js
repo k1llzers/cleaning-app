@@ -13,6 +13,7 @@ const cancelOrderPopup = document.getElementById('cancel_order_popup');
 const reviewOrderPopup = document.getElementById('review_order_popup');
 const changeStatusPopup = document.getElementById('change_status_popup');
 const verifyOrderPopup = document.getElementById('verify_order_popup');
+const orderDetailsPopup = document.getElementById('order_details_popup');
 let currentOrder = null;
 let currentEmployees = null;
 let currentPage = 1;
@@ -120,7 +121,7 @@ NOT_VERIFIED,
 
 function createOrderTrButtonsHtml(order) {
     let html = '<td><div class="buttons">';
-    html += '<button class="details_button grey not_visible">Details</button>';
+    html += '<button class="details_button grey">Details</button>';
     if(userRole === 'USER') {
         if(order.status === 'NOT_VERIFIED' || order.status === 'VERIFIED') {
             html += '<button class="cancel_button red">Cancel</button>';
@@ -299,6 +300,15 @@ function initButtons(order, orderTr) {
             showPopup(verifyOrderPopup);
         });
     }
+    const detailsButton = orderTr.querySelector('.details_button');
+    if(detailsButton) {
+        detailsButton.addEventListener('click', async function() {
+            const fullOrder = await tryGetOrder(order.id);
+            const htmlOrder = await orderToHtml(fullOrder);
+            orderDetailsPopup.querySelector('.order_details').innerHTML = htmlOrder;
+            showPopup(orderDetailsPopup);
+        });
+    }
 }
 
 async function tryGetOrder(orderId) {
@@ -347,6 +357,151 @@ async function tryVerify() {
     currentOrder = null
     currentEmployees = null;
     closePopup(verifyOrderPopup);
+}
+
+
+
+function createHtmlAddress(address) {
+    return `${address.city}, ${address.street}, ${address.houseNumber}${address.flatNumber ? ', ' + address.flatNumber : ''}${address.zip ? ', ' + address.zip : ''}`;
+}
+
+async function getProposal(proposalId) {
+    const url = `/api/commercial-proposals/${parseInt(proposalId)}`;
+    const response = await tryGetRequest(null, url, '', '');
+    if(response.type === 'success') {
+        return response.response;
+    }
+    return null;
+}
+
+async function createCommercialProposalHtml(proposals) {
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    console.log(proposals);
+    for(const proposalId in proposals) {
+        console.log(proposalId);
+        html += `
+            <tr>
+                <td>${proposalId}</td>
+                <td>${proposals[proposalId]}</td>
+            </tr>
+        `;
+    }
+    html += '</tbody></table>';
+    return html;
+}
+
+/*
+private Long id;
+    @Positive(message = "Price of order should be positive")
+    private Double price;
+    private LocalDateTime orderTime;
+    private AddressDto address;
+    @NotNull(message = "Order status can't be null")
+    private Status status;
+    @NotNull(message = "Order duration can't be null")
+    private Duration duration;
+    private ReviewDto review;
+    private Map<String, Integer> commercialProposals;
+    @NotNull(message = "Order executors can't be null")
+    @Size(min = 1, message = "Order should have at least 1 executor")
+    private List<EmployeeDto> executors;
+ */
+
+function createHtmlExecutors(executors) {
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Patronym</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    for(const executor of executors) {
+        html += `
+            <tr>
+                <td>${executor.name}</td>
+                <td>${executor.surname}</td>
+                <td>${executor.patronymic}</td>
+                <td>${executor.email}</td>
+                <td>${executor.phoneNumber}</td>
+            </tr>
+        `;
+    }
+    html += '</tbody></table>';
+    return html;
+}
+
+async function orderToHtml(order) {
+    let html = '';
+    if(order['price']) {
+        html += `
+            <h2 class="price">Price: ${order['price']}</h2>
+        `;
+    }
+    if(order['orderTime']) {
+        html += `
+            <h2>Order Time: ${dayjs(order['orderTime']).format('DD.MM.YYYY HH:mm')}</h2>
+        `;
+    }
+    if(order['address']) {
+        html += `
+            <h2>Address: ${createHtmlAddress(order.address)}</h2>
+        `;
+    }
+    if(order['status']) {
+        html += `
+            <h2>Status: ${order['status']}</h2>
+        `;
+    }
+    if(order['duration']) {
+        html += `
+            <h2 class="time">Duration: ${dayjs.duration(order['duration']).as('minutes')}</h2>
+        `;
+    }
+    if(order['commercialProposals']) {
+        const commercialProposalsHtml = await createCommercialProposalHtml(order['commercialProposals']);
+        html += `
+            <h2>Proposals</h2>
+            ${commercialProposalsHtml}
+        `;
+    }
+    if(order['executors'] && order['executors'].length > 0) {
+        const executorsHtml = createHtmlExecutors(order['executors']);
+        html += `
+            <h2>Executors</h2>
+             ${executorsHtml}
+        `;
+    }
+    /*
+    private Long cleaningRate;
+    @Range(min = 1, max = 5, message = "Employee rate should be in range from 1 to 5")
+    private Long employeeRate;
+    private String details;
+     */
+    if(order['review']) {
+        html += `
+            <h2>Review</h2>
+            <h4>Cleaning Rate: ${order['review'].cleaningRate}</h4>
+            <h4>Employee Rate: ${order['review'].employeeRate}</h4>
+            <h4>Coment</h4>
+            <p>${order['review'].details}</p>
+        `;
+    }
+    return html;
 }
 
 function orderDetails() {

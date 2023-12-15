@@ -107,3 +107,15 @@ label input {
     height: 20px;
     margin-right: 10px;
 }
+
+#order_details_popup .popup_content {
+    width: 800px;
+}
+
+#order_details_popup table {
+    width: 100%;
+}
+
+#order_details_popup .time::after {
+    content: ' min';
+}
