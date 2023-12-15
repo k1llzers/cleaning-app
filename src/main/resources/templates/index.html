@@ -34,6 +34,13 @@
 
                 Morbi iaculis risus a sem rutrum, id vestibulum neque efficitur. Integer bibendum diam sit amet ipsum iaculis vestibulum. Fusce ac massa aliquet, scelerisque eros a, iaculis lacus. Nunc in tincidunt lectus. Curabitur ornare dictum mauris, a tincidunt leo mollis quis. Ut fringilla sagittis lobortis. Mauris et magna id ligula tempor suscipit sed ut odio. Praesent suscipit posuere velit vel ultricies. Donec pretium urna mi, eget sodales tellus mattis ut. Vestibulum quis massa tincidunt, facilisis dolor condimentum, finibus augue. Maecenas euismod ex eu velit vulputate, vitae fringilla ligula posuere. In quis ipsum odio. Vivamus lacinia elit libero. Mauris pretium, purus vel sollicitudin tempus, nulla diam maximus libero, molestie congue turpis tellus rutrum diam. Suspendisse potenti. Phasellus et ante id est bibendum malesuada in at ante.
             </p>
+            <hr sec:authorize="hasRole('ROLE_USER')"/>
+            <div sec:authorize="hasRole('ROLE_USER')" id="employment">
+                <h1>Employment</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque accumsan ornare orci, eget efficitur lorem bibendum ut. Curabitur at tempus augue. Vivamus rhoncus fermentum mauris scelerisque auctor. Sed quis accumsan est. Integer nisl augue, molestie vel nisi vitae, feugiat mattis lectus. Fusce rhoncus sem non turpis varius, eu dictum ante ornare. Maecenas vitae semper quam.<p>
+                <button>Employment Form</button>
+            </div>
+
         </div>
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>

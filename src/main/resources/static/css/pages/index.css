@@ -90,3 +90,9 @@ hr {
 .apply_button {
     margin-top: 0;
 }
+
+#employment button {
+    padding-left: 20px;
+    padding-right: 20px;
+    width: fit-content;
+}

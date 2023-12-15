@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Applicants</title>
+    <link th:href="@{/css/pages/applicants.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div id="main_part">
+    <div id="main_part_content">
+        <h1>Applicants</h1>
+        <p class="request_message"></p>
+        <div class="empty_list" th:classappend="${applicants != null and !applicants.isEmpty()} ? not_visible : ''">
+            <span>Empty</span>
+        </div>
+        <table id="applicants_table" th:class="${applicants != null and !applicants.isEmpty()} ? '' : not_visible">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Patronymic</th>
+                <th>Email</th>
+                <th>Phone number</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="applicant:${applicants}" th:attr="data-id=${applicant.applicant.id}">
+                    <td class="name" th:text="${applicant.applicant.name}"></td>
+                    <td class="surname" th:text="${applicant.applicant.surname}"></td>
+                    <td class="patronymic" th:text="${applicant.applicant.patronymic}"></td>
+                    <td class="email" th:text="${applicant.applicant.email}"></td>
+                    <td class="phone" th:text="${applicant.applicant.phoneNumber}"></td>
+                    <td class="motivation_list not_visible" th:text="${applicant.motivationList}"></td>
+                    <td>
+                        <div class="buttons">
+                            <button class="motivation_list_button grey">Motivation\nList</button>
+                            <button class="apply_button green">Apply</button>
+                            <button class="cancel_button red">Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<dialog id="cancel_applicant_popup" class="popup">
+    <div class="popup_content">
+        <h1>Cancel Applicant</h1>
+        <p>Are you sure you want to cancel this applicant?</p>
+        <p class="warning">This operation cannot be cancelled!</p>
+        <button class="delete_button red">Cancel</button>
+        <button class="cancel_button close_popup_button grey">Close</button>
+    </div>
+</dialog>
+
+<dialog id="apply_applicant_popup" class="popup">
+    <div class="popup_content">
+        <h1>Apply Applicant</h1>
+        <p>Are you sure you want to apply this applicant?</p>
+        <p class="warning">This operation cannot be cancelled!</p>
+        <button class="delete_button green">Apply</button>
+        <button class="cancel_button close_popup_button grey">Close</button>
+    </div>
+</dialog>
+
+<dialog id="motivation_list_popup" class="popup">
+    <div class="popup_content">
+        <h1>Motivation List</h1>
+        <form>
+            <textarea class="motivation_list">
+
+            </textarea>
+        </form>
+        <button class="cancel_button close_popup_button grey">Close</button>
+    </div>
+</dialog>
+<script type="module" th:src="@{/scripts/pages/applicants.js}"></script>
+<script th:src="@{/scripts/utils/general.js}"></script>
+</body>
+</html>

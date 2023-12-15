@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employment Form</title>
+    <link th:href="@{/css/pages/employment-form.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div id="main_part">
+    <div id="main_part_content">
+        <h1>Employment Form</h1>
+        <p class="request_message"></p>
+        <h3>Motivation List</h3>
+        <form>
+            <textarea class="motivation_list"></textarea>
+        </form>
+        <button class="apply_button green">Send Request</button>
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/scripts/utils/general.js}"></script>
+<script type="module" th:src="@{/scripts/pages/employment-form.js}"></script>
+</body>
+</html>

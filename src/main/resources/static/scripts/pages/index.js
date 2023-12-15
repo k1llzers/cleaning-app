@@ -155,3 +155,9 @@ plusButton.addEventListener('click', () => {
     }
     changePriceEl();
 });
+const employmentButton = document.querySelector('#employment button');
+if(employmentButton) {
+    employmentButton.addEventListener('click', () => {
+        window.location.replace('/employment-form');
+    });
+}

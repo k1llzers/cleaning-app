@@ -144,3 +144,37 @@ export async function tryDeleteRequest(requestMessageEl, url, successMessage, er
     document.body.classList.remove('loading');
     return false;
 }
+
+export async function tryPutBooleanRequest(requestMessageEl, url, successMessage, errorMessage) {
+    document.body.classList.add('loading');
+    const response = await fetch(url,
+        {
+            method: 'PUT',
+            headers: {"Content-Type": "application/json"}
+        });
+    const responseText = await response.text();
+    if (responseText === 'true') {
+        successRequest(requestMessageEl, successMessage);
+        document.body.classList.remove('loading');
+        return true;
+    }
+    else {
+        try {
+            const responseJson = await response.json();
+            if(responseJson['errorMessage']) {
+                errorRequest(requestMessageEl, responseJson['errorMessage']);
+            }
+            else if(responseJson['errors']) {
+                errorRequest(requestMessageEl, responseJson['errors']);
+            }
+            else {
+                errorRequest(requestMessageEl, errorMessage);
+            }
+        }
+        catch (e) {
+            errorRequest(requestMessageEl, errorMessage);
+        }
+    }
+    document.body.classList.remove('loading');
+    return false;
+}

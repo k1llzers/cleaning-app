@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee rating</title>
+    <link th:href="@{/css/utils/rating.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:fragment="employee-rating" class="stars">
+    <input type="radio" id="star11" name="rating" value="1" /><input type="radio" id="star22" name="rating" value="2" /><input type="radio" id="star33" name="rating" value="3" /><input type="radio" id="star44" name="rating" value="4" /><input type="radio" id="star55" name="rating" value="5"/>
+    <label for="star11" aria-label="Banana">1 star</label><label for="star22">2 stars</label><label for="star33">3 stars</label><label for="star44">4 stars</label><label for="star55">5 stars</label>
+</div>
+</body>
+</html>
