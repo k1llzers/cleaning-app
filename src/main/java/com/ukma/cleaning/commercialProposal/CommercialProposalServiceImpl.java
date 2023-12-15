@@ -27,9 +27,13 @@ public class CommercialProposalServiceImpl implements CommercialProposalService 
 
     @Override
     public CommercialProposalDto update(CommercialProposalDto commercialProposal) {
-        if (commercialProposalRepository.findCommercialProposalEntityByName(commercialProposal.getName()).isPresent()) {
+        CommercialProposalEntity proposal = commercialProposalRepository.findById(commercialProposal.getId()).orElseThrow(() -> {
+            log.info("Cna`t find proposal by id: " + commercialProposal.getId());
+            throw new NoSuchEntityException("Cna`t find proposal by id: " + commercialProposal.getId());
+        });
+        if (!proposal.getName().equals(commercialProposal.getName())) {
             log.info("Same commercial proposals name, when update proposal with name: {}", commercialProposal.getName());
-            throw new ProposalNameDuplicateException("Commercial proposal name should be unique!");
+            throw new ProposalNameDuplicateException("Commercial proposal can`t be edited!");
         }
         log.debug("Commercial proposal with id = {} successfully updated", commercialProposal.getId());
         return mapper.toDto(commercialProposalRepository.save(mapper.toEntity(commercialProposal)));

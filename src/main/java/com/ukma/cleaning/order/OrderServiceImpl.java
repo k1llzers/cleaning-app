@@ -5,6 +5,7 @@ import com.ukma.cleaning.commercialProposal.CommercialProposalRepository;
 import com.ukma.cleaning.notification.NotificationService;
 import com.ukma.cleaning.order.dto.*;
 import com.ukma.cleaning.review.ReviewDto;
+import com.ukma.cleaning.user.Role;
 import com.ukma.cleaning.utils.exceptions.AccessDeniedException;
 import com.ukma.cleaning.utils.exceptions.CantChangeEntityException;
 import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
@@ -223,7 +224,8 @@ public class OrderServiceImpl implements OrderService {
                     SecurityContextAccessor.getAuthenticatedUser(), orderId);
             return new NoSuchEntityException("Can`t find order by id: " + orderId);
         });
-        if (!orderEntity.getExecutors().contains(SecurityContextAccessor.getAuthenticatedUser())) {
+        if (!orderEntity.getExecutors().contains(SecurityContextAccessor.getAuthenticatedUser())
+                && SecurityContextAccessor.getAuthenticatedUser().getRole() != Role.ADMIN) {
             log.warn("User id = {} trying to get change order by id id = {}",
                     SecurityContextAccessor.getAuthenticatedUserId(), orderEntity.getId());
             throw new AccessDeniedException("Access denied");

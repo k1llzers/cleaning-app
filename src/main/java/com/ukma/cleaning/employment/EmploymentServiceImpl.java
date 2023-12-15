@@ -26,7 +26,7 @@ public class EmploymentServiceImpl implements EmploymentService {
     public EmploymentDto create(String motivationList) {
         EmploymentEntity employmentRequest = mapper.toEntity(motivationList);
         employmentRequest.setApplicant(SecurityContextAccessor.getAuthenticatedUser());
-        log.info("Created new employment request with id = {}",employmentRequest.getId());
+        log.info("Created new employment request with id = {}", employmentRequest.getId());
         return mapper.toDto(repository.save(employmentRequest));
     }
 
