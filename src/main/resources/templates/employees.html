@@ -9,9 +9,42 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <div id="main_part">
     <div id="main_part_content">
+        <h1>Employees</h1>
+        <button th:if="${!applicants.isEmpty()}" id="applicants_button" class="green">Applicants</button>
+        <p class="request_message"></p>
+        <div class="empty_list not_visible">
+            <span>Empty</span>
+        </div>
+        <table id="employees_table" class="not_visible">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Patronym</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="pagination not_visible">
+        </div>
     </div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
-<script th:src="@{/scripts/utils/employees.js}"></script>
+
+<dialog id="unemployment_popup" class="popup">
+    <div class="popup_content">
+        <h1>Unemployment</h1>
+        <p>Are you sure you want to unemploy this employee?</p>
+        <p class="warning">This action cannot be cancelled!</p>
+        <button class="unemploy_button red">Unemploy</button>
+        <button class="close_button close_popup_button grey">Close</button>
+    </div>
+</dialog>
+
+<script th:src="@{/scripts/utils/general.js}"></script>
+<script type="module" th:src="@{/scripts/pages/employees.js}"></script>
 </body>
 </html>

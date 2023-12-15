@@ -34,9 +34,10 @@ function initApplicants() {
 async function tryCancelApplicant() {
     const url = `/api/employment/${currentUserId}/cancel`;
     const response = await tryPutBooleanRequest(requestMessageEl, url, 'Applicant cancelled successfully!', 'Applicant wasn\'t cancelled!');
-    if(response.type === 'success') {
+    if(response) {
+        //console.log(currentTr);
         currentTr.remove();
-        if(applicantsTable.querySelector('tbody').textContent.trim() === '') {
+        if(applicantsTable.querySelector('tbody').innerHTML.trim() === '') {
             applicantsTable.classList.add('not_visible');
             document.querySelector('.empty_list').classList.remove('not_visible');
         }
@@ -46,10 +47,10 @@ async function tryCancelApplicant() {
 
 async function tryApplyApplicant() {
     const url = `/api/employment/${currentUserId}/succeed`;
-    const response = await tryPutBooleanRequest(requestMessageEl, url, 'Applicant cancelled successfully!', 'Applicant wasn\'t cancelled!');
-    if(response.type === 'success') {
+    const response = await tryPutBooleanRequest(requestMessageEl, url, 'Applicant employed successfully!', 'Applicant wasn\'t emloyed!');
+    if(response) {
         currentTr.remove();
-        if(applicantsTable.querySelector('tbody').textContent.trim() === '') {
+        if(applicantsTable.querySelector('tbody').innerHTML.trim() === '') {
             applicantsTable.classList.add('not_visible');
             document.querySelector('.empty_list').classList.remove('not_visible');
         }
@@ -59,6 +60,7 @@ async function tryApplyApplicant() {
 
 initPopups();
 initForms();
+initApplicants();
 cancelApplicantPopup.querySelector('.cancel_button').addEventListener('click', () => {
     tryCancelApplicant();
 });

@@ -18,6 +18,7 @@
             </div>
         </div>
         <nav sec:authorize="isAuthenticated()">
+            <a th:href="@{/employees}" sec:authorize="hasRole('ROLE_ADMIN')">Employees</a>
             <a th:href="@{/proposals}" sec:authorize="hasRole('ROLE_ADMIN')">Proposals</a>
             <a th:href="@{/orders}" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_EMPLOYEE')">Orders</a>
             <a th:href="@{/cart}" sec:authorize="hasRole('ROLE_USER')">Cart</a>

@@ -1,0 +1,83 @@
+@import '../utils/general.css';
+@import '../utils/header.css';
+@import '../utils/footer.css';
+@import '../utils/popup.css';
+@import '../utils/form.css';
+@import '../utils/button.css';
+@import '../utils/table.css';
+@import '../utils/rating.css';
+
+#applicants_button {
+    padding-right: 20px;
+    padding-left: 20px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+#main_part_content {
+    text-align: center;
+}
+
+#employees_table {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 20px;
+}
+
+#employees_table button {
+    margin-right: 10px;
+}
+
+#main_part_content {
+    display: flex;
+    flex-direction: column;
+}
+
+.empty_list {
+    display: flex;
+    height: 100%;
+    margin: auto;
+}
+
+.empty_list span {
+    color: darkgrey;
+    font-size: 80px;
+    font-weight: bold;
+    margin: auto;
+}
+
+.pagination {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.pagination button {
+    padding-left: 20px;
+    padding-right: 20px;
+    width: fit-content;
+    margin-right: 10px;
+}
+
+.pagination button:last-child {
+    margin-right: 0;
+}
+
+.pagination span {
+    margin-top: auto;
+    color: darkgrey;
+    font-size: 30px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#employees_table .buttons {
+    display: flex;
+    height: 100%;
+}
