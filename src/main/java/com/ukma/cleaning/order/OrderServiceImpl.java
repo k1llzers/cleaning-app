@@ -2,9 +2,9 @@ package com.ukma.cleaning.order;
 
 import com.ukma.cleaning.address.AddressRepository;
 import com.ukma.cleaning.commercialProposal.CommercialProposalRepository;
+import com.ukma.cleaning.notification.NotificationService;
 import com.ukma.cleaning.order.dto.*;
 import com.ukma.cleaning.review.ReviewDto;
-import com.ukma.cleaning.user.UserEntity;
 import com.ukma.cleaning.utils.exceptions.AccessDeniedException;
 import com.ukma.cleaning.utils.exceptions.CantChangeEntityException;
 import com.ukma.cleaning.utils.exceptions.NoSuchEntityException;
@@ -33,6 +33,7 @@ public class OrderServiceImpl implements OrderService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
     private final ReviewMapper reviewMapper;
+    private final NotificationService notificationService;
 
     @Override
     public OrderForUserDto createOrder(OrderCreationDto order) {
@@ -49,6 +50,7 @@ public class OrderServiceImpl implements OrderService {
         entity.setAddress(addressRepository.findById(order.getAddress().getId())
                 .orElseGet(() -> addressRepository.save(addressMapper.toEntity(order.getAddress()))));
         OrderForUserDto orderDto = orderMapper.toUserDto(orderRepository.save(entity));
+//        notificationService.create(entity);
         log.info("Order with id = {} successfully created", entity.getId());
         return orderDto;
     }
