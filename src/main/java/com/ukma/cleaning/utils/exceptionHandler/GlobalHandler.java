@@ -27,7 +27,8 @@ public class GlobalHandler {
         return new ResponseEntity<>(formatMessage(message), getHttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({EmailDuplicateException.class, PhoneNumberDuplicateException.class, ProposalNameDuplicateException.class})
+    @ExceptionHandler({EmailDuplicateException.class, PhoneNumberDuplicateException.class,
+            ProposalNameDuplicateException.class, CantChangeEntityException.class, AlreadyAppliedException.class})
     public ResponseEntity<String> handleDuplicateException(Exception e) {
         return new ResponseEntity<>(formatMessage(e.getMessage()), getHttpHeaders(), HttpStatus.CONFLICT);
     }
