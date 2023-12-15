@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Orders</title>
     <link th:href="@{/css/pages/order/orders.css}" rel="stylesheet" />
 </head>
 <body>
     <div th:replace="~{fragments/header :: header}"></div>
     <div id="main_part">
-        <div id="main_part_content" th:attr="user-id=${user.id}">
+        <div id="main_part_content" th:attr="user-id=${user.id}, user-role=${user.role}">
             <h1>Orders</h1>
             <p class="request_message"></p>
             <div class="empty_list not_visible">
@@ -17,7 +17,7 @@
             <table id="orders_table" class="not_visible">
                 <thead>
                 <tr>
-                    <th>Id</th>
+                    <th>Number</th>
                     <th>Price</th>
                     <th>Order Time</th>
                     <th>Address</th>
@@ -29,15 +29,73 @@
                 </tbody>
             </table>
             <div class="pagination not_visible">
-                <!--span class="pagination_link_chosen">1</span>
-                <span class="pagination_link">2</span>
-                <span class="pagination_link">3</span>
-                <span class="pagination_dots">...</span>
-                <span class="pagination_link">Last</span-->
             </div>
         </div>
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
+    <dialog id="cancel_order_popup" class="popup">
+        <div class="popup_content">
+            <h1>Delete Address</h1>
+            <p>Are you sure you want to cancel this order?</p>
+            <p class="warning">This action cannot be cancelled!</p>
+            <button class="cancel_button red">Cancel</button>
+            <button class="close_button close_popup_button grey">Close</button>
+        </div>
+    </dialog>
+    <dialog id="review_order_popup" class="popup">
+        <div class="popup_content">
+            <h1>Review</h1>
+            <h3>Cleaning rate</h3>
+            <div id="cleaning_rate">
+                <div th:replace="~{fragments/cleaning-rating :: cleaning-rating}"></div>
+            </div>
+            <h3>Employee rate</h3>
+            <div id="employee_rate">
+                <div th:replace="~{fragments/employee-rating :: employee-rating}"></div>
+            </div>
+            <h3>Comment</h3>
+            <form><textarea id="review_comment"></textarea></form>
+            <button class="review_button green">Review</button>
+            <button class="close_button close_popup_button grey">Close</button>
+        </div>
+    </dialog>
+    <dialog id="change_status_popup" class="popup">
+        <div class="popup_content">
+            <h1>Change Status</h1>
+            <h3>Choose Status</h3>
+            <form>
+                <select>
+                    <option class="preparing">PREPARING</option>
+                    <option class="in_progress">IN_PROGRESS</option>
+                    <option class="done">DONE</option>
+                    <option class="cancelled">CANCELLED</option>
+                </select>
+            </form>
+            <button class="change_status_button green">Change</button>
+            <button class="close_button close_popup_button grey">Close</button>
+        </div>
+    </dialog>
+    <dialog id="verify_order_popup" class="popup">
+        <div class="popup_content">
+            <h1>Change Status</h1>
+            <form>
+                <div class="form_field">
+                    <h3>Duration (minutes)</h3>
+                    <div class="counter" min="1" max="9999">
+                        <button type="button" class="grey minus">-</button>
+                        <input type="text" class="time not_empty" value="1">
+                        <button type="button" class="grey plus">+</button>
+                    </div>
+                    <p class="validation_error"></p>
+                </div>
+                <h3>Choose Executors</h3>
+                <div class="executors">
+                </div>
+            </form>
+            <button class="verify_button green">Verify</button>
+            <button class="close_button close_popup_button grey">Cancel</button>
+        </div>
+    </dialog>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/dayjs.min.js" integrity="sha512-FwNWaxyfy2XlEINoSnZh1JQ5TRRtGow0D6XcmAWmYCRgvqOUTnzCxPc9uF35u5ZEpirk1uhlPVA19tflhvnW1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/plugin/duration.min.js" integrity="sha512-t0b2NyBypSms8nA81pldWo0mXbfMotsdYgvs4awmbi/GU/25YBNLnXj+I9DAMV7WGZ8+z8wtRolX7zSF2LN8UQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>dayjs.extend(window.dayjs_plugin_duration)</script>

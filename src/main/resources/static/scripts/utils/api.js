@@ -1,21 +1,31 @@
+const timeouts = new Map();
+
 function successRequest(requestMessageEl, message) {
-    if(!requestMessageEl) return;
+    if(!requestMessageEl || !message) return;
+    requestMessageEl.classList.remove('error_message');
     requestMessageEl.classList.add('success_message');
     requestMessageEl.textContent = message;
-    setTimeout(() => {
+    if(timeouts.get(requestMessageEl)) {
+        clearTimeout(timeouts.get(requestMessageEl));
+    }
+    timeouts.set(requestMessageEl, setTimeout(() => {
         requestMessageEl.textContent = '';
         requestMessageEl.classList.remove('success_message');
-    }, 5000);
+    }, 5000));
 }
 
 function errorRequest(requestMessageEl, message) {
-    if(!requestMessageEl) return;
+    if(!requestMessageEl || !message) return;
+    requestMessageEl.classList.remove('success_message');
     requestMessageEl.classList.add('error_message');
     requestMessageEl.textContent = message;
-    setTimeout(() => {
+    if(timeouts.get(requestMessageEl)) {
+        clearTimeout(timeouts.get(requestMessageEl));
+    }
+    timeouts.set(requestMessageEl, setTimeout(() => {
         requestMessageEl.textContent = '';
         requestMessageEl.classList.remove('error_message');
-    }, 5000);
+    }, 5000));
 }
 
 export async function tryPutRequest(requestMessageEl, url, body, successMessage, errorMessage) {

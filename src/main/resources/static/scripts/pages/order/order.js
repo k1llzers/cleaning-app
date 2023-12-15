@@ -133,6 +133,7 @@ function initTimeTableTBody(times) {
 
 async function initTimeTable(count, duration) {
     const url = `/api/available/time/${count}/${dayjs.duration(duration).toISOString()}`;
+    console.log(url);
     const response = await tryGetRequest(null, url, '', '');
     if(response.type === 'success') {
         const times = response.response;
@@ -261,6 +262,7 @@ initForms();
             duration: dayjs.duration(duration).toISOString(),
             proposals: proposalsToObj()
         };
+        //console.log(order);
         //console.log(order);
         tryOrder(order);
     });

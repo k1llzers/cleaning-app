@@ -25,7 +25,7 @@ public class OrderVC {
         return "order/order-success";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/orders")
     public String showOrders(Model model) {
         model.addAttribute("user", userService.getUser());

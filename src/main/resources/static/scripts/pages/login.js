@@ -7,8 +7,8 @@ async function tryLogin() {
     const requestMessageEl = loginForm.querySelector('.request_message');
     const url = '/api/auth/login';
     const body = {
-        username: loginForm.querySelector('.email_input').value,
-        password: loginForm.querySelector('.password_input').value
+        username: loginForm.querySelector('.email').value,
+        password: loginForm.querySelector('.password').value
     };
     const response = await tryPostRequest(requestMessageEl, url, JSON.stringify(body), 'You logged in successfully!', 'Your email or password is invalid!');
     if(response.type === 'success') {
@@ -22,11 +22,11 @@ async function tryLogin() {
 initForms();
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const emailEl = loginForm.querySelector('.email_input');
-    const passwordEl = loginForm.querySelector('.password_input');
-    const isFormValid =
-        checkEmail(emailEl)
-        && checkPassword(passwordEl);
+    const emailEl = true;//loginForm.querySelector('.email_input');
+    const passwordEl = true;//loginForm.querySelector('.password_input');
+    const isFormValid = true;
+        //checkEmail(emailEl)
+        //&& checkPassword(passwordEl);
     if (isFormValid) {
         tryLogin();
     }
