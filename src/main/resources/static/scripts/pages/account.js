@@ -33,6 +33,8 @@ function edit() {
         x.classList.remove('not_editable');
         x.removeAttribute('readonly');
     });
+    document.querySelector('.account_info .email_input').classList.add('not_editable');
+    document.querySelector('.account_info .email_input').setAttribute('readonly', 'true');
     document.querySelector('.account_info button').classList.remove('not_visible');
     editable = !editable;
 }
