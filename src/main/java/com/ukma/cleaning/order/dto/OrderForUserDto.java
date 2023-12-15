@@ -20,10 +20,10 @@ public class OrderForUserDto {
     private Long id;
     private Double price;
     @NotNull(message = "Order time can't be null")
-    private LocalDateTime orderTime;//
+    private LocalDateTime orderTime;
     private AddressDto address;
-    private Status status; //
+    private Status status;
     private Duration duration;
-    private ReviewDto review; //
+    private ReviewDto review;
     private Map<String, Integer> commercialProposals;
 }

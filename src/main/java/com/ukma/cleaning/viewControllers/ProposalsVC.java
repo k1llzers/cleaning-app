@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class ProposalsVC {
     private final CommercialProposalService proposalService;
-    //TODO
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/proposals")
     String getProposals(Model model) {

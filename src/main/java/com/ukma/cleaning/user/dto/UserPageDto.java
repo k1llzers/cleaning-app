@@ -10,7 +10,6 @@ import java.util.List;
 @Data
 
 public class UserPageDto {
-    // starts from 0
     private long currPage;
     private long numOfPages;
     private List<UserListDto> orderList;

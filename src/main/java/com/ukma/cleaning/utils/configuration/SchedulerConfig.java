@@ -38,9 +38,4 @@ public class SchedulerConfig {
         orderRepository.saveAll(orders);
         log.info("Orders status set, and mails sent");
     }
-
-//    @Scheduled(fixedDelay = 1000 * 60 * 10)
-//    public void sendNotificationsForUser() {
-//        notificationService.sendNotifications();
-//    }
 }

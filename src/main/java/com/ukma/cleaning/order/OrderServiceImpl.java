@@ -51,7 +51,6 @@ public class OrderServiceImpl implements OrderService {
         entity.setAddress(addressRepository.findById(order.getAddress().getId())
                 .orElseGet(() -> addressRepository.save(addressMapper.toEntity(order.getAddress()))));
         OrderForUserDto orderDto = orderMapper.toUserDto(orderRepository.save(entity));
-//        notificationService.create(entity);
         log.info("Order with id = {} successfully created", entity.getId());
         return orderDto;
     }
