@@ -20,12 +20,12 @@ public class OrderCreationDto {
     @NotNull(message = "Order time can't be null")
     private LocalDateTime orderTime;
     @NotNull(message = "Client id can't be null")
-    private Long clientId; // in service
+    private Long clientId;
     private String comment;
     @NotNull(message = "Address of order can't be null")
     private AddressDto address;
     @NotNull(message = "Duration of order can't be null")
     private Duration duration;
     @NotNull(message = "Order can't be null")
-    private Map<Long, Integer> proposals; //in service
+    private Map<Long, Integer> proposals;
 }

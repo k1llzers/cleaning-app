@@ -45,6 +45,8 @@ public class GlobalHandler {
 
     @ExceptionHandler
     public String handleUnexpectedException(Exception e) {
+        log.info(e.getMessage());
+        e.printStackTrace();
         return "unexpectedError";
     }
 

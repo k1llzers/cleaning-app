@@ -10,7 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class OrderPageDto {
-    // starts from 0
     private long currPage;
     private long numOfPages;
     private List<OrderListDto> orderList;
