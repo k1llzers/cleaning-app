@@ -84,7 +84,7 @@ public class EmploymentServiceImpl implements EmploymentService {
             throw new NoSuchEntityException("Can`t find user by id: " + userId);
         });
         long countOfUnfinishedOrders = orderRepository.findOrdersByExecutorsId(employee.getId()).stream()
-                .filter(order -> order.getStatus() != Status.CANCELLED || order.getStatus() != Status.DONE)
+                .filter(order -> order.getStatus() != Status.CANCELLED && order.getStatus() != Status.DONE)
                 .filter(order -> order.getOrderTime().isAfter(LocalDateTime.now()))
                 .count();
         if (countOfUnfinishedOrders != 0) {
